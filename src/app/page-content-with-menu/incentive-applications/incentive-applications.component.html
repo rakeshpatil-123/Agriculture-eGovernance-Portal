@@ -1,0 +1,58 @@
+<div class="page-header">
+  <h1 class="page-head">
+    <mat-icon class="page-icon">assignment</mat-icon>
+    Incentive Applications
+  </h1>
+</div>
+
+<app-dynamic-table [data]="applications" [columns]="incentiveApplications" [pageSize]="10" [showPagination]="true" [searchable]="true"></app-dynamic-table>
+<!-- <div *ngIf="statusModal.visible" class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3 class="modal-title">{{ statusModal.title }}</h3>
+      <button type="button" class="close-btn" (click)="closeModal()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <form [formGroup]="remarkForm" (ngSubmit)="onSubmitStatus()" class="modal-body">
+      <div class="form-group space-y-3">
+        <app-ilogi-input formControlName="remarks" label="Remarks" [mandatory]="true"
+          placeholder="Enter remarks (min 5 characters)">
+        </app-ilogi-input>
+        <small class="text-danger" *ngIf="remarkForm.get('remarks')?.invalid && remarkForm.get('remarks')?.touched">
+          Remarks are required and must be at least 5 characters.
+        </small>
+        <ng-container *ngIf="statusModal.action === 'approved'">
+          <app-ilogi-input formControlName="claimed_amount" label="Claimed Amount" [mandatory]="true"
+            placeholder="Enter Claimed Amount">
+          </app-ilogi-input>
+          <small class="text-danger"
+            *ngIf="remarkForm.get('claimed_amount')?.invalid && remarkForm.get('claimed_amount')?.touched">
+            Claimed Amount is required.
+          </small>
+
+          <app-ilogi-input formControlName="approved_amount" label="Approved Amount" [mandatory]="true"
+            placeholder="Enter Approved Amount">
+          </app-ilogi-input>
+          <small class="text-danger"
+            *ngIf="remarkForm.get('approved_amount')?.invalid && remarkForm.get('approved_amount')?.touched">
+            Approved Amount is required.
+          </small>
+        </ng-container>
+      </div>
+      <div class="modal-actions">
+        <button *ngIf="isCertificatePreview && statusModal.action === 'approved'" type="button" mat-raised-button
+          (click)="previewCertificate()" class="btn preview-btn">
+          <mat-icon>visibility</mat-icon> Preview Certificate
+        </button>
+        <button type="button" (click)="closeModal()" class="btn cancel-btn">
+          <mat-icon>close</mat-icon> Cancel
+        </button>
+        <button type="submit" [disabled]="remarkForm.invalid" class="btn confirm-btn">
+          <mat-icon>check_circle</mat-icon> Confirm
+        </button>
+      </div>
+    </form>
+  </div>
+</div> -->

@@ -1,0 +1,262 @@
+<div *ngIf="workflowData.length > 0" class="workflow-header new-workflow-header" role="banner"
+  aria-label="Workflow header">
+  <div class="header-side header-left">
+    <button type="button" mat-icon-button class="icon-btn back-btn" (click)="goBack()" aria-label="Go back">
+      <mat-icon class="back-icon">arrow_back</mat-icon>
+      <span class="back-label" aria-hidden="true">Back</span>
+    </button>
+  </div>
+    <div class="header-center" aria-live="polite">
+      <h1 class="page-head centered-head">
+        <span class="head-main">Workflow Steps</span>
+      <span class="service-name" aria-hidden="false">{{serviceName}}</span>
+    </h1>
+    <div class="title-subtle-underline" aria-hidden="true"></div>
+  </div>
+    <div class="header-side header-right">
+      <div class="btn-group-right">
+        <button type="button" class="btn-gradient ghost-action" (click)="navigateToCAF()" aria-label="Open CAF">
+          <mat-icon class="icon-left">visibility</mat-icon>
+          <span class="btn-label">CAF</span>
+        </button>
+        <button type="button" class="btn-print" (click)="openPrintPreview()" aria-label="Print Application">
+          <mat-icon class="icon-left" aria-hidden="true">print</mat-icon>
+          <span class="btn-label">Print Application</span>
+        </button>
+        <button *ngIf="isFinalApproval" mat-raised-button class="btn-gradient primary-action generate-btn"
+          (click)="editCertificateGeneration()" aria-label="Generate or re-generate certificate">
+          <mat-icon class="icon-left animate-icon">workspace_premium</mat-icon>
+          <span class="btn-label">{{isCertificateGenerated ? 'Re-Generate Certificate' : 'Generate Certificate'}}</span>
+        </button>
+        <button *ngIf="isFinalApproval" type="button" class="btn-gradient pdf-action" (click)="downloadCertificate()"
+          aria-label="Download certificate as PDF">
+          <mat-icon class="icon-left animate-pulse">picture_as_pdf</mat-icon>
+          <span class="btn-label">Certificate</span>
+      </button>
+      <!-- <button mat-raised-button color="primary" class="submit-btn" *ngIf="sampleFilePreview" (click)="previewSampleFile()">
+          Preview Sample File
+        </button> -->
+    </div>
+  </div>
+</div>
+    <app-dynamic-table [data]="workflowData" [columns]="workflowColumns" [showPagination]="true" [pageSize]="5"
+      [searchable]="true"></app-dynamic-table>
+
+    <ng-container *ngIf="applicationQAColumns.length > 0; else noQa">
+      <h3 class="mt-4 page-head">Application Questions & Answers</h3>
+      <div class="qa-section">
+        <ng-container *ngFor="let item of applicationQATableData; let i = index">
+          <div *ngIf="item.isSection" class="qa-section-header">
+            <h5 class="section-title">{{ item.question }}</h5>
+          </div>
+       <div class="qa-item">
+  <div class="qa-question">{{ item.question }}</div>
+
+  <div class="qa-answer" *ngIf="item.isFile; else textAnswer">
+   <ng-container *ngIf="item.fileUrls?.length > 0; else singleFile">
+  <div class="file-list">
+    <button
+      type="button"
+      class="view-file-btn"
+      *ngFor="let file of item.fileUrls; let i = index"
+      (click)="openFile(file)">
+      {{ item.fileNames?.[i] || ('View File ' + (i + 1)) }}
+    </button>
+  </div>
+</ng-container>
+
+
+    <ng-template #singleFile>
+      <button type="button" class="view-file-btn" (click)="openFile(item.fileUrl)">
+        {{ item.fileName }}
+      </button>
+    </ng-template>
+  </div>
+
+  <ng-template #textAnswer>
+    <div class="qa-answer">{{ item.answer }}</div>
+  </ng-template>
+</div>
+        </ng-container>
+      </div>
+    </ng-container>
+    <ng-template #noQa>
+      <div class="alert alert-info mt-4">
+        No application questions provided.
+      </div>
+    </ng-template>
+    <div *ngIf="infoData.length > 0" class="app-summary-wrapper">
+      <div class="app-summary-container">
+        <h3 class="page-head">Application Summary</h3>
+        <section class="summary-card highlights" role="group" aria-label="Key highlights">
+          <div class="summary-top">
+            <div class="left">
+              <div class="label">Application Number</div>
+              <div class="value big">{{ applicationData?.application_number || '—' }}</div>
+              <div class="sub-row">
+                <div>
+                  <div class="small-label">Service</div>
+                  <div class="small-val">{{ applicationData?.service_name || '—' }}</div>
+                </div>
+                <div>
+                  <div class="small-label">Applied On</div>
+                  <div class="small-val">{{ applicationData?.created_at ? (applicationData?.created_at | date:'dd/MM/yyyy')
+                    : '—' }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="right">
+              <div class="chip-wrap">
+                <div class="chip-block">
+                  <div class="chip-label">Status</div>
+                  <div class="chip" role="status"
+                    [attr.aria-label]="'Application status: ' + (formatStatusLabel(applicationData?.status) || 'Unknown')"
+                    title="{{ formatStatusLabel(applicationData?.status) || 'Unknown' }}">
+                    <span class="status-chip" [ngClass]="statusClass(applicationData?.status)">
+                      <span class="dot" aria-hidden="true"></span>
+                      <span class="chip-text">{{ formatStatusLabel(applicationData?.status) }}</span>
+                    </span>
+                  </div>
+                </div>
+                <div class="chip-block">
+                  <div class="chip-label">Payment</div>
+                  <div class="chip" role="note"
+                    [attr.aria-label]="'Payment status: ' + (formatPaymentLabel(applicationData?.payment_status) || 'Pending')"
+                    title="{{ formatPaymentLabel(applicationData?.payment_status) || 'Pending' }}">
+                    <span class="payment-chip" [ngClass]="paymentClass(applicationData?.payment_status)">
+                      <span class="dot" aria-hidden="true"></span>
+                      <span class="chip-text">{{ formatPaymentLabel(applicationData?.payment_status) }}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="action-row">
+                <button class="btn primary" (click)="previewCertificate()">Preview</button>
+                <button class="btn outline" (click)="downloadCertificate()">Download</button>
+              </div> -->
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="fees-row">
+            <div class="fee">
+              <div class="small-label">Application Fee</div>
+              <div class="fee-val">{{ applicationData?.application_fee || '—' }}</div>
+            </div>
+            <div class="fee">
+              <div class="small-label">Extra Raised</div>
+              <div class="fee-val">{{ applicationData?.extra_payment || '—' }}</div>
+            </div>
+            <div class="fee">
+              <div class="small-label">Total Fee</div>
+              <div class="fee-val">{{ applicationData?.total_fee || '—' }}</div>
+            </div>
+          </div>
+
+        </section>
+        <section class="details-accordion" aria-label="Application details">
+          <div *ngFor="let item of infoData; let idx = index" class="accordion-card"
+            [class.open]="expandedInfoIndex === idx">
+            <button class="accordion-header" (click)="toggleInfo(idx)" type="button"
+              [attr.aria-expanded]="expandedInfoIndex === idx">
+              <div class="title">{{ item.key }}</div>
+              <div class="preview">{{ item.value && item.value.length > 90 ? (item.value | slice:0:90) + '...' : item.value
+                }}</div>
+            </button>
+
+            <div class="accordion-body" *ngIf="expandedInfoIndex === idx">
+              <div class="full-val">{{ item.value || '—' }}</div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+  <!-- Status Action Modal -->
+  <div *ngIf="statusModal.visible" class="modal-overlay">
+    <div class="modal-content">
+      <h3>{{ statusModal.title }}</h3>
+
+      <form [formGroup]="remarkForm" (ngSubmit)="onSubmitStatus()">
+        <div class="extra-payment" *ngIf="statusModal.action === 'raise_extra_payment'">
+          <app-ilogi-input formControlName="extraAmount" fieldLabel="Extra Payment Amount" [mandatory]="true"
+            placeholder="Enter extra payment amount" [type]="'number'" inputType="number"></app-ilogi-input>
+
+          <small *ngIf="remarkForm.get('extraAmount')?.invalid && remarkForm.get('extraAmount')?.touched" class="text-danger">Extra Payment Amount is required.</small>
+        </div>
+        <div class="mb-3">
+          <app-ilogi-input formControlName="remarks" label="Remarks" [mandatory]="true"
+            placeholder="Enter remarks for this action (min 2 characters)"></app-ilogi-input>
+        </div>
+        <div>
+          <app-ilogi-file-upload formControlName="attachment" [mandatory]="false"
+            placeholder="Upload supporting document" accept=".png,.jpg,.jpeg,.pdf"></app-ilogi-file-upload>
+        </div>
+
+        <small *ngIf="remarkForm.get('remarks')?.invalid && remarkForm.get('remarks')?.touched" class="text-danger">
+          Remarks are required and must be at least 2 characters.
+        </small>
+        <div class="modal-actions">
+
+<!--
+          <button class="btn btn-primary" *ngIf="isCertificatePreview && statusModal.action === 'approved'"
+            mat-raised-button class="generate-btn" (click)="editCertificateGeneration()">
+            <mat-icon style="color: white;" class="mr-2">workspace_premium</mat-icon>
+            <span style="color: white;">Generate Certificate</span>
+          </button> -->
+
+
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+
+        <button type="submit" class="btn btn-primary" [disabled]="remarkForm.invalid">
+           {{ statusModal.action === 'approved' ? (justBeforeApproval ?  'Final Approve' : 'Approve/Forward') : statusModal.action === 'raise_extra_payment' ? 'Raise Extra Payment' : statusModal.action === 'send_back' ? 'Send Back' : 'Reject'}}
+          </button>
+        </div>
+      </form>
+    <!-- </div> -->
+  </div>
+</div>
+
+<div *ngIf="showPdfPreview" class="pdf-overlay" role="dialog" aria-label="Application preview">
+  <div class="pdf-modal">
+    <div class="pdf-header">
+      <div class="pdf-title">
+        <strong>Application Preview</strong>
+        <div class="pdf-subtitle">
+          {{ applicationData?.service_name || serviceName || '' }} —
+          {{ getApplicationNumber(applicationData || applicationId) }}
+        </div>
+      </div>
+
+      <div class="pdf-toolbar" role="toolbar" aria-label="PDF actions">
+        <button class="pdf-tool" type="button" (click)="zoomOut()">−</button>
+        <button class="pdf-tool" type="button" (click)="fitToWidth()">Fit</button>
+        <button class="pdf-tool" type="button" (click)="zoomIn()">+</button>
+        <button class="pdf-tool" type="button" (click)="printApplication()">Print</button>
+        <button class="pdf-tool" type="button" (click)="downloadPdf()">Download</button>
+        <button class="pdf-tool" type="button" (click)="openPdfInNewTab()">Open</button>
+        <button class="pdf-close-btn" type="button" (click)="closePdfPreview()" aria-label="Close preview">✕</button>
+      </div>
+    </div>
+
+    <div class="pdf-body">
+      <div class="pdf-viewport" [style.transform]="'scale(' + pdfZoom + ')'" [style.transformOrigin]="'top left'">
+        <iframe *ngIf="pdfUrl" [src]="pdfUrl" class="pdf-iframe" frameborder="0"></iframe>
+      </div>
+    </div>
+
+    <div class="pdf-footer">
+      <div class="pdf-meta">
+        <span>
+          Printed On:
+          {{
+            (applicationData?.updated_at
+              ? (applicationData?.updated_at | date:'dd/MM/yyyy HH:mm')
+              : (now | date:'dd/MM/yyyy HH:mm'))
+          }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

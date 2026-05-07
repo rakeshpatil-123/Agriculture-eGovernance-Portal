@@ -1,0 +1,461 @@
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { TableModule } from 'primeng/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { GenericService } from '../../_service/generic/generic.service';
+import { TooltipModule } from 'primeng/tooltip';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import Swal from 'sweetalert2';
+import { LoaderService } from '../../_service/loader/loader.service';
+import { finalize } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+
+@Component({
+  selector: 'app-business-users',
+  templateUrl: './business-users.component.html',
+  styleUrls: ['./business-users.component.scss'],
+  imports: [
+    CommonModule,
+    TableModule,
+    MatIconModule,
+    MatInputModule,
+    MatButtonModule,
+    TooltipModule,
+    ToggleSwitchModule,
+    ReactiveFormsModule,
+    FormsModule,
+    InputTextModule,
+    ButtonModule
+  ]
+})
+export class BusinessUsersComponent implements OnInit {
+  users: any[] = [];
+  loading: boolean = false;
+  userForms: { [key: number]: FormGroup } = {};
+
+  columns: { field: string; header: string }[] = [
+    { field: 'id', header: 'ID' },
+    { field: 'name_of_enterprise', header: 'Enterprise Name' },
+    { field: 'authorized_person_name', header: 'Authorized Person' },
+    { field: 'email_id', header: 'Email' },
+    { field: 'mobile_no', header: 'Mobile' },
+    { field: 'user_name', header: 'Username' },
+    { field: 'bin', header: 'BIN' },
+    { field: 'pan', header: 'PAN' },
+    { field: 'district_name', header: 'District Name' },
+    { field: 'subdivision_name', header: 'Subdivision Name' },
+    { field: 'ulb_name', header: 'ULB Name' },
+    { field: 'ward_name', header: 'Ward Name' },
+    { field: 'registered_enterprise_address', header: 'Address' },
+    { field: 'registered_enterprise_city', header: 'City' },
+    { field: 'user_type', header: 'User Type' },
+    { field: 'status', header: 'Status' },
+    { field: 'login', header: 'Login' }
+  ];
+  totalRecords: number = 0;
+  rows: number = 10;
+  currentPage: number = 1;
+
+  globalFilterFields: string[] = this.columns.map(c => c.field);
+  searchText: string = '';
+  basePath: string = '';
+
+  constructor(
+    private genericService: GenericService,
+    private fb: FormBuilder,
+    private loaderService: LoaderService,
+    private router: Router
+  ) { }
+
+  ngOnInit(): void {
+    this.basePath = this.getBasePath();
+    this.fetchUsers(1);
+  }
+  fetchUsers(page: number = 1, rowCount: number = this.rows) {
+    this.loading = true;
+    this.loaderService.showLoader();
+
+    this.genericService
+      .getBusinessUsersDetails(page, rowCount, this.searchText)
+      .pipe(finalize(() => this.loaderService.hideLoader()))
+      .subscribe({
+        next: (res: any) => {
+          this.users = res?.status === 1 && Array.isArray(res.data) ? res.data : [];
+          this.totalRecords = res?.pagination?.total ?? 0;
+          this.currentPage = res?.pagination?.current_page ?? page;
+          this.rows = res?.pagination?.row_count ?? rowCount;
+
+          this.userForms = {};
+          this.users.forEach(user => {
+            this.userForms[user.id] = this.fb.group({
+              status: [user.status === 'active']
+            });
+          });
+
+          this.loading = false;
+        },
+        error: () => {
+          this.users = [];
+          this.totalRecords = 0;
+          this.loading = false;
+        }
+      });
+  }
+
+  onLazyLoad(event: any) {
+    const page = Math.floor(event.first / event.rows) + 1;
+    this.rows = event.rows;
+    this.fetchUsers(page, this.rows);
+  }
+  applyFilter(event: Event, dt: any) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    dt.filterGlobal(filterValue.trim().toLowerCase(), 'contains');
+  }
+
+  confirmStatusChange(user: any) {
+    const form = this.userForms[user.id];
+    const isActive = form.get('status')?.value;
+    const newStatus = isActive ? 'active' : 'inactive';
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to change status to "${newStatus}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: newStatus === 'active' ? '#10b981' : '#ef4444',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, change it!',
+      cancelButtonText: 'Cancel'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.updateUserStatus(user, newStatus);
+      } else {
+        form.patchValue({ status: !isActive }, { emitEvent: false });
+      }
+    });
+  }
+
+  updateUserStatus(user: any, status: string) {
+    this.genericService.updateBusinessUserStatus({ id: user.id, status }).subscribe({
+      next: () => {
+        user.status = status;
+        Swal.fire({
+          icon: 'success',
+          title: 'Status Updated',
+          text: `User status changed to ${status}.`,
+          timer: 1500,
+          showConfirmButton: false
+        });
+      },
+      error: () => {
+        const form = this.userForms[user.id];
+        form.patchValue({ status: user.status === 'active' }, { emitEvent: false });
+        Swal.fire('Error', 'Failed to update status.', 'error');
+      }
+    });
+  }
+  onServerSearch() {
+    this.fetchUsers(1, this.rows);
+  }
+  clearSearch() {
+    this.searchText = '';
+    this.fetchUsers(1, this.rows);
+  }
+  confirmDownload() {
+    Swal.fire({
+      title: 'Download Excel?',
+      text: 'Do you want to download the business users Excel file?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, download',
+      cancelButtonText: 'Cancel',
+      showClass: { popup: 'animate__animated animate__fadeInDown' },
+      hideClass: { popup: 'animate__animated animate__fadeOutUp' }
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.performExport();
+      }
+    });
+  }
+  getUserLogin(user: any): void {
+    this.loaderService.showLoader();
+    const payload = { user_id: user.id };
+
+    this.genericService.getByConditions(payload, 'api/admin/login-by-admin')
+      .pipe(finalize(() => this.loaderService.hideLoader()))
+      .subscribe({
+        next: (res: any) => {
+          if (!(res && res.status === 1 && res.token)) {
+            Swal.fire('Login Failed', res?.message || 'Unable to login this user.', 'error');
+            return;
+          }
+          try {
+            const backupKey = 'admin_session_backup_v1';
+            if (!localStorage.getItem(backupKey)) {
+              const snap: { [k: string]: string | null } = {};
+              for (let i = 0; i < localStorage.length; i++) {
+                const k = localStorage.key(i);
+                if (k) snap[k] = localStorage.getItem(k);
+              }
+              localStorage.setItem(backupKey, JSON.stringify(snap));
+            }
+          } catch (e) {
+            console.warn('Backup admin session failed', e);
+          }
+          try {
+            localStorage.setItem('token', res.token || '');
+          } catch (e) {
+            console.warn('Unable to set token before storeSessionData', e);
+          }
+          try {
+            this.genericService.storeSessionData(res, false);
+          } catch (e) {
+            console.warn('storeSessionData failed', e);
+          }
+          const d = res.data || {};
+          try {
+            localStorage.setItem('token_type', res.token_type || 'bearer');
+            localStorage.setItem('expires_in', String(res.expires_in ?? ''));
+
+            localStorage.setItem('userName', d.authorized_person_name ?? '');
+            localStorage.setItem('userRole', d.user_type ?? '');
+            localStorage.setItem('email_id', d.email_id ?? '');
+            localStorage.setItem('user_name', d.user_name ?? '');
+            localStorage.setItem('bin', d.bin ?? '');
+            localStorage.setItem('userId', String(d.id ?? ''));
+            localStorage.setItem('name_of_enterprise', d.name_of_enterprise ?? '');
+            localStorage.setItem('deptId', String(d.department_id ?? ''));
+            localStorage.setItem('deptName', d.department_name ?? '');
+            localStorage.setItem('hierarchy', d.hierarchy ?? '');
+            localStorage.setItem('designation', d.designation ?? '');
+            localStorage.setItem('district', d.district ?? '');
+            localStorage.setItem('subdivision', d.subdivision ?? '');
+            localStorage.setItem('ulb', d.ulb ?? '');
+            localStorage.setItem('ward', d.ward ?? '');
+          } catch (e) {
+            console.warn('Setting plain localStorage items failed', e);
+          }
+          try {
+            this.genericService.setLoginStatus(true);
+            try {
+              const gsAny: any = this.genericService as any;
+              if (typeof gsAny.refreshSession === 'function') {
+                gsAny.refreshSession();
+              } else if (typeof gsAny.loadSessionFromLocalStorage === 'function') {
+                gsAny.loadSessionFromLocalStorage();
+              } else if (gsAny.user$ && typeof gsAny.user$.next === 'function') {
+                gsAny.user$.next(d);
+              } else if (gsAny.currentUser && typeof gsAny.currentUser.next === 'function') {
+                gsAny.currentUser.next(d);
+              } else if (gsAny.setCurrentUser && typeof gsAny.setCurrentUser === 'function') {
+                gsAny.setCurrentUser(d);
+              }
+            } catch (refreshErr) {
+              console.warn('session refresh helper call failed', refreshErr);
+            }
+            try {
+              const evt = new CustomEvent('app.sessionChanged', { detail: { user: d } });
+              window.dispatchEvent(evt);
+            } catch (evtErr) {
+            }
+            try {
+              window.dispatchEvent(new Event('session-changed'));
+            } catch { }
+            const displayName = (d.authorized_person_name || d.user_name || d.name_of_enterprise || d.email_id || 'User');
+            const displayEnterprise = d.name_of_enterprise ? String(d.name_of_enterprise) : '';
+            const initials = displayName.split(' ').map((s: any) => s[0]).slice(0, 2).join('').toUpperCase();
+            Swal.fire({
+              html: `
+              <div style="display:flex;flex-direction:row;align-items:center;gap:14px;padding:6px 10px;">
+                <div style="flex:0 0 64px; height:64px; border-radius:12px; display:flex;align-items:center;justify-content:center;
+                            background: linear-gradient(135deg,#0ea5e9,#0369a1);
+                            box-shadow: 0 8px 22px rgba(3,37,65,0.18); color:#fff; font-weight:700; font-size:20px;">
+                  ${this.escapeHtml(initials)}
+                </div>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-size:1.05rem; font-weight:700; color:#04263f; line-height:1.1;">
+                    Welcome, ${this.escapeHtml(displayName)}
+                  </div>
+                  <div style="font-size:0.88rem; color:#556b7a; margin-top:4px;">
+                    ${displayEnterprise ? this.escapeHtml(displayEnterprise) + ' · ' : ''}Signed in successfully
+                  </div>
+                </div>
+                <div style="flex:0 0 auto; margin-left:6px;">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <rect x="0" y="0" width="24" height="24" rx="6" fill="#10b981"></rect>
+                    <path d="M7 12.5l2.5 2.5L17 8.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            `,
+              showConfirmButton: false,
+              showCloseButton: false,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              backdrop: true,
+              timer: 1400,
+              didOpen: (popup) => {
+                try {
+                  (popup as HTMLElement).style.transition = 'transform 360ms cubic-bezier(.2,.9,.3,1), opacity 260ms ease';
+                  (popup as HTMLElement).style.transform = 'translateY(-6px) scale(1.01)';
+                  setTimeout(() => { (popup as HTMLElement).style.transform = ''; }, 80);
+                } catch (e) { }
+              }
+            }).then(() => {
+              try {
+                const redirectPath = this.resolvePath('/dashboard/home');
+                const redirectUrl = `${window.location.origin}${redirectPath}`;
+                window.location.replace(redirectUrl);
+              } catch (navErr) {
+                const redirectPath = this.resolvePath('/dashboard/home');
+                const redirectUrl = `${window.location.origin}${redirectPath}`;
+                window.location.replace(redirectUrl);
+              }
+            });
+          } catch (e) {
+            console.warn('Post-login actions failed', e);
+          }
+        },
+        error: (err: any) => {
+          console.error('Login as user error:', err);
+          Swal.fire('Error', 'Failed to login user. Please try again.', 'error');
+        }
+      });
+  }
+  private getBasePath(): string {
+    if (typeof window === 'undefined') return '';
+    const anyWin = window as any;
+    if (typeof anyWin.__BASE_PATH__ === 'string') {
+      return anyWin.__BASE_PATH__.replace(/\/$/, '');
+    }
+    const { pathname } = window.location;
+    return pathname.startsWith('/onlineservice') ? '/onlineservice' : '';
+  }
+
+  private escapeHtml(unsafe: string | null | undefined): string {
+    const s = (unsafe || '').toString();
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+  }
+
+
+  resolvePath(path: string): string {
+    if (!path) return path;
+    if (/^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(path)) return path;
+    const p = path.startsWith('/') ? path : '/' + path;
+    let base = this.basePath || '';
+    try {
+      if (!base) {
+        const baseHref = document.querySelector('base')?.getAttribute('href') || '';
+        base = baseHref || '';
+      }
+    } catch (e) {
+      base = base || '';
+    }
+
+    if (!base) return p;
+    if (!base.startsWith('/')) base = '/' + base;
+    if (base.endsWith('/')) base = base.slice(0, -1);
+    if (p === base) return p;
+    if (p.startsWith(base + '/')) return p;
+    return base + p;
+  }
+  performExport() {
+    const payload: any = {
+      page: this.currentPage ?? 1,
+      per_page: this.rows ?? 10,
+      export: 'excel'
+    };
+
+    if (this.searchText && this.searchText.trim()) {
+      payload.search = this.searchText.trim();
+    }
+
+    this.loaderService.showLoader();
+
+    this.genericService
+      .exportBusinessUsersExcel(payload)
+      .pipe(finalize(() => this.loaderService.hideLoader()))
+      .subscribe({
+        next: (resp: HttpResponse<Blob>) => {
+          const status = resp.status;
+          const headers = resp.headers;
+          const contentType = (headers.get('content-type') || '').toLowerCase();
+          const disposition = headers.get('content-disposition') || '';
+          if (contentType.includes('application/json') || contentType.includes('text/html') || status >= 400) {
+            const blob = resp.body;
+            if (!blob) {
+              Swal.fire('Export Failed', 'Server returned an empty response.', 'error');
+              return;
+            }
+
+            blob
+              .text()
+              .then((text: string) => {
+                if (!text) {
+                  Swal.fire('Export Failed', 'Server returned an empty response.', 'error');
+                  return;
+                }
+
+                try {
+                  const parsed = JSON.parse(text);
+                  const msg = parsed?.message || parsed?.error || JSON.stringify(parsed);
+                  Swal.fire('Export Failed', msg || 'Server returned an error while exporting.', 'error');
+                } catch (e) {
+                  const snippet = text.length > 120 ? text.slice(0, 120) + '...' : text;
+                  Swal.fire('Export Failed', `Server returned unexpected content: ${snippet}`, 'error');
+                }
+              })
+              .catch((err: any) => {
+                Swal.fire('Export Failed', 'Unable to read server response: ' + (err?.message || err), 'error');
+              });
+
+            return;
+          }
+          const blob = resp.body ?? new Blob([], { type: 'application/octet-stream' });
+          let filename = 'business_users.xlsx';
+          const filenameMatch = /filename\*?=(?:UTF-8'')?["']?([^;"']+)["']?/i.exec(disposition);
+          if (filenameMatch && filenameMatch[1]) {
+            try {
+              filename = decodeURIComponent(filenameMatch[1]);
+            } catch {
+              filename = filenameMatch[1];
+            }
+          }
+
+          try {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+            Swal.fire({
+              icon: 'success',
+              title: 'Downloaded!',
+              html: `<strong>${filename}</strong><div>Excel file exported successfully.</div>`,
+              timer: 1800,
+              showConfirmButton: false,
+              showClass: { popup: 'animate__animated animate__zoomIn' },
+              hideClass: { popup: 'animate__animated animate__zoomOut' }
+            });
+          } catch (downloadErr) {
+            console.error('Download error:', downloadErr);
+            Swal.fire('Error', 'Unable to download the exported file.', 'error');
+          }
+        },
+        error: (err: any) => {
+          console.error('Export failed:', err);
+          Swal.fire('Error', 'Failed to export Excel. Check console for details.', 'error');
+        }
+      });
+  }
+}

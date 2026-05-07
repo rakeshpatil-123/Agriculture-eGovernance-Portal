@@ -1,0 +1,131 @@
+<div class="certificate-wrapper" role="dialog" aria-labelledby="serviceTitle">
+  <div class="header">
+    <div class="header-left">
+      <h2 id="serviceTitle" class="service-title">{{ serviceName }}</h2>
+      <div class="meta">
+        <span class="meta-item">Service: {{ serviceName || '--' }}</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="icon-btn close-btn" title="Close" aria-label="Close" (click)="closeDialog()">
+        ✕
+      </button>
+    </div>
+  </div>
+  <div class="custom-toolbar" role="toolbar" aria-label="Editor toolbar">
+    <div class="toolbar-left">
+      <label class="toolbar-control">
+        <span class="label-text">Font</span>
+        <select (change)="applyFontFamily(getValue($event))" class="control-select">
+          <option value="">— default —</option>
+          <option value="Arial">Arial</option>
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Georgia">Georgia</option>
+          <option value="Verdana">Verdana</option>
+          <option value="Roboto">Roboto</option>
+        </select>
+      </label>
+      <label class="toolbar-control">
+        <span class="label-text">Page size</span>
+        <select class="control-select" [value]="pageSizeKey" (change)="applyPageSize(getValue($event))"
+          aria-label="Select page size">
+          <option *ngFor="let k of pageSizeKeys" [value]="k">{{ pageSizes[k].label }}</option>
+        </select>
+      </label>
+      <label class="toolbar-control">
+        <span class="label-text">Variables</span>
+        <select class="control-select" (change)="onVariableSelect($event)" aria-label="Insert certificate variable">
+          <option value="">— insert variable —</option>
+          <option *ngFor="let v of variableList" [value]="v.key">{{ v.label }}</option>
+        </select>
+      </label>
+
+      <label class="toolbar-control">
+        <span class="label-text">Size (px)</span>
+        <input class="control-input" type="number" min="8" max="72" [value]="fontSize"
+          (change)="applyFontSize(getNumberValue($event))" />
+      </label>
+    </div>
+    <div class="toolbar-right">
+      <label class="toolbar-control toolbar-file" style="display:flex; flex-direction:column; width:120px;">
+        <span class="label-text">Image</span>
+        <input type="file" accept="image/*" (change)="onImageSelected($event)" class="file-input" style="width:100%;" />
+      </label>
+      <div style="display:flex; align-items:center; gap:8px; margin-left:10px;" class="mt-10">
+        <button pButton type="button" class="p-button" title="Insert page break" (click)="insertPageBreak()">
+          Page break
+        </button>
+      </div>
+
+      <div class="image-controls" *ngIf="selectedImageId">
+        <div class="control-row">
+
+          <label class="toolbar-control">
+            <span>W (px)</span>
+            <input type="number" min="0" [(ngModel)]="imageWidth" />
+          </label>
+
+          <label class="toolbar-control">
+            <span>H (px)</span>
+            <input type="number" min="0" [(ngModel)]="imageHeight" />
+          </label>
+          <button pButton type="button" class="p-button" (click)="applyImageSize(imageWidth, imageHeight)">Apply
+          </button>
+
+          <button pButton type="button" class="p-button p-button-secondary" (click)="resetImageSize()">
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <button pButton type="button" class="p-button btn-clear mt-10" (click)="removeInlineStyles()">Clear
+        styles</button>
+    </div>
+  </div>
+  <div class="editor-container">
+    <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" [customMenuRef]="tableMenu"
+      class="ngx-menu"></ngx-editor-menu>
+
+    <ngx-editor [editor]="editor" [(ngModel)]="formTemplate" (ngModelChange)="onContentChange($event)"
+      [placeholder]="'Type your certificate content here...'" class="ngx-editor-host"
+      aria-label="Certificate editor"></ngx-editor>
+
+    <ng-template #tableMenu>
+      <div class="NgxEditor__Seperator"></div>
+      <div class="NgxEditor__MenuItem custom-menu" style="display:flex;gap:8px;align-items:center;">
+        <button type="button" class="p-button small" (click)="insertTable(3,3,true)">Insert 3×3</button>
+        <button type="button" class="p-button small" (click)="insertTable(4,2,false)">Insert 4×2</button>
+        <button type="button" class="p-button small" (click)="addRow()">Add Row</button>
+        <button type="button" class="p-button small" (click)="addColumn()">Add Column</button>
+        <button type="button" class="p-button small" (click)="deleteColumn()">Delete Column</button>
+        <button type="button" class="p-button small" (click)="deleteCell()">Delete Cell</button>
+        <button type="button" class="p-button small" (click)="deleteTable()">Delete Table</button>
+      </div>
+    </ng-template>
+  </div>
+  <div class="preview-block">
+    <div class="preview-header">
+
+      <div class="preview-actions footer-actions">
+        <button pButton type="button" class="p-button-success save-btn" (click)="saveTemplate()">
+          Save Template
+        </button>
+
+        <button pButton type="button" class="p-button-outlined" (click)="previewTemplate()">
+          Preview in new window
+        </button>
+        <!--
+      <button
+        pButton
+        type="button"
+        class="p-button-secondary"
+        (click)="downloadTemplate()"
+      >
+        Download PDF
+      </button>
+      -->
+      </div>
+
+    </div>
+  </div>

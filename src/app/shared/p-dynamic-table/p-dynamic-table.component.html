@@ -1,0 +1,184 @@
+<p-table
+  #dt
+  [value]="filteredAndSortedData"
+  [loading]="loading"
+  [paginator]="showPagination && paginator"
+  [rows]="rows"
+  [rowsPerPageOptions]="rowsPerPageOptions"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  [showGridlines]="showGridlines"
+  [stripedRows]="stripedRows"
+  [resizableColumns]="resizableColumns"
+  [reorderableColumns]="reorderableColumns"
+  [tableStyle]="tableStyle"
+  [scrollable]="scrollable"
+  [scrollHeight]="scrollHeight"
+  [sortMode]="sortMode"
+  [sortField]="internalSortField"
+  [sortOrder]="internalSortOrder"
+  selectionMode="single"
+  [(selection)]="selectedRow"
+  (onRowSelect)="onRowSelect($event)"
+  (onRowUnselect)="onRowUnselect($event)"
+  responsiveLayout="scroll"
+>
+  <!-- Caption: Search Bar -->
+  <ng-template #caption>
+    <div class="flex flex-wrap justify-content-between align-items-center">
+      <div
+        class="flex align-items-center"
+        *ngIf="
+          searchable && globalFilterFields && globalFilterFields.length > 0
+        "
+      >
+        <p-iconField iconPosition="left">
+          <p-inputIcon>
+            <i class="pi pi-search"></i>
+          </p-inputIcon>
+          <input
+            pInputText
+            type="text"
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()"
+            placeholder="Search..."
+            aria-label="Search table"
+          />
+        </p-iconField>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Header -->
+  <ng-template #header>
+    <tr>
+      <th
+        *ngFor="let col of filteredColumns; trackBy: trackByColumnKey"
+        [style.width]="getColumnWidth(col)"
+        [pSortableColumn]="isColumnSortable(col) ? col.key : undefined"
+        [ngClass]="col.class"
+      >
+        <div class="flex align-items-center">
+          {{ col.label }}
+          <p-sortIcon *ngIf="isColumnSortable(col)" [field]="col.key" />
+        </div>
+      </th>
+    </tr>
+  </ng-template>
+
+  <!-- Body -->
+  <ng-template #body let-rowData>
+    <tr
+      [pSelectableRow]="rowData"
+      [ngClass]="getRowClass ? getRowClass(rowData) : ''"
+    >
+      <td
+        *ngFor="let col of filteredColumns; trackBy: trackByColumnKey"
+        [ngClass]="getCellClass(getCellValue(rowData, col), rowData, col)"
+        [style.width]="getColumnWidth(col)"
+      >
+        <!-- Render Component -->
+        @if (col.renderComponent) {
+        <ng-container
+          *ngComponentOutlet="
+            col.renderComponent;
+            inputs: getRenderComponentInputs(col, rowData);
+            injector: injector
+          "
+        >
+        </ng-container>
+        }
+
+        <!-- Action Dropdown Menu -->
+        @if (col.type === 'action' && col.actions && col.actions.length > 0) {
+        <div class="action-cell-wrapper">
+          <div class="action-cell-content">
+            <p-menu
+              #menu
+              [popup]="true"
+              (onShow)="onMenuOpen($event)"
+              (onHide)="onMenuHide($event)"
+              appendTo="body"
+            />
+            <button
+              pButton
+              type="button"
+              icon="pi pi-ellipsis-v"
+              class="action-button"
+              (click)="toggleMenuWithCol($event, menu, col, rowData)"
+              [attr.aria-label]="'Actions'"
+            ></button>
+          </div>
+        </div>
+        }
+
+        <!-- Status Badge -->
+        @if (col.type === 'status') {
+        <div class="status-badge-wrapper">
+          <div
+            pBadge
+            [value]="getCellValue(rowData, col)"
+            [severity]="getStatusSeverity(getCellValue(rowData, col))"
+            size="small"
+          ></div>
+        </div>
+        }
+
+        <!-- Payment Status Badge -->
+        @if (col.type === 'payment') {
+        <div class="payment-tag-wrapper">
+          <p-tag
+            [value]="getCellValue(rowData, col)"
+            [severity]="getPaymentSeverity(getCellValue(rowData, col))"
+            [size]="'small'"
+          ></p-tag>
+        </div>
+        }
+
+        <!-- Boolean -->
+        @if (col.type === 'boolean') {
+        {{ getFormattedValue(getCellValue(rowData, col), rowData, col) }}
+        }
+
+        <!-- Currency -->
+        @if (col.type === 'currency') {
+        {{ getFormattedValue(getCellValue(rowData, col), rowData, col) }}
+        }
+
+        <!-- Date -->
+        @if (col.type === 'date') {
+        {{ getFormattedValue(getCellValue(rowData, col), rowData, col) }}
+        }
+
+        <!-- Link -->
+        @if (col.type === 'link' && col.linkHref && col.linkText) {
+        <a [href]="col.linkHref(rowData)" target="_blank">
+          {{ col.linkText(rowData) }}
+        </a>
+        }
+
+        <!-- Default Text -->
+        @if (!col.renderComponent && col.type !== 'action' && col.type !==
+        'status' && col.type !== 'payment' && col.type !== 'boolean' && col.type
+        !== 'currency' && col.type !== 'date' && col.type !== 'link') {
+        {{ getCellValue(rowData, col) }}
+        }
+      </td>
+    </tr>
+  </ng-template>
+
+  <!-- Empty Message -->
+  <ng-template #emptymessage>
+    <tr>
+      <td [attr.colspan]="filteredColumns.length" class="text-center">
+        <div class="flex flex-column align-items-center py-5">
+          <i
+            class="pi pi-search"
+            style="font-size: 2rem; margin-bottom: 1rem"
+          ></i>
+          <p>No records found</p>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

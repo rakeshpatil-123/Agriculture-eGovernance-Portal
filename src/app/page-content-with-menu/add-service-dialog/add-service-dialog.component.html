@@ -1,0 +1,205 @@
+<div class="dialog-header">
+  <span class="title" mat-dialog-title>{{ data ? 'Update Service' : 'Create Service' }}</span>
+  <button mat-icon-button (click)="closeDialog()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+  <form [formGroup]="serviceForm" class="form-container">
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Service Mode</mat-label>
+        <mat-select formControlName="service_mode">
+          <mat-option value="native">Native</mat-option>
+          <mat-option value="third_party">Third Party</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Service Title</mat-label>
+        <input matInput formControlName="service_title_or_description" placeholder="e.g. Contract Labour">
+        <mat-error *ngIf="serviceForm.get('service_title_or_description')?.hasError('required')">
+          Service Title is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Department</mat-label>
+        <mat-select formControlName="department_id">
+          <mat-option *ngFor="let dept of departments" [value]="dept.id">{{ dept.name }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="serviceForm.get('department_id')?.hasError('required')">
+          Department is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>NOC Type</mat-label>
+        <mat-select formControlName="noc_type">
+          <mat-option *ngFor="let type of nocTypes" [value]="type">{{ type }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="serviceForm.get('noc_type')?.hasError('required')">
+          NOC Type is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Application ID Format</mat-label>
+        <input matInput formControlName="noc_short_name">
+        <mat-error *ngIf="serviceForm.get('noc_short_name')?.hasError('required')">
+          NOC Short Name is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Payment Type</mat-label>
+        <mat-select formControlName="noc_payment_type">
+          <mat-option value="Estimated">Estimated</mat-option>
+          <mat-option value="Calculated">Calculated</mat-option>
+          <mat-option value="Hardcoded">Hardcoded</mat-option>
+        </mat-select>
+        <mat-error *ngIf="serviceForm.get('noc_payment_type')?.hasError('required')">
+          Payment Type is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Target Days</mat-label>
+        <input matInput type="number" formControlName="target_days">
+        <mat-error *ngIf="serviceForm.get('target_days')?.hasError('required')">
+          Target Days is required
+        </mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="serviceForm.get('service_mode')?.value === 'native'" appearance="outline" class="form-field">
+          <mat-label>Fixed Expiry Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="fixed_expiry_date" placeholder="Select expiry date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        </div>
+    <div *ngIf="serviceForm.get('service_mode')?.value !== 'third_party'" class="form-row">
+      <div>
+        
+        <mat-error style="font-size: 10px" *ngIf="serviceForm.get('generated_id_format')?.hasError('required')">
+          Generated License ID is required
+        </mat-error>
+      <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Generated License ID</mat-label>
+          <input matInput formControlName="generated_id_format" placeholder="e.g. CL/WR/SWS/{{ '{YEAR}' }}/{{ '{SEQ}' }}">
+          <mat-hint>Use {{ '{YEAR}' }} for current year & {{ '{SEQ}' }} for sequence</mat-hint>
+        </mat-form-field>
+      </div>
+      <mat-form-field appearance="outline" class="form-field full-width">
+        <mat-label>Depend on Service</mat-label>
+        <mat-select formControlName="depends_on_services" placeholder="Select dependent service" multiple>
+          <mat-option value="" disabled>Select a service</mat-option>
+          <mat-option *ngFor="let service of allServices" [value]="service.name">
+            {{ service.name }} — <small>{{ service.department_name || 'No Department' }}</small>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>NOC Name</mat-label>
+        <input matInput formControlName="noc_name">
+        <mat-error *ngIf="serviceForm.get('noc_name')?.hasError('required')">
+          NOC Name is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>EGRAS Scheme Code</mat-label>
+        <input matInput formControlName="egras_scheme_code" placeholder="e.g. 1475-00-106-21-06" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>NOC Validity (days)</mat-label>
+        <input matInput type="number" formControlName="noc_validity">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>NSW License ID</mat-label>
+        <input matInput formControlName="nsw_license_id">
+      </mat-form-field>
+    </div>
+    <div class="form-row" *ngIf="serviceForm.get('service_mode')?.value === 'third_party'">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Third Party Portal Name</mat-label>
+        <input matInput formControlName="third_party_portal_name">
+      </mat-form-field>
+    </div>
+    <div class="form-row" *ngIf="serviceForm.get('service_mode')?.value === 'third_party'">
+    
+    
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Third Party Redirect URL</mat-label>
+        <input matInput formControlName="third_party_redirect_url">
+      </mat-form-field>
+    </div>
+    <div class="form-row" *ngIf="serviceForm.get('service_mode')?.value === 'third_party'">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Third Party Return URL</mat-label>
+        <input matInput formControlName="third_party_return_url">
+      </mat-form-field>
+    </div>
+    <div class="form-row" *ngIf="serviceForm.get('service_mode')?.value === 'third_party'">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Third Party Status API URL</mat-label>
+        <input matInput formControlName="third_party_status_api_url">
+      </mat-form-field>
+    </div>
+    <div class="form-row" *ngIf="serviceForm.get('service_mode')?.value === 'third_party'">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Third Party Payment Mode</mat-label>
+        <mat-select formControlName="third_party_payment_mode">
+          <mat-option value="unified">Unified</mat-option>
+          <mat-option value="external">External</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="form-row" *ngIf="serviceForm.get('service_mode')?.value === 'third_party'">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Is Special</mat-label>
+          <mat-select formControlName="is_special">
+            <mat-option value="yes">Yes</mat-option>
+            <mat-option value="no">No</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Third Party Verification Token</mat-label>
+        <input matInput formControlName="verification_token">
+      </mat-form-field>
+    </div>
+    
+    
+    
+    <div *ngIf="serviceForm.get('service_mode')?.value !== 'third_party'" class="form-row checkboxes">
+      <mat-checkbox formControlName="allow_repeat_application">Allow Repeat Application</mat-checkbox>
+      <mat-checkbox formControlName="generate_id">Generate ID</mat-checkbox>
+      <mat-checkbox formControlName="generate_pdf">Generate PDF</mat-checkbox>
+      <mat-checkbox formControlName="show_valid_till">Show Valid Till</mat-checkbox>
+      <mat-checkbox formControlName="auto_renewal">Auto Renewal</mat-checkbox>
+      <mat-checkbox formControlName="show_letter_date">Show Letter Date</mat-checkbox>
+      <mat-checkbox formControlName="external_data_share">External Data Share</mat-checkbox>
+      <mat-checkbox formControlName="valid_for_upload">Valid For Upload</mat-checkbox>
+      <mat-checkbox formControlName="has_input_form">Has Input Form</mat-checkbox>
+    </div>
+    <mat-checkbox formControlName="caf_depends">Dependent on CAF</mat-checkbox>
+      <div class="form-row">
+        <mat-slide-toggle formControlName="status" color="primary" [checked]="serviceForm.get('status')?.value === 1">
+          {{ serviceForm.get('status')?.value ? 'Active' : 'Inactive' }}
+        </mat-slide-toggle>
+    </div>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-footer">
+  <button mat-raised-button color="warn" (click)="closeDialog()">Cancel</button>
+  <button mat-stroked-button color="primary" [disabled]="!serviceForm.valid"
+    (click)="data ? submit(true) : submit(false)">
+    {{ data ? 'Update' : 'Create' }}
+  </button>
+</mat-dialog-actions>

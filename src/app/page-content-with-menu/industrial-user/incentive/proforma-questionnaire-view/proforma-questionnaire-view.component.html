@@ -1,0 +1,119 @@
+<div class="swgt-container">
+  <ng-container *ngIf="loading; else formTemplate">
+   <app-loader></app-loader>
+  </ng-container>
+
+  <ng-template #formTemplate>
+    <form [formGroup]="proformaForm" (ngSubmit)="onSubmit()" class="p-4 proforma-form">
+      <div class="h-style mb-4">
+        <h1 class="page-head">Proforma Questionnaire</h1>
+      </div>
+      <div *ngFor="let group of getKeys(groupedQuestions)" class=" ">
+        <h5 class="mb-2 page-head">{{ group }}</h5>
+        <hr />
+        <div class="row">
+          <div *ngFor="let q of groupedQuestions[group]" class="mb-3" [class]="q.display_width || 'col-12'">
+            <!-- Text / Number / Email / Tel / Textarea / Password / URL -->
+            <app-ilogi-input
+              *ngIf="['text','number','email','tel','textarea','password','url'].includes(q.question_type)"
+              [formControlName]="q.id" [fieldLabel]="q.question_label" 
+              [mandatory]="q.is_required === 'yes'" [type]="getInputType(q.question_type)">
+            </app-ilogi-input>
+            <div
+              *ngIf="app_Type === 'claim' && q.question_type === 'number' && q.is_claim === 'yes' && (q.claim_percentage !== null || q.claim_per_unit !== null)"
+              class="mt-1 ms-2 text-muted small">
+              <div *ngIf="q.claim_percentage !== null">
+                <strong class="color-green">Subsidy:</strong> &nbsp; <strong>₹{{ (claimCalculations[q.id] || 0) | number
+                  }}</strong>
+              </div>
+              <div *ngIf="q.claim_per_unit !== null">
+                <strong class="color-green">Subsidy:</strong> &nbsp; <strong>₹{{ (claimCalculations[q.id] || 0) | number
+                  }}</strong>
+              </div>
+            </div>
+            <!-- File Upload -->
+            <ng-container *ngIf="q.question_type === 'file'">
+              <p>{{q.question_label}}</p>
+              <ng-container *ngIf="q.upload_rule?.max_files > 1; else singleFile">
+                <div class="mb-2" *ngFor="let i of getRange(q.upload_rule.max_files); trackBy: trackByIndex">
+                  <!-- <app-ilogi-file-upload [formControlName]="getMultiFileControlName(q.id, i)"
+                    [maxFileSize]="(q.upload_rule?.max_size_mb || 5) * 1024 * 1024"
+                    [fileUrl]=" getFullFileUrl(getFileUrl(q.id)) "
+                    >
+                  </app-ilogi-file-upload> -->
+                  <app-ilogi-file-upload [formControlName]="getMultiFileControlName(q.id, i)"
+                    [maxFileSize]="(q.upload_rule?.max_size_mb || 5) * 1024 * 1024"
+                    [fileUrl]="getFullFileUrl(resolvedFileUrls[getMultiFileControlName(q.id, i)])">
+                  </app-ilogi-file-upload>
+                </div>
+              </ng-container>
+
+              <ng-template #singleFile>
+                <app-ilogi-file-upload [formControlName]="q.id" [label]="q.question_label"
+                  [accept]="q.upload_rule?.mimes?.join(',') || '*'"
+                  [maxFileSize]="(q.upload_rule?.max_size_mb || 5) * 1024 * 1024"
+                  [fileUrl]=" getFullFileUrl(getFileUrl(q.id)) ">
+                </app-ilogi-file-upload>
+              </ng-template>
+            </ng-container>
+
+            <!-- Select -->
+            <app-ilogi-select *ngIf="q.question_type === 'select'" [formControlName]="q.id"
+              [fieldLabel]="q.question_label" [mandatory]="q.is_required === 'yes'"
+              [selectOptions]="getSelectOptions(q)" placeholder="Select...">
+            </app-ilogi-select>
+
+            <!-- Radio -->
+            <app-ilogi-radio *ngIf="q.question_type === 'radio' && getRadioOptions(q).length > 0"
+              [formControlName]="q.id" [fieldLabel]="q.question_label" [mandatory]="q.is_required === 'yes'"
+              [radioOptions]="getRadioOptions(q)">
+            </app-ilogi-radio>
+
+            <!-- Checkbox -->
+            <app-ilogi-checkbox *ngIf="q.question_type === 'checkbox' && getCheckboxOptions(q).length > 0"
+              [formControlName]="q.id" [fieldLabel]="q.question_label" [mandatory]="q.is_required === 'yes'"
+              [checkboxOptions]="getCheckboxOptions(q)">
+            </app-ilogi-checkbox>
+
+            <!-- Date -->
+            <app-ilogi-input-date *ngIf="q.question_type === 'date'" [formControlName]="q.id"
+              [fieldLabel]="q.question_label" [mandatory]="q.is_required === 'yes'" placeholder="DD-MM-YYYY"
+              [submitted]="proformaForm.touched">
+            </app-ilogi-input-date>
+
+            <!-- Switch -->
+            <app-ilogi-radio *ngIf="q.question_type === 'switch'" [formControlName]="q.id"
+              [fieldLabel]="q.question_label" [mandatory]="q.is_required === 'yes'" [radioOptions]="[
+                { value: 'yes', name: 'Yes' },
+                { value: 'no', name: 'No' }
+              ]">
+            </app-ilogi-radio>
+
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+
+        @if(app_Type === 'claim' && totalClaimAmount > 0) {
+        <div class="alert alert-info ">
+          <strong>Total Claim Amount:</strong> ₹{{ totalClaimAmount | number }}
+        </div>
+        }
+        @if(questionnaireData.length > 0 && appData?.is_editable === true || appData === null  ) {
+
+        <div class="mt-2">
+          <button type="button" class="btn btn-secondary me-2" (click)="onSaveAsDraft()"
+            [disabled]="proformaForm.invalid">
+            Save as Draft
+          </button>
+          <button type="button" class="btn btn-success" (click)="onSubmit()" [disabled]="proformaForm.invalid">
+            Submit
+          </button>
+        </div>
+        }
+      </div>
+    </form>
+  </ng-template>
+
+  <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+</div>

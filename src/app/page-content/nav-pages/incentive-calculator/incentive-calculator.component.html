@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subsidy Calculator - TIIPIS Policy</title>
+</head>
+<body>
+  <div class="container">
+    <h2>Incentive Calculator under TIIPIS - 2022</h2>
+
+    <form [formGroup]="investmentForm">
+      <div class="container-for-select-and-search">
+        <div class="form-container">
+  <div class="row g-4">
+    <!-- Sector of the Unit -->
+    <div class="form-group col-sm-12 col-md-6 col-lg-4">
+      <label for="sectorOfUnit">Sector of the Unit:</label>
+      <select id="sectorOfUnit" formControlName="sectorOfUnit" class="form-control">
+        <option value="">Select the Sector of the Unit</option>
+        <option value="bamboo_rubber">Industry using Bamboo, Rubber, etc.</option>
+        <option value="tea">Tea manufacturing</option>
+        <option value="agar_oil">Agar Oil Extraction industry</option>
+        <option value="rubber_wood">Rubber Wood Processing Industry</option>
+        <option value="plastic_waste">Industrial units using plastic/e-waste</option>
+        <option value="municipal_waste">Municipal Waste Processing</option>
+        <option value="packaging_material">Packaging material manufacturing</option>
+        <option value="agro_waste">Agro waste processing Industry</option>
+        <option value="biodegradable_plastics">Industries manufacturing/using bio-degradable plastics</option>
+        <option value="cutlery_items">Industries making cutlery items using areca nut leaves/bamboo</option>
+        <option value="others">Others (Non-Thrust Sector)</option>
+      </select>
+      <div *ngIf="investmentForm.get('sectorOfUnit')?.invalid && investmentForm.get('sectorOfUnit')?.touched" class="error">
+        This field is required.
+      </div>
+    </div>
+    <!-- Total Invested Amount -->
+    <div class="form-group col-sm-12 col-md-6 col-lg-4">
+      <label for="total_invested_amount">Total Invested Amount (in Cr):</label>
+      <input type="number" id="total_invested_amount" formControlName="totalInvestedAmount" min="0" class="form-control" (input)="resetLoanAmount()" />
+      <div *ngIf="investmentForm.get('totalInvestedAmount')?.invalid && investmentForm.get('totalInvestedAmount')?.touched" class="error">
+        This field is required.
+      </div>
+    </div>
+    <!-- Loan Amount -->
+    <div class="form-group col-sm-12 col-md-6 col-lg-4">
+      <label for="loan_amount">Loan Amount (in Cr):</label>
+      <input type="number" id="loan_amount" formControlName="loanAmount" min="0" class="form-control" />
+      <div *ngIf="investmentForm.get('loanAmount')?.invalid && investmentForm.get('loanAmount')?.touched" class="error">
+        This field is required.
+      </div>
+    </div>
+  </div>
+  
+  <!-- Button Section - Now on a separate line -->
+  <div class="button-section mt-4">
+    <button type="button" (click)="validateForm()" class="btn btn-primary calculate-btn">
+      <span class="btn-text">Calculate Subsidy</span>
+      <span class="btn-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </span>
+    </button>
+  </div>
+</div>
+      </div>
+    </form>
+
+    <div class="container-for-table">
+      <table id="resultTable">
+        <thead>
+          <tr>
+            <th>Category of Subsidy</th>
+            <th colspan="2">Assumption (Percentage of Total Investment & Amount)</th>
+            <th></th>
+            <th>Subsidy Amount</th>
+            <th></th>
+            <th>Subsidy Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="investment-type">Capital Investment</td>
+            
+            <td style="font-weight: 500;">
+              <b>
+                <input type="number" [(ngModel)]="capitalInvestment" (input)="onCapitalInvestmentChange($event)"
+                  style="background: #ddd; width: 60px; text-align: center; font-weight: bold; border: none;">
+                %
+              </b>
+            </td>
+            <td> ₹ {{capitalInvestment_InvestedAmount}} Cr </td>
+
+            <td class="pillar-of-tipps tiips" rowspan="6">TIIPIS 2022</td>
+
+            <td>
+              <div class="subsidy-amount-box tiips-box">
+                <span *ngIf="capitalInvestment_TIIPS_SubsidyAmount == 'NA'">
+                  {{ capitalInvestment_TIIPS_SubsidyAmount }}
+                </span>
+                <span *ngIf="capitalInvestment_TIIPS_SubsidyAmount !== 'NA'">
+                  ₹ {{ capitalInvestment_TIIPS_SubsidyAmount }} Cr
+                </span>
+                <span class="small-text" *ngIf="capitalInvestment_TIIPS_SubsidyAmount !== 'NA'">Upto 40% of capital investment</span>
+              </div>
+            </td>
+
+            <td class="pillar unnati" rowspan="6"> UNNATI 2024</td>
+
+            <td>
+              <div class="subsidy-amount-box unnati-box">
+                <span *ngIf="capitalInvestment_UNNATI_SubsidyAmount == 'NA'">
+                  {{capitalInvestment_UNNATI_SubsidyAmount}}
+                </span>
+                <span *ngIf="capitalInvestment_UNNATI_SubsidyAmount !== 'NA'">
+                  ₹ {{capitalInvestment_UNNATI_SubsidyAmount}} Cr
+                </span>
+                <span class="small-text" *ngIf="capitalInvestment_UNNATI_SubsidyAmount > 0">Upto 50% of capital investment</span>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="investment-type">Power Subsidy</td>
+            
+            <td style="font-weight: 500;">
+              <b>
+                <input type="number" [(ngModel)]="powerSubsidy" (input)="onPowerSubsidyChange($event)"
+                  style="background: #ddd; width: 60px; text-align: center; font-weight: bold; border: none;">
+                %
+              </b>
+            </td>
+            <td> ₹ {{powerSubsidy_InvestedAmount}} Cr </td>
+
+            <td>
+              <div class="subsidy-amount-box tiips-box">
+                <span>₹ {{ powerSubsidy_TIIPS_SubsidyAmount }} Cr</span>
+                <span class="small-text" *ngIf="powerSubsidy_TIIPS_SubsidyAmount > 0">Rs. 5/- per unit with a capping of Rs. 60 Lakhs per annum</span>
+              </div>
+            </td>
+
+            <td>
+              <div class="subsidy-amount-box unnati-box">
+                <span>{{ powerSubsidy_UNNATI_SubsidyAmount}}</span>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="investment-type">GST Reimbursement</td>
+            
+            <td style="font-weight: 500;">
+              <b>
+                <input type="number" [(ngModel)]="gstReimbursement" (input)="ongstReimbursementChange($event)"
+                  style="background: #ddd; width: 60px; text-align: center; font-weight: bold; border: none;">
+                %
+              </b>
+            </td>
+            <td> ₹ {{gstReimbursement_InvestedAmount}} Cr </td>
+
+            <td>
+              <div class="subsidy-amount-box tiips-box">
+                <span *ngIf="gstReimbursement_TIIPS_SubsidyAmount == 'NA'">
+                  {{gstReimbursement_TIIPS_SubsidyAmount}}
+                </span>
+                <span *ngIf="gstReimbursement_TIIPS_SubsidyAmount !== 'NA'">
+                  ₹ {{gstReimbursement_TIIPS_SubsidyAmount}} Cr
+                </span>
+              </div>
+            </td>
+
+            <td>
+              <div class="subsidy-amount-box unnati-box">
+                <span>₹ {{gstReimbursement_UNNATI_SubsidyAmount}} Cr</span>
+                <span class="small-text" *ngIf="gstReimbursement_UNNATI_SubsidyAmount > 0">Max 100% of Capital Investment</span>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="investment-type">Loan Interest Subsidy</td>
+            
+            <td style="font-weight: 500;">
+              <b>
+                <input type="number" [(ngModel)]="loanInterestSubsidy" (input)="onloanInterestSubsidyChange($event)"
+                  style="width: 60px; text-align: center; font-weight: bold; border: none;" readonly>
+                %
+              </b>
+            </td>
+            <td> ₹ {{loanInterestSubsidy_InvestedAmount}} Cr</td>
+
+            <td>
+              <div class="subsidy-amount-box tiips-box">
+                <span>₹ {{loanInterestSubsidy_TIIPS_SubsidyAmount}} Cr</span>
+                <span class="small-text" *ngIf="loanInterestSubsidy_TIIPS_SubsidyAmount > 0">Upto 5% of loan availed with a capping of Rs. 12 Lakhs per annum</span>
+              </div>
+            </td>
+
+            <td>
+              <div class="subsidy-amount-box unnati-box">
+                <span>{{loanInterestSubsidy_UNNATI_SubsidyAmount}}</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="total-section">
+      <span class="total">Total ₹ {{total_tiips_subsidy_count}} Cr</span>
+      <span class="total">Total ₹ {{total_unnati_subsidy_count}} Cr</span>
+    </div>
+
+    <div class="investment-banner-container">
+      <div class="investment-banner invest-text">
+        INVEST ₹ {{total_invested_amount}} Cr & GET INCENTIVES UPTO
+      </div>
+      <div class="incentive-amount">
+        ₹ {{total_of_tiips_and_unnati}} Cr
+      </div>
+    </div>
+
+    <div class="disclaimer-section">
+      <p><strong>#Disclaimer:</strong> The amount calculated and displayed here is only a tentative amount. The final eligible amount may vary. For more details, kindly contact the Department of Industries & Commerce.</p>
+
+      <p>➤ In addition to the above incentives, the following seven components of subsidy are also available under the scheme:</p>
+      <ol>
+        <li>State Transport Subsidy on raw materials and finished goods</li>
+        <li>Employment Cost Subsidy</li>
+        <li>Reimbursement of Standard Certification Fees/ Charges</li>
+        <li>Subsidy on fees paid for coverage of the Credit Guarantee Trust Fund for Micro and Small Enterprise (CGTMSE)</li>
+        <li>Export Promotion Subsidy</li>
+        <li>Subsidy for participation in fairs/ exhibitions</li>
+        <li>Additional subsidy/incentive to ZED-certified industrial enterprises</li>
+      </ol>
+
+      <p>➤ Reimbursement of power charges @Rs 5/- per unit is the highest rate of reimbursement on power among the North Eastern States.</p>
+      <p>➤ State transport subsidy on raw materials and finished goods is only provided in the state of Tripura among the North Eastern States.</p>
+    </div>
+  </div>
+</body>
+</html>

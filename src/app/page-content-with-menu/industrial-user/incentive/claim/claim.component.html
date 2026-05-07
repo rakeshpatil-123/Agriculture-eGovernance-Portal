@@ -1,0 +1,35 @@
+<!-- eligibility.component.html -->
+<div class="">
+    @if(isLoading){
+    <app-loader></app-loader>
+  }@else {
+  <div>
+    <h1 class="page-head">APPLY FOR CLAIM</h1>
+
+    <!-- Scheme Dropdown -->
+    <!-- <div class="mt-3 mb-4" style="max-width: 400px;">
+      <app-ilogi-select [fieldLabel]="'Select Scheme'" [selectOptions]="schemes" [(ngModel)]="selectedSchemeId"
+        (change)="onSchemeChange($event.value)" [mandatory]="true" fieldId="schemeSelect"
+        placeholder="Choose a scheme"></app-ilogi-select>
+    </div> -->
+
+    <!-- Display selected scheme name (optional) -->
+    <!-- <div class="mb-3" *ngIf="selectedSchemeId !== null">
+      <strong>Scheme Name:</strong>
+      <span class="scheme-name ms-2">
+        {{ getSelectedSchemeName() }}
+      </span>
+    </div> -->
+
+    <!-- Dynamic Table -->
+    <div class="mt-2" *ngIf="applications">
+      <app-dynamic-table [data]="applications" [columns]="columns" [searchable]="true" [showPagination]="true"
+        [pageSize]="5"></app-dynamic-table>
+    </div>
+    <div class="mt-4 " *ngIf="!applications">
+      <p class="info" >You need to apply for eligibility first. Once it’s approved by the department, you’ll be eligible to make a
+        claim!</p>
+    </div>
+  </div>
+}
+</div>

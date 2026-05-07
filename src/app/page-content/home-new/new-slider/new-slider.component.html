@@ -1,0 +1,67 @@
+<section class="full-screen-section">
+  <div class="background-container">
+    <div *ngFor="let slide of slides; let i = index" 
+         class="background-slide"
+         [style.background-image]="'url(' + slide.src + ')'"
+         [class.slide-visible]="i === currentSlide"
+         [class.slide-hidden]="i !== currentSlide">
+    </div>
+    
+    <div class="gradient-overlay">
+      <div class="dot-container" #dotContainer>
+        <!-- Dots will be generated dynamically via JavaScript -->
+      </div>
+    </div>
+    
+    <div class="pattern-overlay"></div>
+  </div>
+  <div class="content-container">
+    <div class="text-center">
+      <div class="badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles highlight-icon">
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+          <path d="M5 3v4"></path>
+          <path d="M19 17v4"></path>
+          <path d="M3 5h4"></path>
+          <path d="M17 19h4"></path>
+        </svg>
+        <span class="badge-text">SWAAGAT 2.0 - Digital First Approach</span>
+      </div>
+      <h1 class="title">
+        <span class="fade-in-up">
+          <!-- <span class="highlight-text" style="animation-delay: 0s">Modern Opportunities</span> -->
+          <span class="highlight-text" style="animation-delay: 0s">Planing to start Business in Tripura?</span>
+        </span>
+        <br />
+        <!-- <span class="subtitle fade-in-up" style="animation-delay: 0.3s">Cultural Heritage, Rich Traditions</span> -->
+        <span class="subtitle fade-in-up" style="animation-delay: 0.3s">SWAAGAT 2.0: Tripura’s One-Stop Launchpad for Business</span>
+      </h1>
+      <p class="description fade-in-up" style="animation-delay: 0.5s">
+        Your gateway to fast, hassle-free business licensing in Tripura, where tradition inspires tourism, handicrafts, manufacturing, and diverse enterprises.
+      </p>
+      <!-- <p class="description fade-in-up" style="animation-delay: 0.5s">
+        Invest in a state where ancient traditions meet modern aspirations. Tripura's cultural richness creates unique business opportunities in tourism and handicrafts.
+      </p> -->
+      <div class="button-container fade-in-up" style="animation-delay: 0.7s">
+        <app-button (click)="redirectToLogin()" text="Apply Now" type="designer" size="xxlarge" ></app-button>
+      </div>
+      <div class="stats-grid fade-in-up" style="animation-delay: 0.9s">
+        <div class="stat-card" *ngFor="let stat of stats">
+          <div class="stat-value">{{stat.value}}</div>
+          <div class="stat-label">{{stat.label}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-dots">
+    <button *ngFor="let slide of slides; let i = index" 
+            class="dot"
+            [ngClass]="{'active': i === currentSlide}"
+            [attr.aria-label]="'Go to slide ' + (i + 1)"
+            (click)="setSlide(i)">
+    </button>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-dot"></div>
+  </div>
+</section>

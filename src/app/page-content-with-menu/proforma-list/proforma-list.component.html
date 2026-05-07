@@ -1,0 +1,158 @@
+<div class="proforma-list-container">
+  <div class="proforma-header">
+    <button class="btn btn-back" (click)="goToSchemes()">
+      <span class="material-icons">arrow_back</span>
+      Back to Schemes
+    </button>
+    <h4 class="proforma-heading">
+      {{ schemeTitle }} - Proformas
+    </h4>
+    <button class="add-proforma-btn" (click)="openProformaDialog()">
+      Add New Eligibility/Claim
+    </button>
+  </div>
+  <app-dynamic-table [data]="proformas" [columns]="columns" [showPagination]="true" [pageSize]="5" [searchable]="true"
+    (rowAction)="onRowAction($event)">
+  </app-dynamic-table>
+  <p-dialog appendTo="body" [(visible)]="showProformaDialog" [modal]="true"
+    [style]="{ width: '720px', maxWidth: '95vw', minHeight: '520px', height: 'auto' }" [draggable]="false"
+    [resizable]="false" [closable]="true" [dismissableMask]="true" styleClass="custom-proforma-dialog">
+    <form [formGroup]="proformaForm" (ngSubmit)="saveProforma()" class="proforma-form">
+
+      <h3 class="dialog-header">{{ isEditMode ? 'Edit Eligibility/Claim' : 'Add Eligibility/Claim' }}</h3>
+
+      <div class="form-grid">
+        <div class="form-group"> 
+          <label>Title</label>
+          <input pInputText formControlName="title" placeholder="Enter title" />
+          <small class="error-message"
+            *ngIf="proformaForm.get('title')?.invalid && (proformaForm.get('title')?.touched || proformaForm.get('title')?.dirty)">
+            Title is required
+          </small>
+          <small class="error-message"
+            *ngIf="proformaForm.get('title')?.errors?.['serverError'] && (proformaForm.get('title')?.touched || proformaForm.get('title')?.dirty)">
+            {{ proformaForm.get('title')?.errors?.['serverError'] }}
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Code</label>
+          <input pInputText formControlName="code" placeholder="Enter code" />
+          <small class="error-message"
+            *ngIf="proformaForm.get('code')?.hasError('required') && (proformaForm.get('code')?.touched || proformaForm.get('code')?.dirty)">
+            Code is required
+          </small>
+          <small class="error-message"
+            *ngIf="proformaForm.get('code')?.errors?.['serverError'] && !proformaForm.get('code')?.hasError('required') && (proformaForm.get('code')?.touched || proformaForm.get('code')?.dirty)">
+            {{ proformaForm.get('code')?.errors?.['serverError'] }}
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Form Type</label>
+          <select formControlName="proforma_type">
+            <option *ngFor="let type of PROFORMA_TYPES" [value]="type.value">{{ type.label }}</option>
+          </select>
+          <small class="error-message"
+            *ngIf="proformaForm.get('proforma_type')?.invalid && (proformaForm.get('proforma_type')?.touched || proformaForm.get('proforma_type')?.dirty)">
+            Form Type is required
+          </small>
+        </div>
+
+        <div *ngIf="proformaForm.get('proforma_type')?.value === 'claim'" class="form-group">
+          <label>Claim Type</label>
+          <select formControlName="claim_type">
+            <option [value]="null">--Select--</option>
+            <option *ngFor="let type of CLAIM_TYPES" [value]="type.value">{{ type.label }}</option>
+          </select>
+          <small class="error-message"
+            *ngIf="proformaForm.get('claim_type')?.invalid && (proformaForm.get('claim_type')?.touched || proformaForm.get('claim_type')?.dirty)">
+            Claim Type is required
+          </small>
+          <small class="error-message"
+            *ngIf="proformaForm.get('claim_type')?.errors?.['serverError'] && (proformaForm.get('claim_type')?.touched || proformaForm.get('claim_type')?.dirty)">
+            {{ proformaForm.get('claim_type')?.errors?.['serverError'] }}
+          </small>
+        </div>
+        <div *ngIf="proformaForm.get('proforma_type')?.value === 'claim'" [formGroup]="proformaForm" class="card flex justify-center w-full">
+          <label class="w-full font-medium mb-1 block">Depends On Proformas</label>
+          <p-multiselect [options]="proformaOptions" formControlName="depends_on_proforma_ids" optionLabel="name"
+            optionValue="code" placeholder="Select Depends On Proformas" [maxSelectedLabels]="3" [showClear]="true"
+            [filter]="true" [display]="'chip'" class="w-full md:w-80">
+          </p-multiselect>
+          <small class="error-message"
+            *ngIf="proformaForm.get('depends_on_proforma_ids')?.invalid && (proformaForm.get('depends_on_proforma_ids')?.touched || proformaForm.get('depends_on_proforma_ids')?.dirty)">
+            Depends On Proformas is required
+          </small>
+          <small class="error-message"
+            *ngIf="proformaForm.get('depends_on_proforma_ids')?.errors?.['serverError'] && (proformaForm.get('depends_on_proforma_ids')?.touched || proformaForm.get('depends_on_proforma_ids')?.dirty)">
+            {{ proformaForm.get('depends_on_proforma_ids')?.errors?.['serverError'] }}
+          </small>
+        </div>
+        <div *ngIf="proformaForm.get('proforma_type')?.value === 'claim'" class="form-group">
+          <label>Max Claim Count</label>
+          <input pInputText formControlName="max_claim_count" type="number" placeholder="Enter max claim count" />
+          <small class="error-message"
+            *ngIf="proformaForm.get('max_claim_count')?.hasError('required') && (proformaForm.get('max_claim_count')?.touched || proformaForm.get('max_claim_count')?.dirty)">
+            Max Claim Count is required
+          </small>
+          <small class="error-message"
+            *ngIf="proformaForm.get('max_claim_count')?.hasError('min') && (proformaForm.get('max_claim_count')?.touched || proformaForm.get('max_claim_count')?.dirty)">
+            Max Claim Count must be a positive number
+          </small>
+          <small class="error-message"
+            *ngIf="proformaForm.get('max_claim_count')?.errors?.['serverError'] && (proformaForm.get('max_claim_count')?.touched || proformaForm.get('max_claim_count')?.dirty)">
+            {{ proformaForm.get('max_claim_count')?.errors?.['serverError'] }}
+          </small>
+        </div>
+
+        <div class="form-group full-width">
+          <label>Description</label>
+          <textarea pInputTextarea formControlName="description" placeholder="Enter description"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Display Order</label>
+          <input type="number" pInputText formControlName="display_order" placeholder="Enter display order" />
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select formControlName="status">
+            <option [value]="true">Active</option>
+            <option [value]="false">Inactive</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="showProformaDialog=false">
+          Cancel
+        </button>
+        <button type="submit" pButton label="Save" class="btn-submit"></button>
+      </div>
+
+    </form>
+  </p-dialog>
+
+
+  <p-dialog appendTo="body" header="Proforma Details" [(visible)]="showProformaDetailsDialog" [modal]="true"
+    [style]="{ width: '700px', maxWidth: '95vw' }" [draggable]="false" [resizable]="false" [closable]="true"
+    [dismissableMask]="true" styleClass="proforma-details-dialog animate__animated animate__fadeInDown">
+    <div *ngIf="selectedProforma" class="proforma-details">
+      <table class="details-table">
+        <tbody>
+          <tr *ngFor="let field of proformaFields">
+            <th>{{ field.label }}</th>
+            <td [ngClass]="field.class ? field.class : ''">
+              {{ field.value }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p-footer>
+      <button pButton label="Close" class="p-button-rounded p-button-secondary"
+        (click)="showProformaDetailsDialog = false"></button>
+    </p-footer>
+  </p-dialog>

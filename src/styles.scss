@@ -1,0 +1,1061 @@
+@use "@angular/material" as mat;
+@use "../theme-colors" as theme-colors;
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
+
+:root {
+  @include mat.datepicker-overrides(
+    (
+      calendar-body-label-text-color: var(--color-poppy-yellow),
+      calendar-container-background-color: var(--color-tertiary-shade),
+    )
+  );
+
+  @include mat.table-overrides(
+    (
+      background-color: #ffffff,
+      header-headline-color: #ffffff,
+      // White text on dark header
+      row-item-label-text-color: rgba(0, 0, 0, 0.87),
+      // Standard dark text
+      row-item-outline-color: rgba(0, 0, 0, 0.12),
+      // Subtle borders
+      header-headline-font: 22px,
+      header-headline-weight: 500,
+      row-item-label-text-font: 12px,
+      header-container-height: 56px,
+      // Slightly taller header
+      row-item-container-height: 52px,
+      // Consistent row height
+    )
+  );
+
+  /* Main Theme Colors - 5 Colors Only */
+  --color-primary: hsl(199, 56, 199); /* #fefae0 */
+  --color-secondary: hsl(0, 0%, 100%); /* #ccd5ae */
+  --color-secondary-shade: hsl(76, 45%, 90%); /* #e9edc9 */
+  --color-tertiary: hsl(182, 75%, 37%); /* #d4a373 */
+  --color-tertiary-shade: hsl(253, 85%, 93%); /* #faedcd */
+  --color-transparent: transparent;
+
+  /* Text Colors - 3 Black Shades */
+  --color-text-dark: hsl(0, 0%, 10%); /* #1a1a1a */
+  --color-text-medium: hsl(0, 0%, 29%); /* #4a4a4a */
+  --color-text-light: hsl(0, 0%, 48%); /* #7a7a7a */
+  --color-text-white: hsl(0, 0%, 100%); // White text for dark backgrounds
+
+  /* Supporting Poppy Colors - 5 Colors */
+  --color-poppy-red: hsl(0, 63%, 35%); /* #ff6b6b */
+  --color-poppy-orange: hsl(20, 100%, 66%); /* #ff8e53 */
+  --color-poppy-yellow: hsl(47, 100%, 64%); /* #ffd93d */
+  --color-poppy-green: hsl(139, 55%, 61%); /* #6bcf7f */
+  --color-poppy-blue: hsl(174, 67%, 60%); /* #4ecdc4 */
+
+  /*Link Colors */
+  --color-text-link: ver(--color-tertiary);
+  --color-text-link-hover: var(--color-tertiary-shade);
+  /* Button Colors */
+  --color-btn-primary-text: var(--color-text-dark);
+
+  /* Secondary Button (White with Red border) */
+  --color-btn-secondary-text: var(--color-text-dark);
+
+  // Base & Neutral Tones (Clean White Theme)
+  $bg-white: hsl(0, 0%, 100%);
+  $bg-surface: hsl(210, 15%, 98%); // Very soft blue-white
+  $border-light: hsl(210, 12%, 90%); // Soft border
+  $border-medium: hsl(210, 10%, 80%); // Table lines
+  $text-primary: hsl(220, 14%, 20%); // Deep charcoal (excellent readability)
+  $text-secondary: hsl(220, 10%, 40%); // Gray-blue for secondary text
+  $text-disabled: hsl(220, 8%, 60%); // Light gray
+
+  // Accent & Interactive Colors
+  $primary: hsl(215, 80%, 50%); // Crisp cobalt blue
+  $primary-hover: hsl(215, 85%, 45%); // Slightly deeper on hover
+  $primary-light: hsl(215, 90%, 94%); // Soft blue tint for highlights
+  $primary-border: hsl(215, 70%, 85%); // Soft border for primary
+
+  $success: hsl(145, 60%, 45%); // Vibrant emerald
+  $warning: hsl(39, 80%, 55%); // Warm amber
+  $error: hsl(355, 70%, 55%); // Clean crimson
+  $info: hsl(205, 70%, 50%); // Confident blue
+
+  // Action & Secondary
+  $secondary: hsl(300, 60%, 55%); // Magenta-pink (from your gradient energy)
+  $secondary-light: hsl(300, 90%, 95%); // Soft tint
+
+  // States & Feedback
+  $hover-overlay: hsla(0, 0%, 0%, 0.04);
+  $focus-ring: hsla(215, 80%, 50%, 0.3);
+
+  // $$$$$$$$$$$$$$$$$$$$$$$@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@####################################################
+
+  // /* Outline Button */
+  // --color-btn-outline-active: hsl(348, 100%, 95%);
+  // --color-btn-outline-text: hsl(348, 99%, 33%);
+  // --color-btn-outline-border: hsl(348, 99%, 33%);
+
+  // /* Ghost Button */
+  // --color-btn-ghost-bg: transparent;
+  // --color-btn-ghost-hover: hsl(348, 100%, 98%);
+  // --color-btn-ghost-active: hsl(348, 100%, 95%);
+  // --color-btn-ghost-text: hsl(348, 99%, 33%);
+
+  // /* Danger Button (Same as primary for consistency) */
+  // --color-btn-danger-bg: hsl(348, 99%, 33%);
+  // --color-btn-danger-hover: hsl(348, 99%, 25%);
+  // --color-btn-danger-active: hsl(348, 99%, 20%);
+  // --color-btn-danger-text: hsl(0, 0%, 100%);
+
+  // /* Border Colors */
+  // --color-border-light: hsl(0, 0%, 90%); // Light gray borders
+  // --color-border-medium: hsl(0, 0%, 80%); // Medium gray borders
+  // --color-border-dark: hsl(0, 0%, 70%); // Dark gray borders
+  // --color-border-focus: hsl(348, 99%, 33%); // Red focus ring color
+
+  // /* Form Colors */
+  // --color-form-input-bg: hsl(0, 0%, 100%);
+  // --color-form-input-border: hsl(0, 0%, 85%);
+  // --color-form-input-border-hover: hsl(0, 0%, 75%);
+  // --color-form-input-border-focus: hsl(348, 99%, 33%);
+  // --color-form-input-text: hsl(0, 0%, 13%);
+  // --color-form-input-placeholder: hsl(0, 0%, 60%);
+
+  // /* Form Validation States */
+  // --color-form-input-success: hsl(142, 76%, 45%);
+  // --color-form-input-warning: hsl(45, 100%, 55%);
+  // --color-form-input-error: hsl(348, 99%, 33%);
+
+  // /* Navigation Colors */
+  // --color-nav-bg: hsl(0, 0%, 100%);
+  // --color-nav-border: hsl(0, 0%, 90%);
+  // --color-nav-link-text: hsl(0, 0%, 40%);
+  // --color-nav-link-hover: hsl(348, 99%, 33%);
+  // --color-nav-link-active: hsl(348, 99%, 33%);
+  // --color-nav-link-active-bg: hsl(348, 100%, 97%);
+
+  /* Table Colors */
+  // --color-table-header-bg: hsl(0, 0%, 98%);
+  // --color-table-header-text: hsl(0, 0%, 13%);
+  // --color-table-row-even: hsl(0, 0%, 100%);
+  // --color-table-row-odd: hsl(0, 0%, 99%);
+  // --color-table-row-hover: hsl(348, 100%, 98%);
+  // --color-table-border: hsl(0, 0%, 90%);
+
+  // /* Status Colors */
+  // --color-status-online: hsl(142, 76%, 45%);
+  // --color-status-pending: hsl(45, 100%, 55%);
+  // --color-status-offline: hsl(0, 0%, 60%);
+  // --color-status-draft: hsl(348, 99%, 33%);
+
+  // /* Shadow Colors */
+  // --shadow-light: hsla(0, 0%, 0%, 0.05);
+  // --shadow-medium: hsla(0, 0%, 0%, 0.1);
+  // --shadow-dark: hsla(0, 0%, 0%, 0.15);
+  // --shadow-focus: hsla(348, 99%, 33%, 0.25);
+
+  // /* Overlay Colors */
+  // --color-overlay-light: hsla(0, 0%, 0%, 0.3);
+  // --color-overlay-medium: hsla(0, 0%, 0%, 0.5);
+  // --color-overlay-dark: hsla(0, 0%, 0%, 0.7);
+
+  /* Notification Colors */
+  // --color-notification-success-bg: hsl(142, 76%, 95%);
+  // --color-notification-success-border: hsl(142, 76%, 45%);
+  // --color-notification-success-text: hsl(142, 76%, 30%);
+
+  // --color-notification-warning-bg: hsl(45, 100%, 95%);
+  // --color-notification-warning-border: hsl(45, 100%, 55%);
+  // --color-notification-warning-text: hsl(45, 100%, 35%);
+
+  // --color-notification-error-bg: hsl(348, 100%, 95%);
+  // --color-notification-error-border: hsl(348, 99%, 33%);
+  // --color-notification-error-text: hsl(348, 99%, 25%);
+
+  // --color-notification-info-bg: hsl(200, 100%, 95%);
+  // --color-notification-info-border: hsl(200, 100%, 50%);
+  // --color-notification-info-text: hsl(200, 100%, 35%);
+
+  /* Utility Colors */
+  // --color-utility-disabled: hsl(0, 0%, 85%);
+  // --color-utility-disabled-text: hsl(0, 0%, 60%);
+  // --color-utility-backdrop: hsla(0, 0%, 0%, 0.4);
+  // --color-utility-selection: hsla(348, 99%, 33%, 0.2);
+
+  // /* Additional Red Theme Variants */
+  // --color-red-50: hsl(348, 100%, 97%);
+  // --color-red-100: hsl(348, 100%, 95%);
+  // --color-red-200: hsl(348, 96%, 89%);
+  // --color-red-300: hsl(348, 94%, 80%);
+  // --color-red-400: hsl(348, 91%, 69%);
+  // --color-red-500: hsl(348, 85%, 55%);
+  // --color-red-600: hsl(348, 99%, 33%); // Your main color
+  // --color-red-700: hsl(348, 99%, 25%);
+  // --color-red-800: hsl(348, 99%, 20%);
+  // --color-red-900: hsl(348, 99%, 15%);
+
+  // /* Gray Scale */
+  // --color-gray-50: hsl(0, 0%, 98%);
+  // --color-gray-100: hsl(0, 0%, 95%);
+  // --color-gray-200: hsl(0, 0%, 90%);
+  // --color-gray-300: hsl(0, 0%, 80%);
+  // --color-gray-400: hsl(0, 0%, 70%);
+  // --color-gray-500: hsl(0, 0%, 60%);
+  // --color-gray-600: hsl(0, 0%, 40%);
+  // --color-gray-700: hsl(0, 0%, 30%);
+  // --color-gray-800: hsl(0, 0%, 20%);
+  // --color-gray-900: hsl(0, 0%, 13%);
+}
+
+// Theme Color Mappings
+$primary-color: var(--color-tertiary);
+$secondary-color: var(--color-tertiary);
+$accent-color: var(--color-tertiary-shade);
+$light-color: var(--color-tertiary-shade);
+$dark-color: var(--color-tertiary-shade);
+
+$success-color: var(--color-poppy-green);
+$warning-color: var(--color-poppy-yellow);
+$danger-color: var(--color-poppy-red);
+$info-color: var(--color-poppy-blue);
+
+$text-primary: var(--color-text-dark);
+$text-secondary: var(--color-text-medium);
+$text-muted: var(--color-text-light);
+$text-inverse: var(--color-text-white);
+$text-link: var(--color-text-link);
+$text-link-hover: var(--color-text-link-hover);
+
+$border-color: var(--color-border-light);
+$border-medium: var(--color-border-medium);
+$border-focus: var(--color-border-focus);
+
+$btn-primary-bg: var(--color-tertiary);
+$btn-primary-hover: var(--color-tertiary-shade);
+$btn-primary-active: var(--color-tertiary);
+$btn-primary-text: var(--color-btn-primary-text);
+
+$btn-secondary-bg: var(--color-secondary);
+$btn-secondary-text: var(--color-btn-secondary-text);
+$btn-secondary-border: var(--color-secondary);
+
+$box-shadow: 0 4px 8px var(--shadow-light); // Update if needed
+
+/* ======================
+Main Content Container
+====================== */
+html {
+  @include mat.theme(
+    (
+      color: (
+        primary: theme-colors.$primary-palette,
+        tertiary: theme-colors.$tertiary-palette,
+        theme-type: light,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+/* ======================
+   Main Content Container
+====================== */
+.main-container {
+  margin-left: 240px; /* Default for open sidebar on desktop - matches sidebar width */
+  width: calc(100% - 240px);
+  min-height: calc(100vh - 70px);
+  padding: 30px 40px;
+  background-color: var(--color-primary);
+  color: var(--color-text-dark);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Sidebar collapsed on desktop */
+.sidebar-collapsed .main-container {
+  margin-left: 70px; /* Adjust for collapsed sidebar - matches collapsed sidebar width */
+  width: calc(100% - 70px);
+}
+
+/* Tablet and Mobile: sidebar becomes overlay, so container takes full width */
+@media (max-width: 1024px) {
+  .main-container {
+    margin-left: 0 !important; /* Important to override any other margin settings */
+    width: 100% !important; /* Important to override any other width settings */
+    padding: 25px 30px;
+  }
+
+  /* When sidebar is visible on mobile, add slight blur/dim effect to main content */
+  body.sidebar-mobile-open .main-container {
+    filter: blur(1px);
+    opacity: 0.8;
+  }
+}
+
+/* Mobile (large phones) */
+@media (max-width: 768px) {
+  .main-container {
+    padding: 20px 20px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .main-container {
+    padding: 15px 15px;
+  }
+}
+
+.page-layout {
+  position: relative;
+  min-height: 100vh;
+}
+
+.main-content {
+  min-height: 100vh;
+  background-color: var(--color-primary, #f8f9fa);
+
+  .content-wrapper {
+    padding: 1.5rem;
+  }
+}
+
+/* Prevent scrolling when sidebar is open */
+body.sidebar-open {
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .main-content .content-wrapper {
+    padding: 1rem;
+  }
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: "Open Sans", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --footer-bg: hsl(0, 0%, 10%); /* #1a1a1a */
+    --footer-bottom-bg: hsl(0, 0%, 7%); /* #111111 */
+    --footer-text: hsl(0, 0%, 88%); /* #e0e0e0 */
+    --footer-text-secondary: hsl(0, 0%, 69%); /* #b0b0b0 */
+    --footer-text-muted: hsl(0, 0%, 53%); /* #888888 */
+    --border-color: hsl(0, 0%, 20%); /* #333333 */
+    --border-color-light: hsl(0, 0%, 16%); /* #2a2a2a */
+    --accent-color: var(
+      --color-poppy-blue
+    ); /* Use a poppy color for accent in dark mode */
+  }
+}
+
+@media (prefers-contrast: high) {
+  :root {
+    --primary-color: hsl(220, 100%, 40%); /* #0052cc - Strong blue */
+    --footer-text: hsl(0, 0%, 0%); /* #000000 */
+    --footer-text-secondary: hsl(0, 0%, 20%); /* #333333 */
+    --border-color: hsl(0, 0%, 0%); /* #000000 */
+  }
+}
+
+.main-container {
+  margin-top: 10vh;
+  width: 100%;
+}
+
+.highlight-text {
+  background: linear-gradient(90deg, #a200ff 0%, #ff0000 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.swgt-container{
+  width: 100%;
+  // padding: 42px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px
+}
+.profile-container{
+  width: 100%;
+  margin: 28px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px
+}
+
+.page-head{
+  width: fit-content;
+  color: #2e2e2e;
+  font-size: 1rem;
+  font-weight: 800;
+}
+.form-head{
+  width: fit-content;
+  color: #2e2e2e;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.warn{
+  color: var(--color-poppy-red, #dc3545);
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+/* Chrome, Edge, Safari ke liye */
+::-webkit-scrollbar {
+  width: 10px;   /* vertical scrollbar width */
+  height: 10px;  /* horizontal scrollbar height */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* track background */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1; /* thumb color */
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8; /* hover effect */
+}
+
+/* Firefox ke liye */
+* {
+  scrollbar-color: #c1c1c1 #f1f1f1; /* thumb | track */
+  scrollbar-width: thin;
+}
+
+
+.btn-success{
+  background-color: rgb(77, 187, 44);
+  border: none;
+  font-size: 1rem;
+}
+.custom-confirm-dialog .p-dialog {
+  background: #ffffff !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+  text-align: center;
+}
+
+.custom-confirm-dialog .p-dialog-header {
+  background: #2563eb !important;
+  color: #ffffff !important;
+  font-size: 18px;
+  font-weight: 700 !important;
+  padding: 1rem;
+  text-align: center;
+}
+
+.custom-confirm-dialog .p-dialog-content {
+  background: #ffffff !important;
+  color: #374151 !important;
+  font-size: 15px;
+  padding: 1.5rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.custom-confirm-dialog .p-dialog-footer {
+  background: #f9fafb !important;
+  padding: 1rem;
+  display: flex !important;
+  justify-content: center !important;
+  gap: 1rem;
+}
+
+.custom-confirm-dialog .p-button {
+  border-radius: 8px !important;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem !important;
+  transition: background 0.3s ease-in-out, transform 0.2s ease;
+}
+
+.custom-confirm-dialog .p-confirm-dialog-accept {
+  background: #10b981 !important;
+  border: none !important;
+  color: #fff !important;
+}
+.custom-confirm-dialog .p-confirm-dialog-accept:hover {
+  background: #059669 !important;
+  transform: translateY(-2px);
+}
+
+.custom-confirm-dialog .p-confirm-dialog-reject {
+  background: #ef4444 !important;
+  border: none !important;
+  color: #fff !important;
+}
+.custom-confirm-dialog .p-confirm-dialog-reject:hover {
+  background: #dc2626 !important;
+  transform: translateY(-2px);
+}
+.cdk-overlay-container {
+  z-index: 20000 !important;
+}
+
+.cdk-overlay-container .mat-snack-bar-container {
+  z-index: 21000 !important;
+  position: fixed !important;
+  top: 20px !important;
+  left: 50% !important;
+  transform: translateX(-50%);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  animation: fadeDown 0.4s ease-out;
+}
+
+@keyframes fadeDown {
+  from {
+    transform: translate(-50%, -40px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+.p-datatable-filter-overlay,
+.p-datatable-filter-overlay-popover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #c9d2da !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.p-datatable-filter-overlay .p-inputtext,
+.p-datatable-filter-overlay-popover .p-inputtext {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #c9d2da !important;
+}
+
+.p-datatable-filter-overlay .p-dropdown-panel,
+.p-datatable-filter-overlay .p-multiselect-panel {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.p-datatable-filter-overlay .p-dropdown-item,
+.p-datatable-filter-overlay-popover .p-dropdown-item,
+.p-datatable-filter-overlay .p-multiselect-item,
+.p-datatable-filter-overlay-popover .p-multiselect-item {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.p-datatable-filter-overlay .p-dropdown-item:hover,
+.p-datatable-filter-overlay .p-multiselect-item:hover,
+.p-datatable-filter-overlay-popover .p-dropdown-item:hover,
+.p-datatable-filter-overlay-popover .p-multiselect-item:hover {
+  background-color: #f0f0f0 !important;
+  color: #000000 !important;
+}
+
+:host {
+  ::ng-deep .p-select {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border-color: #c9d2da !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::ng-deep .p-select-label {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  ::ng-deep .p-select-overlay {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #c9d2da !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  ::ng-deep .p-select-list {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  ::ng-deep .p-select-option {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  ::ng-deep .p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
+    background-color: #f0f0f0 !important;
+    color: #000000 !important;
+  }
+
+  ::ng-deep .p-select-option.p-select-option-selected {
+    background-color: #eaeaea !important;
+    color: #000000 !important;
+  }
+}
+
+.p-select {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #c9d2da !important;
+}
+
+.p-select-label {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.p-select-overlay {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #c9d2da !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.p-select-list {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.p-select-option {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
+  background-color: #f5f5f5 !important;
+  color: #000000 !important;
+}
+
+.p-select-option.p-select-option-selected {
+  background-color: #eaeaea !important;
+  color: #000000 !important;
+}
+
+.p-datatable-filter-constraint:not(.p-datatable-filter-constraint-selected):not(.p-disabled):hover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.p-multiselect-option:not(.p-multiselect-option-selected):not(.p-disabled).p-focus {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.p-multiselect-label.p-placeholder {
+  color: #000000 !important;
+}
+
+.p-multiselect-dropdown {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #c9d2da !important;
+}
+
+.my-activity-table {
+  ::ng-deep .p-datatable-filter-constraint {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::ng-deep .p-datatable-filter-constraint:not(.p-datatable-filter-constraint-selected):not(.p-disabled):hover {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  ::ng-deep .p-datatable-filter-overlay,
+  ::ng-deep .p-datatable-filter-overlay-popover {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border-color: #c9d2da !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  ::ng-deep .p-datatable-filter-constraint-list {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  ::ng-deep .p-multiselect-option:not(.p-multiselect-option-selected):not(.p-disabled).p-focus {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  ::ng-deep .p-multiselect-label.p-placeholder {
+    color: #000000 !important;
+  }
+
+  ::ng-deep .p-multiselect-dropdown {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border-color: #c9d2da !important;
+  }
+
+  ::ng-deep .p-multiselect-panel {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  ::ng-deep .p-multiselect-panel .p-multiselect-item {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+
+    &:hover {
+      background-color: #f0f0f0 !important;
+      color: #000000 !important;
+    }
+
+    &.p-highlight {
+      background-color: #eaeaea !important;
+      color: #000000 !important;
+    }
+  }
+}
+
+.my-activity-table {
+  ::ng-deep .p-datatable-filter-constraint {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::ng-deep .p-datatable-filter-constraint.p-datatable-filter-constraint-selected {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-weight: bold;
+  }
+
+  ::ng-deep .p-datatable-filter-constraint:not(.p-datatable-filter-constraint-selected):not(.p-disabled):hover {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  ::ng-deep .p-datatable-filter-constraint-list {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+}
+
+.my-activity-table {
+  ::ng-deep .p-datatable-filter-constraint {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::ng-deep .p-datatable-filter-constraint.p-datatable-filter-constraint-selected {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-weight: bold;
+  }
+
+  ::ng-deep .p-datatable-filter-constraint:not(.p-datatable-filter-constraint-selected):not(.p-disabled):hover {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  ::ng-deep .p-datatable-filter-constraint-list {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+}
+.ngx-editor-host table,
+.ngx-editor-host th,
+.ngx-editor-host td,
+.NgxEditor__Content table,
+.NgxEditor__Content th,
+.NgxEditor__Content td,
+.ngx-editor-host .prosemirror-table,
+.Ngx-editor .prosemirror-table {
+  border-collapse: collapse;
+  border: 1px solid #d8dbe0;
+}
+
+.ngx-editor-host table,
+.NgxEditor__Content table,
+.ngx-editor-host .prosemirror-table {
+  width: 100%;
+}
+
+.ngx-editor-host th,
+.ngx-editor-host td,
+.NgxEditor__Content th,
+.NgxEditor__Content td {
+  padding: 8px 10px;
+  vertical-align: middle;
+  border: 1px solid #d8dbe0;
+}
+
+.ngx-editor-host th {
+  font-weight: 600;
+  background: transparent;
+}
+:host ::ng-deep .p-select {
+  font-size: 0.85rem;
+  padding: 7px 8px;
+
+  width: 100%;
+  background-color: #fff !important;
+  color: #3b3b3b;
+  border: 1px solid #d7d7d7;
+}
+
+:host ::ng-deep .p-select-label {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  color: #3b3b3b;
+}
+
+:host ::ng-deep .p-select-label.p-placeholder {
+  font-size: 0.75rem;
+  color: #999;
+  font-weight: 500;
+
+}
+
+:host ::ng-deep .p-select.p-focus {
+  border-color: #003c5b;
+  box-shadow: none;
+
+}
+
+:host ::ng-deep .p-select-panel {
+  background-color: transparent !important;
+  color: #3b3b3b;
+  border: 1px solid #b8b8b8;
+
+}
+
+:host ::ng-deep .p-select-filter {
+  background-color: #fff !important;
+  color: #3b3b3b;
+  border: 1px solid #b8b8b8;
+  font-size: 0.8rem;
+  height: 28px;
+}
+
+:host ::ng-deep .p-select-empty-message {
+  color: #666 !important;
+  background-color: #fff;
+  font-size: 0.8rem;
+}
+
+:host ::ng-deep .ng-star-inserted .p-select-option {
+  font-size: 0.8rem;
+  color: #000;
+
+}
+
+:host ::ng-deep .p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
+  background-color: #003c5b !important;
+}
+
+:host ::ng-deep .ng-star-inserted li:hover,
+:host ::ng-deep .ng-star-inserted li span:hover {
+  background-color: #003c5b !important;
+  color: #fff !important;
+}
+
+:host ::ng-deep .p-select-item.p-highlight {
+  background-color: #003c5b !important;
+  color: #fff !important;
+}
+
+:host ::ng-deep .p-select-panel,
+:host ::ng-deep .p-select-items-wrapper {
+  background-color: #fff !important;
+}
+
+:host ::ng-deep .p-select-overlay {
+  background-color: #fff !important;
+  border: 1px solid #b8b8b8;
+}
+
+:host ::ng-deep .p-select-item.p-highlight {
+  background-color: #003c5b !important;
+  color: #fff !important;
+}
+
+
+:host ::ng-deep .p-floatlabel.p-floatlabel-on label {
+  background-color: #fff !important;
+  font-size: 0.75rem;
+}
+
+label {
+  font-size: 0.75rem;
+  color: #003c5b;
+
+}
+
+.required-indicator {
+  color: var(--color-poppy-red, #dc3545);
+  margin-left: 0.25rem;
+}
+
+$ms-border: #d7d7d7;
+$ms-placeholder: #9a9a9a;
+$ms-radius: 6px;
+$ms-font-size: 0.85rem;
+
+.p-component .p-multiselect,
+.p-component .p-select {
+  width: 100% !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid $ms-border !important;
+  border-radius: $ms-radius !important;
+  font-size: $ms-font-size !important;
+  box-shadow: none !important;
+  padding: 6px 8px !important;
+  min-height: 40px !important;
+}
+
+.p-multiselect .p-multiselect-label,
+.p-select .p-select-label {
+  color: #000 !important;
+  font-size: 0.82rem !important;
+}
+
+.p-multiselect .p-multiselect-label.p-placeholder,
+.p-select .p-select-label.p-placeholder {
+  color: $ms-placeholder !important;
+  font-weight: 500 !important;
+  font-size: 0.78rem !important;
+}
+
+.p-multiselect .p-multiselect-token {
+  background: #ffffff !important;
+  color: #000 !important;
+  border: 1px solid $ms-border !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  margin-right: 6px !important;
+  box-shadow: none !important;
+}
+
+.p-checkbox-box {
+  background: #ffffff !important;
+  border: 1px solid $ms-border !important;
+  box-shadow: none !important;
+}
+
+.p-checkbox-box .p-checkbox-icon {
+  color: #000 !important;
+}
+
+.p-checkbox-box.p-highlight {
+  background: #ffffff !important;
+  border-color: #000 !important;
+}
+
+.p-checkbox-box.p-highlight .p-checkbox-icon {
+  color: #000 !important;
+}
+
+.p-multiselect-panel,
+.p-multiselect-overlay,
+.p-select-panel,
+.p-select-overlay,
+.p-connected-overlay {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid $ms-border !important;
+  border-radius: $ms-radius !important;
+  box-shadow: 0 6px 18px rgba(15, 23, 32, 0.06) !important;
+  min-width: 100% !important;
+  max-height: 360px !important;
+  overflow: auto !important;
+}
+
+.p-multiselect-item,
+.p-multiselect-option,
+.p-select-item,
+.p-select-option {
+  background: #ffffff !important;
+  color: #000 !important;
+  padding: 10px 12px !important;
+  transition: none !important;
+}
+
+.p-multiselect-item:hover,
+.p-multiselect-option:hover,
+.p-select-item:hover,
+.p-select-option:hover,
+.p-multiselect-item.p-highlight,
+.p-multiselect-option.p-multiselect-option-selected,
+.p-select-item.p-highlight,
+.p-select-option.p-select-option-selected {
+  background: #ffffff !important;
+  color: #000 !important;
+  box-shadow: none !important;
+}
+
+.p-multiselect .p-multiselect-filter,
+.p-select .p-select-filter {
+  background: #ffffff !important;
+}
+
+.p-multiselect .p-multiselect-filter input,
+.p-select .p-select-filter input {
+  height: 34px !important;
+  font-size: 0.82rem !important;
+  border: 1px solid $ms-border !important;
+  border-radius: 4px !important;
+  padding: 4px 8px !important;
+  color: #000 !important;
+  background: #fff !important;
+}
+
+.p-multiselect .p-multiselect-empty-message,
+.p-select .p-select-empty-message {
+  color: $ms-placeholder !important;
+  font-size: 0.8rem !important;
+}
+
+.p-multiselect.p-focus,
+.p-select.p-focus {
+  border-color: #000 !important;
+  box-shadow: none !important;
+}
+
+body .p-component .p-multiselect,
+body .p-component .p-multiselect-panel,
+body .p-component .p-multiselect-overlay,
+body .p-component .p-select,
+body .p-component .p-select-panel,
+body .p-component .p-select-overlay {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #print-area,
+  #print-area * {
+    visibility: visible;
+  }
+  #print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}

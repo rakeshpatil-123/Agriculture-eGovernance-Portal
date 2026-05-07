@@ -1,0 +1,199 @@
+.renewal-container {
+  width: 90vw;
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-top: 30px !important;
+  background: #fff;
+  padding: 2vh 2vw;
+  border-radius: 1vh;
+  box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+
+  .dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2vh;
+
+    h4 {
+      font-weight: 600;
+      color: #0f172a;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    button {
+      color: #444;
+      transform: scale(0.95);
+    }
+  }
+
+  .dialog-body {
+    max-height: 75vh;
+    padding-top: 15px;
+    overflow-y: auto;
+    padding-right: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .dialog-body::-webkit-scrollbar {
+    width: 10px;
+  }
+  .dialog-body::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .dialog-body::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.15);
+    border-radius: 8px;
+  }
+  .dialog-body {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,0,0,0.15) transparent;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5vh 1.5vw;
+      align-items: center;
+
+      .full {
+        grid-column: 1 / -1;
+      }
+
+      mat-form-field {
+        width: 100%;
+        --mdc-outlined-text-field-container-height: 52px;
+        font-size: 0.95rem;
+
+        ::ng-deep .mat-mdc-form-field-infix {
+          padding: 0.7em 0 0.5em 0 !important;
+        }
+
+        ::ng-deep .mat-mdc-floating-label {
+          font-size: 0.9rem !important;
+        }
+
+        ::ng-deep .mat-mdc-select-value-text,
+        ::ng-deep .mat-mdc-input-element {
+          font-size: 0.95rem !important;
+        }
+
+        ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5vh;
+      flex-wrap: wrap;
+      margin-top: 1.5vh;
+
+      button {
+        min-width: 180px;
+        padding: 0.9vh 2vw;
+        font-size: 0.95rem;
+        border-radius: 0.8vh;
+      }
+    }
+  }
+}
+
+.submit-btn {
+  background: linear-gradient(90deg, #1766d1, #155bb3);
+  color: #fff !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: linear-gradient(90deg, #155bb3, #0e4aa1);
+  }
+}
+
+::ng-deep .mat-mdc-dialog-surface {
+  border-radius: 1vh !important;
+  overflow: visible !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+@media (max-width: 1024px) {
+  .renewal-container {
+    width: 95vw;
+    margin-top: 40px !important;
+    padding: 2vh;
+  }
+
+  mat-form-field {
+    --mdc-outlined-text-field-container-height: 48px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .renewal-container {
+    width: 96vw;
+    padding: 2vh 3vw;
+
+    .dialog-header h4 {
+      font-size: 1rem;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+
+    mat-form-field {
+      --mdc-outlined-text-field-container-height: 46px;
+      font-size: 0.9rem;
+    }
+
+    .form-actions button {
+      width: 100%;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .renewal-container {
+    width: 98vw;
+    padding: 1.5vh 3vw;
+
+    .dialog-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1vh;
+
+      h4 {
+        font-size: 0.95rem;
+      }
+    }
+
+    form {
+      gap: 1.5vh;
+    }
+
+    mat-form-field {
+      --mdc-outlined-text-field-container-height: 42px;
+      font-size: 0.85rem;
+    }
+
+    .form-actions {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}

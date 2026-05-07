@@ -1,0 +1,241 @@
+<!-- user-application-view.component.html -->
+<div class="application-view-container">
+  <div class="loading" *ngIf="isLoading">
+    <app-loader></app-loader>>
+  </div>
+
+  <div class="error-card" *ngIf="error && !isLoading">
+    <div class="icon">⚠️</div>
+    <p>{{ error }}</p>
+    <button class="btn-primary" (click)="fetchApplicationDetails()">Retry</button>
+  </div>
+
+  <div class="application-card" *ngIf="application && !isLoading">
+    <div class="app-header">
+      <h2 class="app-title">Application Information</h2>
+      <!-- Show Download Certificate button only if not third-party AND has download URL -->
+      <button class="btn-download" *ngIf=" hasDownloadUrl" (click)="downloadCertificate()">
+        Download Certificate
+      </button>
+  <!-- UPDATED PREVIEW / ACTION BUTTONS -->
+<button class="btn-print" type="button" (click)="printPage()">
+  🖨 Print Application
+</button>
+
+<div *ngIf="showPdfPreview" class="pdf-overlay" role="dialog" aria-label="Application preview">
+  <div class="pdf-modal">
+    <div class="pdf-header">
+      <div class="pdf-title">
+        <strong>Application Preview</strong>
+        <div class="pdf-subtitle">
+          {{ applicationData?.service_name || serviceName || '' }} —
+          {{ getApplicationNumber(applicationData || application) }}
+        </div>
+      </div>
+
+      <div class="pdf-toolbar" role="toolbar" aria-label="PDF actions">
+        <button class="pdf-tool" type="button" (click)="zoomOut()">−</button>
+        <button class="pdf-tool" type="button" (click)="fitToWidth()">Fit</button>
+        <button class="pdf-tool" type="button" (click)="zoomIn()">+</button>
+        <button class="pdf-tool" type="button" (click)="printApplication()">Print</button>
+        <button class="pdf-tool" type="button" (click)="downloadPdf()">Download</button>
+        <button class="pdf-tool" type="button" (click)="openPdfInNewTab()">Open</button>
+        <button class="pdf-close-btn" type="button" (click)="closePdfPreview()" aria-label="Close preview">✕</button>
+      </div>
+    </div>
+
+    <div class="pdf-body">
+      <div class="pdf-viewport" [style.transform]="'scale(' + pdfZoom + ')'" [style.transformOrigin]="'top left'">
+        <iframe *ngIf="pdfUrl" [src]="pdfUrl" class="pdf-iframe" frameborder="0"></iframe>
+      </div>
+    </div>
+
+    <div class="pdf-footer">
+      <div class="pdf-meta">
+        <span>
+          Printed On:
+          {{ (applicationData?.updated_at ? (applicationData?.updated_at | date:'dd/MM/yyyy HH:mm') : (now | date:'dd/MM/yyyy HH:mm')) }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+    <div id="print-area">
+
+    <section class="section">
+      <div class="grid">
+        <div class="field" *ngIf="application?.applicationId">
+          <label>Application Number</label>
+          <span>{{ application?.applicationId || '—' }}</span>
+        </div>
+        <div class="field">
+          <label>Application Date</label>
+          <span>{{ formatDate(application?.application_date) || '—' }}</span>
+        </div>
+        <div class="field">
+          <label>Due Date</label>
+          <span>{{ formatDate(application?.max_processing_date) || '—' }}</span>
+        </div>
+        <!-- <div class="field" *ngIf="application?.approved_fee !== null || 0">
+          <label>Approved Fee</label>
+          <span>{{ application?.approved_fee || '₹0' }}</span>
+        </div> -->
+        <div class="field" *ngIf="!isThirdParty">
+          <label>Current Step</label>
+          <span> {{ historyDetails[0]?.step_number || '—' }}</span>
+        </div>
+        <div class="field" *ngIf="!isThirdParty">
+          <label>Current Step Name</label>
+          <span class="capitalize"> {{ historyDetails[0]?.step_type || '—' }}</span>
+        </div>
+        <div class="field" *ngIf="!isThirdParty">
+          <label>Base Fee</label>
+          <span>₹{{ application?.final_fee || '₹0' }}</span>
+        </div>
+        <div class="field" *ngIf="hasExtraPayment">
+          <label>Extra Payment</label>
+          <span>₹{{ application?.extra_payment }}</span>
+        </div>
+        <div class="field" *ngIf="!isThirdParty">
+          <label>Total Fee</label>
+          <span>₹{{ application?.total_fee || '₹0' }}</span>
+        </div>
+        <div class="field" *ngIf="serviceName !== '' ">
+          <label>Applied For</label>
+          <span>{{ serviceName}}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Status</h2>
+      <div class="status-display">
+        <span [ngClass]="getStatusBadgeClass(application?.status || '')">
+          {{ (application?.status || '—') | titlecase }}
+        </span>
+      </div>
+    </section>
+
+<section class="section" *ngIf="!isThirdParty && application?.application_data_structured?.length">
+  <h2>Applicant Information</h2>
+  <div class="grid">
+    <div class="field" *ngFor="let qa of application.application_data_structured">
+      @if (qa.isFile || qa.type === 'file') {
+      <div class="file-display">
+        <label [innerHTML]="qa.question"></label>
+
+   <ng-container *ngIf="qa.fileUrls?.length as count; else singleFileView">
+  <div class="file-list" *ngIf="count > 0">
+    <button
+      type="button"
+      class="btn-view btn-success btn-sm"
+      *ngFor="let file of qa.fileUrls!; let i = index"
+      (click)="previewFile(file)">
+      {{ qa.fileNames?.[i] || getFileNameFromUrl(file) }}
+    </button>
+  </div>
+</ng-container>
+
+
+        <ng-template #singleFileView>
+          <button
+            type="button"
+            class="btn-view btn-success btn-sm"
+            (click)="previewFile(qa.fileUrl || qa.answer)">
+            {{ qa.fileName || getFileNameFromUrl(qa.fileUrl || qa.answer) }}
+          </button>
+            </ng-template>
+          </div>
+          } @else {
+          <label [innerHTML]="qa.question"></label>
+          <span>{{ formatAnswerForDisplay(qa.answer) }}</span>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Hide Applicant Information section for third-party -->
+    <section class="section"
+      *ngIf="!isThirdParty && !application?.application_data_structured?.length && application?.application_data">
+      <h2>Applicant Information</h2>
+      <div class="grid">
+        <div class="field" *ngFor="let entry of application.application_data | keyvalue">
+          <label>{{ getLabel(entry.key) }}</label>
+          <span>{{ entry.value || '—' }}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" *ngIf="application?.payment_status">
+      <h2>Payment Information</h2>
+      <div class="grid">
+        <div class="field">
+          <label>Payment Status</label>
+          <span [ngClass]="{
+              'payment-pending': application?.payment_status === 'pending',
+              'payment-success': application?.payment_status === 'success',
+              'payment-failed': application?.payment_status === 'failed'
+            }">
+            {{ application?.payment_status ? (application.payment_status | titlecase) : '—' }}
+          </span>
+        </div>
+        <div class="field" *ngIf="application?.payment_status !== 'pending'">
+          <label>Transaction ID</label>
+          <span>{{ application?.payment_transId || '—' }}</span>
+        </div>
+        <div class="field" *ngIf="application?.payment_status !== 'pending'">
+          <label>Payment Time</label>
+          <span>{{ formatDate(application?.payment_time) || '—' }}</span>
+        </div>
+        <div class="field" *ngIf="application?.GRN_number">
+          <label>GRN Number</label>
+          <span>{{ application?.GRN_number || '—' }}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" *ngIf="application?.NOC_letter_number">
+      <h2>📄 NOC Details</h2>
+      <div class="grid">
+        <div class="field">
+          <label>NOC Letter Number</label>
+          <span>{{ application?.NOC_letter_number || '—' }}</span>
+        </div>
+        <div class="field">
+          <label>NOC Letter Date</label>
+          <span>{{ formatDate(application?.NOC_letter_date) || '—' }}</span>
+        </div>
+        <div class="field">
+          <label>NOC Expiry Date</label>
+          <span>{{ formatDate(application?.NOC_expiry_date) || '—' }}</span>
+        </div>
+        <div class="field">
+          <label>Penalty Amount</label>
+          <span *ngIf="application?.NOC_penalty_amount !== null && application?.NOC_penalty_amount !== undefined">
+            ₹{{ application?.NOC_penalty_amount }}
+          </span>
+          <span *ngIf="application?.NOC_penalty_amount === null || application?.NOC_penalty_amount === undefined">
+            —
+          </span>
+        </div>
+      </div>
+    </section>
+ </div>
+
+    <section class="section mt-5">
+      <h2>Application History</h2>
+      <app-dynamic-table [searchable]="false" [columns]="historyColumns" [data]="historyDetails">
+      </app-dynamic-table>
+    </section>
+
+    <section class="section">
+      <h2>Payment Details</h2>
+
+      <app-dynamic-table [searchable]="false" [columns]="transactionColumns"
+        [data]="transactionDetails"></app-dynamic-table>
+    </section>
+
+  </div>
+</div>

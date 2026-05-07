@@ -1,0 +1,679 @@
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  min-height: 100vh;
+  padding: 20px;
+  line-height: 1.6;
+}
+/* Container Styles */
+.container {
+  min-width: 95vw;
+  max-width: none;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  padding: 40px;
+  margin: 30px auto;
+  max-width: 1400px;
+}
+.container h2 {
+  font-size: 2.2rem;
+  color: #03578d;
+  margin-bottom: 40px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e8f0fe;
+}
+/* Form Container */
+.container-for-select-and-search {
+  width: 100%;
+  max-width: none;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  padding: 35px;
+  margin: 40px 0;
+  border: 1px solid #e0e0e0;
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+/* Enhanced Row Styling with More Gap */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px; /* Increased gap between form fields */
+  margin: 0 -15px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+  flex: 1;
+  min-width: 220px;
+  padding: 0 15px; /* Added padding to create space between fields */
+}
+label {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 12px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+select,
+input[type="number"] {
+  width: 100%;
+  padding: 16px;
+  font-size: 1rem;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: #fafafa;
+}
+select:focus,
+input[type="number"]:focus {
+  border-color: #009cde;
+  box-shadow: 0 0 0 3px rgba(0, 156, 222, 0.2);
+  transform: translateY(-2px);
+}
+/* Button Section */
+.button-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px; /* Increased top margin */
+  padding-top: 20px;
+  border-top: 1px solid #eaeaea;
+}
+button {
+  background-color: #009cde;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  height: 60px;
+  box-shadow: 0 4px 12px rgba(0, 156, 222, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 30px;
+  min-width: 250px;
+}
+button:hover {
+  background-color: #0073e6;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 156, 222, 0.4);
+}
+.btn-text {
+  font-weight: 700;
+}
+.btn-icon {
+  display: flex;
+  align-items: center;
+}
+/* Error Messages */
+.error {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  font-weight: 500;
+}
+/* Table Styles */
+.container-for-table {
+  width: 100%;
+  max-width: none;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  padding: 35px;
+  margin: 40px 0;
+  border: 1px solid #e0e0e0;
+  overflow-x: auto; /* Enable horizontal scrolling */
+}
+table {
+  width: 100%;
+  min-width: 800px; /* Ensure table doesn't get too small */
+  border-collapse: separate;
+  border-spacing: 0 18px;
+  margin-top: 25px;
+  font-size: 0.95rem;
+}
+th, td {
+  text-align: center;
+  padding: 18px;
+  vertical-align: middle;
+}
+th {
+  background-color: #083347;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+}
+th:first-child {
+  border-top-left-radius: 18px;
+  border-bottom-left-radius: 18px;
+}
+th:last-child {
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+td {
+  font-size: 0.95rem;
+  color: #555;
+  background-color: #fdfdfd;
+  border-radius: 14px;
+  transition: background-color 0.3s ease;
+}
+/* Pillar Styling */
+.pillar-of-tipps {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: center;
+  font-weight: bold;
+  color: #083347;
+  padding: 15px;
+  width: 85px;
+  font-size: 1.8rem;
+  background-color: #fdb100;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(253, 177, 0, 0.2);
+  color: #083347;
+  line-height: 1;
+  margin: 0 auto;
+}
+.pillar {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  padding: 15px;
+  width: 85px;
+  font-size: 1.8rem;
+  background-color: #009cde;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0, 156, 222, 0.3);
+  color: white;
+  line-height: 1;
+  margin: 0 auto;
+}
+.investment-type {
+  background-color: #fdb100;
+  color: #083347;
+  font-size: 1rem;
+  font-weight: 800;
+  text-align: center;
+  border-radius: 18px;
+  width: 120px;
+  padding: 12px;
+  margin: 0 auto 15px;
+  box-shadow: 0 3px 8px rgba(253, 177, 0, 0.2);
+}
+/* Input Fields in Table */
+td input[type="number"] {
+  width: 80%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+  font-size: 1rem;
+  text-align: center;
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+td input[type="number"]:focus {
+  border-color: #009cde;
+  box-shadow: 0 0 0 3px rgba(0, 156, 222, 0.2);
+}
+td select {
+  width: 90%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+  font-size: 1rem;
+  background-color: #f8f9fa;
+}
+td select:focus {
+  border-color: #009cde;
+  box-shadow: 0 0 0 3px rgba(0, 156, 222, 0.2);
+}
+/* Subsidy Amount Display Boxes */
+.subsidy-amount-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  border-radius: 16px;
+  min-height: 90px;
+  justify-content: center;
+  font-weight: 600;
+  margin: 0 auto;
+}
+.tiips-box {
+  background-color: #FDD579;
+  border: 1px solid #FBD68D;
+}
+.unnati-box {
+  background-color: #79BFEE;
+  border: 1px solid #A1D3F5;
+}
+.subsidy-amount-box span {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.subsidy-amount-box .small-text {
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+  margin-top: 8px;
+  line-height: 1.3;
+  padding: 0 10px;
+  text-align: center;
+}
+/* Total Section */
+.total-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 40px 0;
+  padding: 25px;
+  background-color: #f8f9fa;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  gap: 30px;
+}
+.total {
+  background-color: #009cde;
+  color: white;
+  padding: 16px 30px;
+  border-radius: 14px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 156, 222, 0.3);
+  min-width: 200px;
+  text-align: center;
+}
+/* Investment Banner */
+.investment-banner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 40px;
+  gap: 0;
+}
+.investment-banner {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: white;
+  text-align: center;
+  background-color: #26456d;
+  padding: 18px 40px;
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+  flex: 1;
+  margin-right: 0;
+  box-shadow: 0 4px 12px rgba(38, 69, 109, 0.3);
+}
+.invest-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.incentive-amount {
+  background-color: #f5e069;
+  color: #112b48;
+  padding: 18px 45px;
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+  font-size: 1.6rem;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(250, 231, 130, 0.4);
+  min-width: 200px;
+  text-align: center;
+}
+/* Disclaimer Section */
+.disclaimer-section {
+  max-width: 100%;
+  padding: 50px;
+  background-color: #f8f9fa;
+  border-radius: 18px;
+  margin-top: 50px;
+  border: 1px solid #e0e0e0;
+}
+.disclaimer-section p {
+  margin-bottom: 20px;
+  color: #555;
+  line-height: 1.7;
+}
+.disclaimer-section strong {
+  color: #e74c3c;
+  font-weight: 700;
+}
+.disclaimer-section ol {
+  text-align: left;
+  margin-left: 50px;
+  margin-bottom: 25px;
+  padding-left: 25px;
+  line-height: 1.7;
+}
+.disclaimer-section li {
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  color: #555;
+  padding-left: 10px;
+  position: relative;
+}
+.disclaimer-section li::before {
+  content: "•";
+  color: #009cde;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .container {
+    padding: 35px;
+  }
+  
+  .container h2 {
+    font-size: 2rem;
+  }
+  
+  .pillar-of-tipps, .pillar {
+    width: 75px;
+    font-size: 1.7rem;
+  }
+  
+  .investment-banner {
+    font-size: 1.2rem;
+    padding: 16px 35px;
+  }
+  
+  .incentive-amount {
+    font-size: 1.5rem;
+    padding: 16px 40px;
+  }
+  
+  .total {
+    font-size: 1.2rem;
+    padding: 14px 24px;
+  }
+  
+  /* Adjust gap for medium screens */
+  .row {
+    gap: 25px;
+  }
+}
+
+@media (max-width: 992px) {
+  .form-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .form-group {
+    min-width: 100%;
+    padding: 0; /* Remove padding on mobile */
+  }
+  
+  .container-for-table {
+    padding: 30px;
+  }
+  
+  th, td {
+    padding: 16px;
+  }
+  
+  .investment-banner-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .investment-banner, .incentive-amount {
+    width: 100%;
+    border-radius: 14px;
+    margin-right: 0;
+  }
+  
+  .investment-banner {
+    border-top-right-radius: 14px;
+    border-bottom-right-radius: 14px;
+  }
+  
+  .incentive-amount {
+    border-top-left-radius: 14px;
+    border-bottom-left-radius: 14px;
+  }
+  
+  .total-section {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .total {
+    width: 100%;
+    margin: 0;
+  }
+  
+  .button-section {
+    margin-top: 15px;
+    padding-top: 15px;
+  }
+  
+  button {
+    min-width: 220px;
+    padding: 0 25px;
+  }
+  
+  /* Adjust gap for tablet screens */
+  .row {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 30px;
+  }
+  
+  .container h2 {
+    font-size: 1.8rem;
+  }
+  
+  th, td {
+    font-size: 0.9rem;
+    padding: 14px;
+  }
+  
+  .pillar-of-tipps, .pillar {
+    width: 65px;
+    font-size: 1.6rem;
+  }
+  
+  .subsidy-amount-box {
+    min-height: 80px;
+  }
+  
+  .investment-banner, .incentive-amount {
+    font-size: 1.2rem;
+  }
+  
+  .total {
+    font-size: 1.1rem;
+    padding: 12px 20px;
+  }
+  
+  .disclaimer-section {
+    padding: 35px;
+  }
+  
+  .disclaimer-section ol {
+    margin-left: 30px;
+    padding-left: 20px;
+  }
+  
+  .button-section {
+    margin-top: 10px;
+    padding-top: 15px;
+  }
+  
+  button {
+    min-width: 200px;
+    height: 55px;
+    font-size: 1rem;
+  }
+  
+  /* Make table horizontally scrollable */
+  .container-for-table {
+    padding: 20px;
+    overflow-x: auto;
+  }
+  
+  table {
+    min-width: 700px;
+  }
+  
+  /* Adjust gap for mobile screens */
+  .row {
+    gap: 15px;
+    margin: 0; /* Remove negative margin on mobile */
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+    margin: 20px auto;
+  }
+  
+  .container h2 {
+    font-size: 1.6rem;
+  }
+  
+  .form-container {
+    gap: 20px;
+  }
+  
+  select, input[type="number"] {
+    padding: 14px;
+    font-size: 0.95rem;
+  }
+  
+  th, td {
+    padding: 12px;
+    font-size: 0.85rem;
+  }
+  
+  .pillar-of-tipps, .pillar {
+    width: 60px;
+    font-size: 1.4rem;
+  }
+  
+  .investment-banner, .incentive-amount {
+    font-size: 1.1rem;
+    padding: 14px 30px;
+  }
+  
+  .total {
+    font-size: 1rem;
+    padding: 10px 18px;
+  }
+  
+  .disclaimer-section {
+    padding: 25px;
+  }
+  
+  .disclaimer-section ol {
+    margin-left: 20px;
+    padding-left: 15px;
+  }
+  
+  .button-section {
+    margin-top: 5px;
+    padding-top: 10px;
+  }
+  
+  button {
+    min-width: 180px;
+    height: 50px;
+    font-size: 0.95rem;
+    padding: 0 20px;
+  }
+  
+  /* Enhanced table scrolling for small screens */
+  .container-for-table {
+    padding: 15px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  table {
+    min-width: 650px;
+  }
+  
+  /* Adjust investment type for small screens */
+  .investment-type {
+    width: 100px;
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+  
+  /* Adjust subsidy boxes for small screens */
+  .subsidy-amount-box {
+    min-height: 70px;
+    padding: 10px;
+  }
+  
+  .subsidy-amount-box span {
+    font-size: 1rem;
+  }
+  
+  .subsidy-amount-box .small-text {
+    font-size: 0.75rem;
+  }
+  
+  /* Adjust gap for small mobile screens */
+  .row {
+    gap: 10px;
+  }
+}
+
+/* Remove spinner arrows for WebKit browsers */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+  -webkit-appearance: textfield;
+}

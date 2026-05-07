@@ -1,0 +1,25 @@
+<div
+  class="page-layout"
+  [class.sidebar-collapsed]="!isDesktopMenuOpen && !isMobile"
+>
+  <main class="main-content">
+    <app-sidebar
+      [isCollapsed]="!isDesktopMenuOpen && !isMobile"
+      [isVisible]="isMobileMenuVisible"
+      (onToggle)="handleSidebarToggle()"
+      (onNavigate)="closeMobileSidebar()"
+    >
+    </app-sidebar>
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+  <app-mini-footer></app-mini-footer>
+
+  <!-- Backdrop for mobile overlay menu -->
+  <div
+    class="sidebar-backdrop"
+    *ngIf="isMobileMenuVisible"
+    (click)="closeMobileSidebar()"
+  ></div>
+</div>

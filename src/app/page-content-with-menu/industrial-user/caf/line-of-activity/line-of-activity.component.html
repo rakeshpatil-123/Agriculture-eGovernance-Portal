@@ -1,0 +1,162 @@
+<div class="form-container">
+  <form [formGroup]="form" novalidate class="mb-5">
+
+    <!-- Raw Materials -->
+    <div class="mt-2 mb-2">
+      <span class="header-color">List of Raw Materials to be Used</span>
+    </div>
+
+    <div class="mt-2 mb-5">
+      <div class="container large-container grid-container no-padding-first-last">
+        <table formArrayName="rawMaterials" class="table table-bordered grid-table">
+          <thead class="table-primary">
+            <tr>
+              <th>SL No</th>
+              <th>Name of Raw Material <span class="red-font">*</span></th>
+              <th>Quantity/Month <span class="red-font">*</span></th>
+              <th>Unit <span class="red-font">*</span></th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let rm of rawMaterials.controls; let i = index trackBy: trackByIndex" [formGroupName]="i">
+              <td>{{ i + 1 }}</td>
+
+              <td>
+                <div class="mt-3">
+                  <app-ilogi-input fieldLabel="Raw Material" formControlName="raw_material_name" placeholder="Enter"
+                    maxlength="255"></app-ilogi-input>
+                </div>
+              </td>
+              <td>
+                <div class="mt-3">
+
+                  <app-ilogi-input fieldLabel="Quantity/Month" formControlName="raw_material_quantity_per_month"
+                    placeholder="Enter"></app-ilogi-input>
+                </div>
+              </td>
+
+
+              <td>
+                <app-ilogi-select fieldLabel="Unit" [selectOptions]="unitOptions" placeholder="Select Unit"
+                  formControlName="raw_material_unit"></app-ilogi-select>
+              </td>
+
+              <td>
+                <div class="mt-3">
+
+                  <button type="button" class="btn btn-danger btn-sm" (click)="removeRawMaterial(i)"
+                    [disabled]="isDeleting">
+                    {{ deletingRowIndex === i ? 'Deleting...' : 'Remove' }}</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr *ngIf="rawMaterials.length === 0">
+              <td colspan="5">No raw materials added.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pull-right mt-2 color-666666 clkable" (click)="addRawMaterial()">
+        <i class="fa fa-plus"></i>
+        <span class="add ml-2">ADD NEW</span>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Thrust Sector -->
+    <div class="mt-2 mb-2">
+      <div class="row no-padding-first-last">
+        <div class="col-md-4">
+          <app-ilogi-select fieldLabel="Thrust Sector" [selectOptions]="thrustSectorOptions"
+            formControlName="thrustSector" [mandatory]="true" placeholder="Select Thrust Sector"></app-ilogi-select>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Products -->
+    <div class="mt-2 mb-2">
+      <span class="header-color">List of Product & by-products/Finished Products</span>
+    </div>
+
+    <div class="mt-2 mb-5">
+      <div class="container large-container grid-container no-padding-first-last">
+        <table formArrayName="products" class="table table-bordered grid-table">
+          <thead class="table-primary">
+            <tr>
+              <th>SL No</th>
+              <th>Name of product <span class="red-font">*</span></th>
+              <th>Production Capacity/Month <span class="red-font">*</span></th>
+              <th>Avg Production / Month <span class="red-font">*</span></th>
+              <th>Unit <span class="red-font">*</span></th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of products.controls; let i = index trackBy: trackByIndex" [formGroupName]="i">
+              <td>{{ i + 1 }}</td>
+
+              <td>
+                <div class="mt-3">
+
+                  <app-ilogi-input fieldLabel="Product" formControlName="product_name" placeholder="Enter"
+                    maxlength="255"></app-ilogi-input>
+                </div>
+              </td>
+
+              <td>
+                <div class="mt-3">
+
+                  <app-ilogi-input fieldLabel="Capacity/Month" formControlName="product_production_capacity_per_month"
+                    placeholder="Enter"></app-ilogi-input>
+                </div>
+              </td>
+
+              <td>
+                <div class="mt-3">
+
+                  <app-ilogi-input fieldLabel="Production/Month" formControlName="product_average_production_per_month"
+                    placeholder="Enter"></app-ilogi-input>
+                </div>
+              </td>
+
+              <td>
+                <app-ilogi-select fieldLabel="Unit" [selectOptions]="unitOptions" placeholder="Select Unit"
+                  formControlName="unit"></app-ilogi-select>
+              </td>
+
+              <td>
+                <div class="mt-3">
+
+                  <button type="button" class="btn btn-danger btn-sm" (click)="removeProduct(i)"
+                    [disabled]="isDeleting">
+                   {{ deletingRowIndex === i ? 'Deleting...' : 'Remove' }}</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr *ngIf="products.length === 0">
+              <td colspan="6">No products added.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="pull-right mt-2 color-666666 clkable" (click)="addProduct()">
+          <i class="fa fa-plus"></i>
+          <span class="add ml-2">ADD NEW</span>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="form-actions ">
+    <button type="button" class="btn btn-primary" (click)="saveAsDraft()">Save As Draft</button>
+    <button type="button" class="btn btn-success" (click)="onSubmit()">Submit</button>
+  </div>
+</div>

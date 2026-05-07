@@ -1,0 +1,193 @@
+<div class="table-header-wrapper">
+  <h2 class="title">
+    <i class="pi pi-users title-icon"></i>
+    Departmental Users
+  </h2>
+  <div class="action-bar department-action-bar" style="z-index:31000;">
+    <div class="filter-box">
+      <div class="w-100">
+      <app-ilogi-input fieldId="search" fieldLabel="Search" placeholder="Search by name or email" [(ngModel)]="filters.search"
+        (ngModelChange)="searchChanged.next($event)">
+      </app-ilogi-input>
+      </div>
+      <div *ngIf="userRole==='admin'" class="mb-20" style="position: relative; z-index: 31005;">
+        <app-ilogi-select fieldId="department_id" fieldLabel="Department" [selectOptions]="departments"
+          placeholder="Select department" appendTo="body" [(ngModel)]="selectedDepartment" (ngModelChange)="filterByDepartment($event)">
+        </app-ilogi-select>
+      </div>
+    </div>
+    <button pButton type="button" icon="pi pi-file-excel" label="Download Excel" class="p-button-success fancy-btn"
+      (click)="confirmExportExcel()">
+    </button>
+    <button *ngIf="userRole === 'admin'" pButton type="button" icon="pi pi-plus" label="Add Departmental User" class="p-button-add fancy-btn"
+      (click)="openDialog()">
+    </button>
+  </div>
+</div>
+<div class="p-4">
+  <p-table [value]="users" [paginator]="true" [totalRecords]="pagination.total" [rows]="pagination.row_count" [rowsPerPageOptions]="rowsPerPageOptions" [loading]="loading" [lazy]="true" 
+    [first]="(pagination.current_page - 1) * pagination.row_count" (onPage)="onPageChange($event)" class="p-datatable-gridlines p-mb-4 animated-table" [responsiveLayout]="'scroll'">
+
+    <ng-template pTemplate="header">
+      <tr class="header-bg-color">
+        <th>
+          <div class="header-wrapper">#</div>
+        </th>
+        <th>
+          <div class="header-wrapper">User ID</div>
+        </th>
+        <!-- <th>
+          <div class="header-wrapper">Enterprise Name</div>
+        </th> -->
+        <th>
+          <div class="header-wrapper">Registered Name</div>
+        </th>
+        <th>
+          <div class="header-wrapper">Email</div>
+        </th>
+        <th>
+          <div class="header-wrapper">Mobile</div>
+        </th>
+        <th>
+          <div class="header-wrapper">User Name</div>
+        </th>
+        <th>
+          <div class="header-wrapper">Hierarchy Level</div>
+        </th>
+        <th>
+          <div class="header-wrapper">District</div>
+        </th>
+        <th>
+          <div class="header-wrapper">Subdivision</div>
+        </th>
+        <th>
+          <div class="header-wrapper">ULB/Block</div>
+        </th>
+        <!-- <th>
+          <div class="header-wrapper">Ward</div>
+        </th> -->
+        <th>
+          <div class="header-wrapper">Department</div>
+        </th>
+        <th>
+          <div class="header-wrapper">Is Inspector</div>
+        </th>
+        <th>
+          <div class="header-wrapper">Status</div>
+        </th>
+        <th>
+          <div class="header-wrapper">Created At</div>
+        </th>
+        <th>
+          <div class="header-wrapper">Updated At</div>
+        </th>
+        <th>
+          <div class="header-wrapper">Created By</div>
+        </th>
+        <th>
+          <div class="header-wrapper">Updated By</div>
+        </th>
+        <th *ngIf="userRole == 'admin' || isStateLevelUser">
+          <div class="header-wrapper">Action</div>
+        </th>
+        <th *ngIf="userRole == 'admin' || isStateLevelUser">
+          <div class="header-wrapper">Login</div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user let-rowIndex="rowIndex">
+      <tr [ngClass]="'table-row-animate'">
+        <td>{{ (pagination.current_page - 1) * pagination.row_count + rowIndex + 1 }}</td>
+        <td>{{ user.id || '----' }}</td>
+        <!-- <td pTooltip="{{ user.name_of_enterprise }}" tooltipPosition="right">
+                  {{ user.name_of_enterprise || '----' }}
+                </td> -->
+        <td pTooltip="{{ user.authorized_person_name }}" tooltipPosition="right">
+          {{ user.authorized_person_name || '----' }}
+        </td>
+        <td pTooltip="{{ user.email_id }}" tooltipPosition="right">
+          {{ user.email_id || '----' }}
+        </td>
+        <td pTooltip="{{ user.mobile_no }}" tooltipPosition="right">
+          {{ user.mobile_no || '----' }}
+        </td>
+        <td pTooltip="{{ user.user_name }}" tooltipPosition="right">
+          {{ user.user_name || '----' }}
+        </td>
+        <td pTooltip="{{ user.hierarchy_level }}" tooltipPosition="right">
+          {{ user.hierarchy_level ? (user.hierarchy_level | titlecase) : '----' }}
+        </td>
+        <td pTooltip="{{ user.district_name }}" tooltipPosition="right" class="large-data-cell col-district">
+          <div class="large-data-content" [innerHTML]="formatListHtml(user.district_name)"></div>
+        </td>
+        
+        <td pTooltip="{{ user.subdivision_name }}" tooltipPosition="right" class="large-data-cell col-subdivision">
+          <div class="large-data-content" [innerHTML]="formatListHtml(user.subdivision_name)"></div>
+        </td>
+        
+        <td pTooltip="{{ user.ulb_name }}" tooltipPosition="right" class="large-data-cell col-ulb">
+          <div class="large-data-content" [innerHTML]="formatListHtml(user.ulb_name)"></div>
+        </td>
+        
+        <!-- <td pTooltip="{{ user.ward_name }}" tooltipPosition="right">
+                  {{ user.ward_name || '----' }}
+                </td> -->
+        <td pTooltip="{{ user.department_name }}" tooltipPosition="right">
+          {{ user.department_name || '----' }}
+        </td>
+        <td pTooltip="{{ user.inspector }}" tooltipPosition="right">
+          {{ user.inspector || 'No' }}
+        </td>
+        <td >
+          <form [formGroup]="userForms[user.id]">
+            <p-toggleswitch [readonly]="userRole === 'admin' ? false : true" [disabled]="userRole === 'admin' ? false : true" formControlName="status" (onChange)="confirmStatusChange($event, user)">
+            </p-toggleswitch>
+          </form>
+        </td>
+        <td pTooltip="{{ user.created_at }}" tooltipPosition="right">
+          {{ ( user.created_at  | date ) || '----' }}
+        </td>
+        <td pTooltip="{{ user.updated_at }}" tooltipPosition="right">
+          {{ ( user.updated_at | date) || '----' }}
+        </td>
+        <td pTooltip="{{ user.created_by }}" tooltipPosition="right">
+          {{ ( user.created_by ) || '----' }}
+        </td>
+        <td pTooltip="{{ user.updated_by }}" tooltipPosition="right">
+          {{ user.updated_by || '----' }}
+        </td>
+        <td *ngIf="userRole=='admin' || isStateLevelUser" class="text-center">
+          <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-sm edit-btn"
+            pTooltip="Edit User" tooltipPosition="left" (click)="editUser(user)">
+            <span class="ml-2 font-medium hidden sm:inline">Edit</span>
+          </button>
+        </td>
+        <td *ngIf="userRole=='admin' || isStateLevelUser" class="text-center">
+          <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-sm edit-btn"
+            pTooltip="Login as User" tooltipPosition="left" (click)="LoginAsDeptUser(user)">
+            <span class="ml-2 font-medium hidden sm:inline">Login</span>
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="14" class="no-data-cell">
+          <div class="no-data-wrapper">
+            <i class="pi pi-inbox no-data-icon"></i>
+            <h3>No Departmental Users Found</h3>
+            <p *ngIf="userRole==='admin'">Please add a new user by clicking <b>"Add Departmental User"</b> button above.</p>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<p-dialog [header]="selectedUser ? 'Edit Departmental User' : 'Register Departmental User'" [(visible)]="displayDialog"
+[modal]="true" [closable]="true" [style]="{width: '55vw'}" [draggable]="false" [resizable]="false" [baseZIndex]="10000" [dismissableMask]="true" [contentStyle]="{'border-radius': '12px'}" (onHide)="closeDialog()" class="custom-dialog">
+ <ng-container *ngIf="displayDialog">
+  <app-registration [sourcePage]="'departmental-users'" [editData]="selectedUser" [editMode]="editMode"(registrationSuccess)="handleRegistrationSuccess()">
+  </app-registration>
+  </ng-container>
+</p-dialog>

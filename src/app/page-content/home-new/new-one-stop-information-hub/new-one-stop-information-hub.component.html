@@ -1,0 +1,26 @@
+<div class="info-hub-container">
+  <header class="header">
+    <h1>One Stop Information Hub</h1>
+    <p>Access comprehensive information about policies, incentives, guidelines, and support resources - all in one centralized location.</p>
+    <div class="search-bar">
+      <input type="text" [(ngModel)]="searchQuery" (input)="filterResources()" placeholder="Search resources..." aria-label="Search resources">
+      <button (click)="clearSearch()">Clear</button>
+    </div>
+  </header>
+
+  <div class="content">
+    <div class="category" *ngFor="let category of filteredResources | keyvalue">
+      <h2>{{ category.key }}</h2>
+      <div class="resource-grid">
+        <div class="resource-card" *ngFor="let resource of category.value">
+          <h3>{{ resource.title }}</h3>
+          <p>{{ resource.description }}</p>
+          <a [href]="resource.link" target="_blank" class="btn">Learn More</a>
+        </div>
+      </div>
+    </div>
+    <div class="no-results" *ngIf="isEmpty(filteredResources)">
+      <p>No resources found for "{{ searchQuery }}".</p>
+    </div>
+  </div>
+</div>

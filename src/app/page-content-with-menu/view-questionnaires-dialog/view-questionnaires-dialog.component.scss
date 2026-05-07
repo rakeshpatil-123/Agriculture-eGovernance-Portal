@@ -1,0 +1,165 @@
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 2px solid #e0e0e0;
+  background: #f8f9fa;
+}
+
+.dialog-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #222;
+  margin: 0;
+}
+
+.close-btn {
+  margin-left: auto;
+  color: #444;
+  transition: transform 0.2s ease;
+}
+
+.close-btn:hover {
+  transform: rotate(90deg);
+  color: #d32f2f;
+}
+
+.heading {
+  color: black !important;
+  font-weight: 900 !important;
+  text-align: center;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  padding-top: 16px !important;
+  align-items: center;
+  gap: 10px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px;
+  color: #777;
+  font-size: 15px;
+}
+
+.empty-icon {
+  font-size: 40px;
+  color: #999;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.custom-table {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+::ng-deep .custom-table .mat-header-row {
+  background: linear-gradient(45deg, #1976d2, #42a5f5);
+  color: #fff;
+  font-size: 14px;
+}
+
+::ng-deep .custom-table .mat-header-cell {
+  font-weight: 700;
+  padding: 12px;
+  text-align: center;
+}
+
+::ng-deep .custom-table .mat-row {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+::ng-deep .custom-table .mat-row:hover {
+  background-color: #f1f5f9;
+  transform: scale(1.01);
+}
+
+::ng-deep .custom-table .mat-cell {
+  padding: 12px;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .dialog-title {
+    font-size: 16px;
+  }
+
+  ::ng-deep .custom-table .mat-header-cell,
+  ::ng-deep .custom-table .mat-cell {
+    font-size: 12px;
+    padding: 8px;
+  }
+}.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: #f9f9fb;
+  border-bottom: 1px solid #e0e0e0;
+
+  .header-left {
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #2c3e50;
+
+      b {
+        color: #1976d2; // Primary color for service name
+      }
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .preview-btn {
+      min-width: 150px;
+    }
+
+    .close-btn {
+      mat-icon {
+        color: #555;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .dialog-header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .header-actions {
+      margin-top: 0.75rem;
+      width: 100%;
+      justify-content: flex-start;
+      gap: 0.5rem;
+
+      .preview-btn {
+        width: auto;
+        flex: 1;
+      }
+    }
+  }
+}

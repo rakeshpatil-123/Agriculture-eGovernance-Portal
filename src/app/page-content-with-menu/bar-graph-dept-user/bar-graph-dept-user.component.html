@@ -1,0 +1,42 @@
+<section class="bar-graph-wrap" role="region" aria-label="Average approval time per service" [@listAnim]="items.length">
+  <header class="bg-header">
+    <div class="head-left">
+      <h3 class="title">Average Approval Time</h3>
+      <div class="subtitle">Per service — displayed in days</div>
+    </div>
+
+    <div class="legend" aria-hidden="true">
+      <div class="legend-pill">
+        <span class="legend-swatch"></span>
+        <span class="legend-text">Average days</span>
+      </div>
+    </div>
+  </header>
+  <div class="bars-list" *ngIf="items?.length; else noData">
+    <ng-container *ngFor="let it of items; let i = index">
+      <div class="bar-row" tabindex="0" role="button"
+        aria-label="{{ it.service_name }}: {{ it.avg_approval_days }} days"
+        (keydown)="onKeyPress($event, $any($event.currentTarget))" [style.transitionDelay]="(it.delayMs ?? (i*80)) + 'ms'">
+        <div class="left">
+          <div class="service-name" [title]="it.service_name">{{ it.service_name }}</div>
+        </div>
+        <div class="right">
+          <div class="bar-outer" aria-hidden="true">
+            <div class="bar-inner">
+              <div #barFill class="bar-fill" [ngClass]="getSeverityClass(it.avg_approval_days)" [attr.data-pct]="it.pct"
+                aria-hidden="true" style="width:0%"></div>
+
+              <div class="bar-shimmer" aria-hidden="true"></div>
+            </div>
+
+            <div #barValue class="bar-value" aria-live="polite">0d</div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <ng-template #noData>
+    <div class="no-data">No approval-time data available.</div>
+  </ng-template>
+</section>
