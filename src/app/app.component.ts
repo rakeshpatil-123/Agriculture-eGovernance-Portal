@@ -37,6 +37,8 @@ import { ChooseDestinationComponent } from "./page-content-with-menu/choose-dest
 import { TestimonialsComponent } from "./page-content-with-menu/testimonials/testimonials.component";
 import { TripuraTourismLicensingComponent } from "./tripura-tourism-licensing/tripura-tourism-licensing.component";
 import { TripuraNocDashboardComponent } from "./tripura-noc-dashboard/tripura-noc-dashboard.component";
+import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
+import { ThemeService } from './_service/theme/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -60,7 +62,8 @@ import { TripuraNocDashboardComponent } from "./tripura-noc-dashboard/tripura-no
     ChooseDestinationComponent,
     TestimonialsComponent,
     TripuraTourismLicensingComponent,
-    TripuraNocDashboardComponent
+    TripuraNocDashboardComponent,
+    ThemeToggleComponent,
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -192,7 +195,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private genericService: GenericService,
     private helpService: HelpService,
     private router : Router,
-    private library: FaIconLibrary
+    private library: FaIconLibrary,
+    private themeService: ThemeService
+
   ) {
     // Add FontAwesome icons to library
     library.addIcons(
@@ -212,6 +217,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.themeService.initTheme();
     this.currentPath = this.router.url;
 
     this.router.events
