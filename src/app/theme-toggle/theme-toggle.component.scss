@@ -1,0 +1,27 @@
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 9px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(11, 78, 162, 0.14);
+  background: linear-gradient(180deg, var(--surface) 0%, var(--surface-soft) 100%);
+  color: var(--text-main);
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-1px);
+    border-color: rgba(11, 78, 162, 0.28);
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(15, 106, 191, 0.16);
+  }
+}
+
+.btn-icon {
+  font-size: 1rem;
+  line-height: 1;
+}

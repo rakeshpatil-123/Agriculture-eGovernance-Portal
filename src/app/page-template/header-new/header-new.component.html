@@ -1,119 +1,100 @@
 <header class="brand-header" role="banner" aria-label="Tripura Tourism header">
-  <div class="brand-inner">
-    <!-- Left: Logo + Title -->
-    <div class="left-block" aria-hidden="false">
-      <a class="logo-link" [routerLink]="['/']" title="Tripura Tourism - Home">
-        <img src="/assets/logo/tripuratourismlogo.png" alt="Tripura Tourism Logo" class="logo" />
+  <a class="skip-link" href="#mainContent">Skip to main content</a>
+
+  <div class="brand-shell">
+    <div class="left-block">
+      <a class="logo-link" [routerLink]="['/']" title="Tripura Tourism Home" aria-label="Tripura Tourism Home">
+        <img src="assets/logo/tripura-agriculture.png" alt="Tripura Tourism Logo" class="logo" />
       </a>
 
       <div class="title-wrap">
-        <div class="site-name-anim">
-          <a [routerLink]="['/']" class="site-name" title="Tripura Tourism Home">Tripura Tourism</a>
+        <div class="title-row">
+          <a [routerLink]="['/']" class="site-name" title="Tripura Tourism Home">
+            Tripura Tourism
+          </a>
+          <span class="gov-badge" aria-hidden="true">Public Portal</span>
         </div>
-        <div class="site-tagline" aria-hidden="true">tripura, where culture meets nature</div>
+
+        <div class="site-tagline" aria-hidden="true">
+          Tripura Agriculture — Cultivating Growth, Empowering Farmers
+        </div>
       </div>
     </div>
 
-    <!-- Right: actions -->
     <div class="action-section" role="navigation" aria-label="Header actions">
       <div class="accessibility-bar" role="group" aria-label="Accessibility tools">
-        <!-- SCREEN READER BUTTON (was a span; now a proper button) -->
         <button
           class="sr-access"
           type="button"
           aria-haspopup="dialog"
           aria-controls="srDialog"
-          aria-expanded="{{ dialogOpen }}"
+          [attr.aria-expanded]="dialogOpen"
           (click)="openSrDialog()">
-          Screen Reader Access
+          <span class="btn-icon" aria-hidden="true">♿</span>
+          <span>Screen Reader</span>
         </button>
+
         <div class="read-controls" role="group" aria-label="Read page controls">
-  <button
-    type="button"
-    class="font-btn"
-    (click)="readPageContent()"
-    [disabled]="reading"
-    aria-pressed="{{ reading }}">
-    Read page
-  </button>
+          <button type="button" class="font-btn" (click)="readPageContent()" [disabled]="reading" [attr.aria-pressed]="reading">
+            Read page
+          </button>
 
-  <button
-    type="button"
-    class="font-btn"
-    (click)="stopReading()"
-    [disabled]="!reading">
-    Stop
-  </button>
+          <button type="button" class="font-btn" (click)="stopReading()" [disabled]="!reading">
+            Stop
+          </button>
 
-  <label class="tts-toggle">
-    <input type="checkbox" [checked]="useBrowserTTS" (change)="useBrowserTTS = !useBrowserTTS" />
-    Browser voice
-  </label>
-</div>
-        <span class="divider">|</span>
+          <label class="tts-toggle">
+            <input type="checkbox" [checked]="useBrowserTTS" (change)="useBrowserTTS = !useBrowserTTS" />
+            <span>Browser voice</span>
+          </label>
+        </div>
+
+        <span class="divider" aria-hidden="true">|</span>
 
         <a href="tel:03812325930" class="helpline" aria-label="Helpline number">
-          0381&nbsp;232&nbsp;5930
+          <span class="btn-icon" aria-hidden="true">☎</span>
+          <span>0381&nbsp;232&nbsp;5930</span>
         </a>
 
-        <span class="divider">|</span>
+        <span class="divider" aria-hidden="true">|</span>
 
         <div class="font-controls" role="group" aria-label="Font size controls">
-          <button
-            type="button"
-            class="font-btn"
-            (click)="increaseFont()"
-            [attr.aria-pressed]="fontSize === 'large'">
-            A+
-          </button>
-
-          <button
-            type="button"
-            class="font-btn"
-            (click)="resetFont()"
-            [class.active]="fontSize === 'normal'"
-            [attr.aria-pressed]="fontSize === 'normal'">
-            A
-          </button>
-
-          <button
-            type="button"
-            class="font-btn"
-            (click)="decreaseFont()"
-            [attr.aria-pressed]="fontSize === 'small'">
-            A-
-          </button>
+          <button type="button" class="font-btn" (click)="increaseFont()" [attr.aria-pressed]="fontSize === 'large'">A+</button>
+          <button type="button" class="font-btn" (click)="resetFont()" [class.active]="fontSize === 'normal'" [attr.aria-pressed]="fontSize === 'normal'">A</button>
+          <button type="button" class="font-btn" (click)="decreaseFont()" [attr.aria-pressed]="fontSize === 'small'">A-</button>
         </div>
       </div>
 
-      <!-- LOGIN / REGISTER (unchanged) -->
+      <app-theme-toggle></app-theme-toggle>
+
       <ng-container *ngIf="!isLoggedIn">
         <button class="action-btn secondary login-btn" aria-label="Login" (click)="navigateToLogin()">
+          <span class="btn-icon" aria-hidden="true">⇢</span>
           <span>Login</span>
         </button>
 
         <button class="action-btn register-btn" aria-label="Register" (click)="navigateToRegister()">
+          <span class="btn-icon" aria-hidden="true">✦</span>
           <span>Register</span>
         </button>
       </ng-container>
 
-      <!-- LOGGED IN --> 
       <ng-container *ngIf="isLoggedIn">
         <a class="action-btn secondary" [routerLink]="['/dashboard/home']" aria-label="Dashboard">
+          <span class="btn-icon" aria-hidden="true">⌂</span>
           <span>Dashboard</span>
         </a>
 
         <button class="action-btn primary logout-btn" aria-label="Logout" (click)="logout()">
+          <span class="btn-icon" aria-hidden="true">⎋</span>
           <span>Logout</span>
         </button>
       </ng-container>
 
-      <!-- Google Translate placeholder -->
       <div id="google_translate_element" class="translate-box" aria-hidden="false"></div>
     </div>
   </div>
 
-  <!-- Screen Reader / Accessibility Dialog -->
   <div
     #srDialog
     id="srDialog"
@@ -123,7 +104,7 @@
     aria-modal="true"
     aria-labelledby="srTitle"
     aria-describedby="srDesc">
-    <div class="sr-dialog" role="document">
+    <div class="sr-dialog" role="document" tabindex="-1">
       <h2 id="srTitle">Accessibility tools</h2>
       <p id="srDesc">Quick tools for screen reader users and font controls.</p>
 
@@ -135,6 +116,7 @@
     </div>
   </div>
 
-  <!-- aria-live region to announce changes for screen readers -->
-  <div class="visually-hidden" aria-live="polite" aria-atomic="true">{{ liveMessage }}</div>
+  <div class="visually-hidden" aria-live="polite" aria-atomic="true">
+    {{ liveMessage }}
+  </div>
 </header>

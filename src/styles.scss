@@ -1059,3 +1059,22 @@ body .p-component .p-select-overlay {
     width: 100%;
   }
 }
+:root {
+  --surface: #ffffff;
+  --surface-soft: #f7fafc;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --primary: #0b4ea2;
+  --accent: #0e9f6e;
+  --gold: #d9a441;
+}
+
+.theme-dark {
+  --surface: #0b1220;
+  --surface-soft: #101a2b;
+  --text-main: #f8fafc;
+  --text-muted: #cbd5e1;
+  --primary: #76a9ff;
+  --accent: #39c98d;
+  --gold: #f2c66d;
+}
