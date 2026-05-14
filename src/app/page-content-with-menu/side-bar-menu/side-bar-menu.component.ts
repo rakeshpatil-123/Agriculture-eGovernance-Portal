@@ -5,12 +5,14 @@ import {
   EventEmitter,
   OnInit,
   OnDestroy,
+  HostBinding,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { GenericService } from '../../_service/generic/generic.service';
 import { HelpService } from '../../_service/help/help.service';
+import { ThemeService } from '../../_service/theme/theme.service';
 
 export interface MenuItem {
   id: string;
@@ -356,7 +358,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private genericService: GenericService,
-    private helpService: HelpService
+    private helpService: HelpService,
+    public themeService: ThemeService
   ) {
     this.currentUserType = localStorage.getItem('userRole') || 'User';
     this.userName = this.genericService.decryptLocalStorageItem('user_name') || 'User';
@@ -373,6 +376,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.blockUser = localStorage.getItem('block') || '';
     this.subDivisionUser = localStorage.getItem('subdivision') || '';
     this.districtUser = localStorage.getItem('district') || '';
+  }
+  @HostBinding('class.theme-dark')
+  get darkMode(): boolean {
+    return this.themeService.isDarkMode;
   }
 
   ngOnInit(): void {

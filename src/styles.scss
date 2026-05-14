@@ -317,6 +317,7 @@ html {
 
   .content-wrapper {
     padding: 1.5rem;
+    margin-top: 2rem !important;
   }
 }
 
@@ -328,6 +329,7 @@ body.sidebar-open {
 @media (max-width: 768px) {
   .main-content .content-wrapper {
     padding: 1rem;
+    margin-top: 2rem !important;
   }
 }
 *,
@@ -1077,4 +1079,10 @@ body .p-component .p-select-overlay {
   --primary: #76a9ff;
   --accent: #39c98d;
   --gold: #f2c66d;
+}
+html.theme-dark,
+body.theme-dark {
+  background: #050b14;
+  color: #e5eefc;
+  color-scheme: dark;
 }
