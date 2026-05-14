@@ -54,7 +54,7 @@ export class MarqueeCardsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.items = [
         {
           id: 'group1',
-          name: 'Tripura Tourism',
+          name: 'Agri Service',
           images: [
             'assets/images/Bashgram.png',
             'assets/images/Durga-Bari.png',

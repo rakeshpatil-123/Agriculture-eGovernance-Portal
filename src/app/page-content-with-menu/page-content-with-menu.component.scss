@@ -1,16 +1,17 @@
 $sidebar-width-expanded: 320px;
 $sidebar-width-collapsed: 70px;
-$top-navbar-height: 40px; 
+$top-navbar-height: 40px;
 $transition-speed: 0.3s;
 $mobile-breakpoint: 1024px;
 
 .page-layout {
   position: relative;
   transition: padding-left $transition-speed ease-in-out;
-  
-  // padding-top: $top-navbar-height;
 
-  
+  // padding-top: $top-navbar-height;
+  margin-top: 5rem !important;
+
+
   padding-left: $sidebar-width-expanded;
 
   &.sidebar-collapsed {
@@ -22,9 +23,10 @@ $mobile-breakpoint: 1024px;
   width: 100%;
   min-height: calc(100vh - #{$top-navbar-height});
   background-color: var(--color-primary, #f8f9fa);
-  
+
   .content-wrapper {
     padding: 1.5rem;
+    margin-top: 2rem !important;
   }
 }
 
@@ -32,12 +34,13 @@ $mobile-breakpoint: 1024px;
 @media (max-width: $mobile-breakpoint) {
   .page-layout {
     padding-left: 0;
-    
+
     &.sidebar-collapsed {
       padding-left: 0;
     }
-    
+
     .content-wrapper {
+      margin-top: 2rem !important;
       padding: 1rem;
     }
   }
@@ -50,7 +53,7 @@ $mobile-breakpoint: 1024px;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999; 
+  z-index: 999;
   animation: fadeIn 0.3s ease;
 }
 

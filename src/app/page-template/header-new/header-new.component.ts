@@ -15,38 +15,45 @@ import { GenericService } from '../../_service/generic/generic.service';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { A11yModule } from '@angular/cdk/a11y';
 import { ThemeToggleComponent } from '../../theme-toggle/theme-toggle.component';
+import { ThemeService } from '../../_service/theme/theme.service';
+
+type ThemeMode = 'light' | 'dark';
+type FontSize = 'small' | 'normal' | 'large';
+
 @Component({
   selector: 'app-header-new',
   standalone: true,
-  imports: [CommonModule, RouterLink, A11yModule, ThemeToggleComponent, ],
+  imports: [CommonModule, RouterLink, A11yModule, ThemeToggleComponent],
   templateUrl: './header-new.component.html',
   styleUrls: ['./header-new.component.scss']
 })
 export class HeaderNewComponent implements OnInit, AfterViewInit, OnDestroy {
-  logoPath = '/assets/images/tripuratourismlogo.png';
+  logoPath = 'assets/logo/tripura-agriculture.png';
+
   isLoggedIn = false;
-  private loginSubscription!: Subscription;
+  private loginSubscription?: Subscription;
 
   reading = false;
   useBrowserTTS = false;
   private readTimeouts: number[] = [];
   private speechUtterance?: SpeechSynthesisUtterance;
 
-  @ViewChild('srDialog') srDialogRef!: ElementRef<HTMLDivElement>;
+  @ViewChild('srDialog') srDialogRef?: ElementRef<HTMLDivElement>;
   dialogOpen = false;
-  previouslyFocused?: Element | null;
+  previouslyFocused?: Element | null = null;
   screenReaderMode = false;
   liveMessage = '';
 
-  fontSize: 'small' | 'normal' | 'large' = 'normal';
+  fontSize: FontSize = 'normal';
+  currentTheme: ThemeMode = 'light';
 
   constructor(
     private genericService: GenericService,
     private cdRef: ChangeDetectorRef,
     private renderer: Renderer2,
-    private hostEl: ElementRef,
     private router: Router,
-    private liveAnnouncer: LiveAnnouncer
+    private liveAnnouncer: LiveAnnouncer,
+    public themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
@@ -57,18 +64,101 @@ export class HeaderNewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isLoggedIn = !!status;
         this.cdRef.detectChanges();
       });
-    } catch (e) {}
-
-    const savedFont = localStorage.getItem('site-font-size');
-    if (savedFont === 'small' || savedFont === 'large' || savedFont === 'normal') {
-      this.fontSize = savedFont;
-    } else {
-      this.fontSize = 'normal';
+    } catch {
+      // no-op
     }
-    this.applyFontSize(this.fontSize, false);
+
+    this.restoreFontSize();
+
+    try {
+      this.themeService.initTheme();
+      this.currentTheme = this.themeService.isDarkMode ? 'dark' : 'light';
+    } catch {
+      this.currentTheme = 'light';
+    }
   }
 
   ngAfterViewInit(): void {}
+
+  ngOnDestroy(): void {
+    this.stopReading();
+
+    if (this.loginSubscription) {
+      this.loginSubscription.unsubscribe();
+    }
+
+    const dialogEl = this.srDialogRef?.nativeElement;
+    if (dialogEl) {
+      dialogEl.removeEventListener('keydown', this.onDialogKeydownBound);
+    }
+
+    document.body.classList.remove('sr-mode');
+  }
+
+  private restoreFontSize(): void {
+    try {
+      const savedFont = localStorage.getItem('site-font-size');
+      if (savedFont === 'small' || savedFont === 'large' || savedFont === 'normal') {
+        this.fontSize = savedFont;
+      } else {
+        this.fontSize = 'normal';
+      }
+
+      this.applyFontSize(this.fontSize, false);
+    } catch {
+      this.fontSize = 'normal';
+      this.applyFontSize('normal', false);
+    }
+  }
+
+  toggleTheme(): void {
+    try {
+      this.themeService.toggleTheme();
+      this.currentTheme = this.themeService.isDarkMode ? 'dark' : 'light';
+
+      this.announce(
+        this.themeService.isDarkMode ? 'Dark mode enabled' : 'Light mode enabled'
+      );
+    } catch {
+      this.currentTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
+      this.applyTheme(this.currentTheme, true);
+    }
+  }
+
+  private applyTheme(theme: ThemeMode, persist = true): void {
+    this.currentTheme = theme;
+
+    const isDark = theme === 'dark';
+    const body = document.body;
+    const root = document.documentElement;
+
+    if (isDark) {
+      this.renderer.addClass(body, 'theme-dark');
+      this.renderer.addClass(root, 'theme-dark');
+    } else {
+      this.renderer.removeClass(body, 'theme-dark');
+      this.renderer.removeClass(root, 'theme-dark');
+    }
+
+    this.renderer.setAttribute(root, 'data-theme', theme);
+
+    if (persist) {
+      try {
+        localStorage.setItem('site-theme', theme);
+      } catch {
+        // no-op
+      }
+
+      this.announce(isDark ? 'Dark mode enabled' : 'Light mode enabled');
+    }
+
+    this.cdRef.detectChanges();
+  }
+
+  toggleBrowserTTS(): void {
+    this.useBrowserTTS = !this.useBrowserTTS;
+    this.announce(this.useBrowserTTS ? 'Browser voice enabled' : 'Browser voice disabled');
+  }
 
   readPageContent(): void {
     if (this.reading) return;
@@ -97,13 +187,17 @@ export class HeaderNewComponent implements OnInit, AfterViewInit, OnDestroy {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
       }
-    } catch (e) {}
+    } catch {
+      // no-op
+    }
 
     this.reading = false;
 
     try {
       this.liveAnnouncer.announce('Stopped reading.', 'polite');
-    } catch (e) {}
+    } catch {
+      // no-op
+    }
   }
 
   private getPageTextToRead(): string {
@@ -114,7 +208,6 @@ export class HeaderNewComponent implements OnInit, AfterViewInit, OnDestroy {
     let text = (source as HTMLElement).innerText || '';
     text = text.replace(/\s{2,}/g, ' ').trim();
 
-    if (text.length === 0) return '';
     return text;
   }
 
@@ -154,7 +247,9 @@ export class HeaderNewComponent implements OnInit, AfterViewInit, OnDestroy {
   private announceWithLiveAnnouncer(chunks: string[]): void {
     try {
       this.liveAnnouncer.announce('Start reading page content.', 'polite');
-    } catch (e) {}
+    } catch {
+      // no-op
+    }
 
     let delay = 400;
     const spacing = 900;
@@ -163,14 +258,18 @@ export class HeaderNewComponent implements OnInit, AfterViewInit, OnDestroy {
       const id = window.setTimeout(() => {
         try {
           this.liveAnnouncer.announce(chunk, 'polite');
-        } catch (e) {}
+        } catch {
+          // no-op
+        }
 
         if (i === chunks.length - 1) {
           const endId = window.setTimeout(() => {
             this.reading = false;
             try {
               this.liveAnnouncer.announce('Finished reading page content.', 'polite');
-            } catch (e) {}
+            } catch {
+              // no-op
+            }
             window.clearTimeout(endId);
           }, 500);
 
@@ -196,7 +295,9 @@ export class HeaderNewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.reading = false;
         try {
           this.liveAnnouncer.announce('Finished reading page content.', 'polite');
-        } catch (e) {}
+        } catch {
+          // no-op
+        }
         return;
       }
 
@@ -211,35 +312,37 @@ export class HeaderNewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     try {
       this.liveAnnouncer.announce('Start reading page content using browser text to speech.', 'polite');
-    } catch (e) {}
+    } catch {
+      // no-op
+    }
 
     speakNext(0);
   }
 
-  ngOnDestroy(): void {
-    this.stopReading();
-
-    if (this.loginSubscription) {
-      this.loginSubscription.unsubscribe();
-    }
-
-    const dialogEl = this.srDialogRef?.nativeElement;
-    if (dialogEl) {
-      dialogEl.removeEventListener('keydown', this.onDialogKeydownBound);
-    }
-  }
-
   checkToken(): void {
-    const token = localStorage.getItem('token');
-    this.isLoggedIn = !!token;
+    try {
+      const token = localStorage.getItem('token');
+      this.isLoggedIn = !!token;
+    } catch {
+      this.isLoggedIn = false;
+    }
   }
 
   logout(): void {
+    this.stopReading();
+
     try {
       this.genericService.logoutUser();
-    } catch (e) {}
+    } catch {
+      // no-op
+    }
 
-    localStorage.removeItem('token');
+    try {
+      localStorage.removeItem('token');
+    } catch {
+      // no-op
+    }
+
     this.isLoggedIn = false;
 
     const redirect = this.getRedirectUrl('/');
@@ -247,19 +350,15 @@ export class HeaderNewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   navigateToLogin(): void {
-    try {
-      (this.router as any).navigateByUrl('/page/login');
-    } catch {
+    void this.router.navigateByUrl('/page/login').catch(() => {
       window.location.href = this.getRedirectUrl('/page/login');
-    }
+    });
   }
 
   navigateToRegister(): void {
-    try {
-      (this.router as any).navigateByUrl('/page/registration');
-    } catch {
+    void this.router.navigateByUrl('/page/registration').catch(() => {
       window.location.href = this.getRedirectUrl('/page/registration');
-    }
+    });
   }
 
   private getRedirectUrl(path: string): string {
@@ -392,10 +491,10 @@ export class HeaderNewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.applyFontSize('small', true);
   }
 
-  applyFontSize(size: 'small' | 'normal' | 'large', persist = true): void {
+  applyFontSize(size: FontSize, persist = true): void {
     this.fontSize = size;
     const docEl = document.documentElement;
-    this.renderer.setStyle(docEl, 'font-size', null);
+    this.renderer.removeStyle(docEl, 'font-size');
 
     let px = '16px';
     if (size === 'small') px = '14px';
@@ -405,7 +504,12 @@ export class HeaderNewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.renderer.setStyle(docEl, 'font-size', px);
 
     if (persist) {
-      localStorage.setItem('site-font-size', size);
+      try {
+        localStorage.setItem('site-font-size', size);
+      } catch {
+        // no-op
+      }
+
       this.announce(
         size === 'small'
           ? 'Font size decreased'

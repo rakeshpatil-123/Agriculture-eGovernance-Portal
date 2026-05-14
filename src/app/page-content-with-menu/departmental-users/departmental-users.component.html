@@ -3,14 +3,14 @@
     <i class="pi pi-users title-icon"></i>
     Departmental Users
   </h2>
-  <div class="action-bar department-action-bar" style="z-index:31000;">
+  <div class="action-bar department-action-bar">
     <div class="filter-box">
       <div class="w-100">
       <app-ilogi-input fieldId="search" fieldLabel="Search" placeholder="Search by name or email" [(ngModel)]="filters.search"
         (ngModelChange)="searchChanged.next($event)">
       </app-ilogi-input>
       </div>
-      <div *ngIf="userRole==='admin'" class="mb-20" style="position: relative; z-index: 31005;">
+      <div *ngIf="userRole==='admin'" class="mb-20" style="position: relative;">
         <app-ilogi-select fieldId="department_id" fieldLabel="Department" [selectOptions]="departments"
           placeholder="Select department" appendTo="body" [(ngModel)]="selectedDepartment" (ngModelChange)="filterByDepartment($event)">
         </app-ilogi-select>
@@ -25,7 +25,7 @@
   </div>
 </div>
 <div class="p-4">
-  <p-table [value]="users" [paginator]="true" [totalRecords]="pagination.total" [rows]="pagination.row_count" [rowsPerPageOptions]="rowsPerPageOptions" [loading]="loading" [lazy]="true" 
+  <p-table [value]="users" [paginator]="true" [totalRecords]="pagination.total" [rows]="pagination.row_count" [rowsPerPageOptions]="rowsPerPageOptions" [loading]="loading" [lazy]="true"
     [first]="(pagination.current_page - 1) * pagination.row_count" (onPage)="onPageChange($event)" class="p-datatable-gridlines p-mb-4 animated-table" [responsiveLayout]="'scroll'">
 
     <ng-template pTemplate="header">
@@ -120,15 +120,15 @@
         <td pTooltip="{{ user.district_name }}" tooltipPosition="right" class="large-data-cell col-district">
           <div class="large-data-content" [innerHTML]="formatListHtml(user.district_name)"></div>
         </td>
-        
+
         <td pTooltip="{{ user.subdivision_name }}" tooltipPosition="right" class="large-data-cell col-subdivision">
           <div class="large-data-content" [innerHTML]="formatListHtml(user.subdivision_name)"></div>
         </td>
-        
+
         <td pTooltip="{{ user.ulb_name }}" tooltipPosition="right" class="large-data-cell col-ulb">
           <div class="large-data-content" [innerHTML]="formatListHtml(user.ulb_name)"></div>
         </td>
-        
+
         <!-- <td pTooltip="{{ user.ward_name }}" tooltipPosition="right">
                   {{ user.ward_name || '----' }}
                 </td> -->
