@@ -1,0 +1,41 @@
+.header {
+  background: linear-gradient(90deg, var(--brand-2), #7b6cf6);
+  color: white;
+  padding: 18px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  .title-area {
+    h2 {
+      margin: 0;
+      font-size: 1.4rem;
+      color: #fff;
+    }
+
+    .subtitle {
+      margin: 4px 0 0;
+      opacity: 0.95;
+      font-size: 0.95rem;
+      color: #e9f0fb;
+    }
+  }
+
+  .refresh-btn {
+    background: white;
+    color: var(--brand-2);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: transform .18s ease, box-shadow .18s;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    }
+  }
+}

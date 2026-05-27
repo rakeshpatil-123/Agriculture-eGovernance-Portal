@@ -4,5 +4,10 @@
   (click)="toggleTheme()"
   [attr.aria-pressed]="themeService.isDarkMode"
   [attr.aria-label]="themeService.isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'">
-  <span class="btn-icon" aria-hidden="true">{{ themeService.isDarkMode ? '☀' : '☾' }}</span>
+  <span class="btn-icon" aria-hidden="true">
+    {{ themeService.isDarkMode ? '☀' : '☾' }}
+  </span>
+  <span class="btn-text">
+    {{ themeService.isDarkMode ? 'Light' : 'Dark' }}
+  </span>
 </button>

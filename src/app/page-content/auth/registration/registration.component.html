@@ -1,7 +1,8 @@
 <div class="swgt-container page-wrapper" [class.dialog-mode]="sourcePage === 'departmental-users'">
-  <video autoplay muted loop playsinline class="bg-video" aria-hidden="true">
+  <!-- <video autoplay muted loop playsinline class="bg-video" aria-hidden="true">
     <source src="assets/videos/tripura-tourism-video.mp4" type="video/mp4" />
-  </video>
+  </video> -->
+  <img class="bg-video" src="assets/images/temple-mid.jpg" />
   <div class="bg-overlay" aria-hidden="true"></div>
     <div class="registration-container">
       <div class="card">
@@ -60,8 +61,8 @@
               <!-- Mobile -->
               <app-ilogi-input fieldId="mobile_no" fieldLabel="Mobile Number" [mandatory]="true"
                 formControlName="mobile_no" placeholder="Enter mobile number" type="text"></app-ilogi-input>
-              <small class="error-text" *ngIf="registrationForm.get('mobile_no')?.touched 
-                       && registrationForm.get('mobile_no')?.invalid 
+              <small class="error-text" *ngIf="registrationForm.get('mobile_no')?.touched
+                       && registrationForm.get('mobile_no')?.invalid
                        && !registrationForm.get('mobile_no')?.hasError('taken')">
                 Please enter a valid 10-digit mobile number.
               </small>

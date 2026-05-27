@@ -4,11 +4,12 @@ import { BehaviorSubject } from 'rxjs';
 export type ThemeMode = 'light' | 'dark';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ThemeService {
   private readonly storageKey = 'site-theme';
   private themeSubject = new BehaviorSubject<ThemeMode>(this.getInitialTheme());
+
   theme$ = this.themeSubject.asObservable();
 
   constructor() {
@@ -46,7 +47,9 @@ export class ThemeService {
       return saved;
     }
 
-    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+    const prefersDark =
+      window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+
     return prefersDark ? 'dark' : 'light';
   }
 
@@ -54,13 +57,8 @@ export class ThemeService {
     const root = document.documentElement;
     const body = document.body;
 
-    if (theme === 'dark') {
-      root.classList.add('theme-dark');
-      body.classList.add('theme-dark');
-    } else {
-      root.classList.remove('theme-dark');
-      body.classList.remove('theme-dark');
-    }
+    root.classList.toggle('theme-dark', theme === 'dark');
+    body.classList.toggle('theme-dark', theme === 'dark');
 
     root.style.colorScheme = theme;
     body.style.colorScheme = theme;

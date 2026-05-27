@@ -209,7 +209,7 @@ export class AppComponent implements OnInit, OnDestroy {
     },
     {
       step: '05',
-      title: 'Download result',
+      title: 'Download NOC',
       description: 'Get approval or certificate.',
       iconSrc: 'https://www.presentations.gov.in/wp-content/uploads/2021/11/plant-growth-plant-growth.png',
       alt: 'Plant growth icon',

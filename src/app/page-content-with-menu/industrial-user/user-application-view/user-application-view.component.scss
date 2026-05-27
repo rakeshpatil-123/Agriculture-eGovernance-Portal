@@ -1,5 +1,5 @@
 .application-view-container {
-  max-width: 1200px;
+  // max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
   background: #ffffff;
@@ -353,7 +353,8 @@
 }
 
 .btn-print{
-  background-color: #003c5b;
+  background-color: #00aaff;
+  color: white !important;
   padding: 6px 8px;
   border-radius: 8px;
   border: none;

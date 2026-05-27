@@ -249,7 +249,7 @@ export class UserProfileComponent implements OnInit {
   private prefillFormOnceOptionsAreReady(): void {
     const tryPatch = () => {
       const userType = this.backendProfile?.user_type;
-      
+
       // For admin users, only check departments; for others, check both
       const departmentsReady = this.departments.length > 0;
       const districtsReady = userType === 'admin' || this.districts.length >= 0;
@@ -1044,8 +1044,8 @@ export class UserProfileComponent implements OnInit {
           this.loadingDistricts = false;
         },
         error: (err: any) => {
-          console.error('Failed to load districts:', err);
-          this.genericService.openSnackBar('Failed to load districts', 'Error');
+          // console.error('Failed to load districts:', err);
+          this.genericService.openSnackBar(err.message || err.error.message || 'Failed to load districts', 'Error');
           this.loadingDistricts = false;
         },
       });
@@ -1311,7 +1311,7 @@ export class UserProfileComponent implements OnInit {
         next: (res: any) => {
           if (res?.status === 1) {
             this.otpVerified = true;
-            this.otpCode = otpInput; 
+            this.otpCode = otpInput;
             this.genericService.openSnackBar(
               'OTP verified successfully!',
               'Success'
@@ -1321,7 +1321,7 @@ export class UserProfileComponent implements OnInit {
               res?.message || 'Invalid OTP',
               'Error'
             );
-            this.otpControl.reset(); 
+            this.otpControl.reset();
           }
         },
         error: (err: any) => {

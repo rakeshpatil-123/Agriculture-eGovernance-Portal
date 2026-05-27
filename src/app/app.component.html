@@ -4,7 +4,11 @@
 <app-new-nav [isLogged]="isLoggedIn"
     *ngIf="currentUrl === '/' || (currentUrl && currentUrl.startsWith('/page'))"></app-new-nav> -->
 
-<section *ngIf="currentUrl === '/'" class="hero">
+<!-- <div class="app-top-actions">
+  <app-theme-toggle></app-theme-toggle>
+</div> -->
+
+<!-- <section *ngIf="currentUrl === '/'" class="hero">
   <div class="hero-overlay"></div>
 
   <div class="container hero-content">
@@ -181,7 +185,7 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 <div>
   <router-outlet></router-outlet>

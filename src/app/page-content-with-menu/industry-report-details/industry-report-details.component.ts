@@ -322,7 +322,7 @@ export class IndustryReportDetailsComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => {
         this.loadingDistricts = false;
-        this.genericService.openSnackBar('Failed to load districts', 'Error');
+        // this.genericService.openSnackBar('Failed to load districts', 'Error');
       }
     });
     return sub;

@@ -109,7 +109,7 @@ export class TripuraTourismLicensingComponent implements OnInit {
         {
           id: 3,
           title: 'Tourist Guide Service Application',
-          subtitle: 'Apply online for Tourist Guide service under the tourism department.',
+          subtitle: 'Apply online for Tourist Guide service under the Agriculture Department.',
           department: 'Tripura Tourism Development Corporation Limited',
           type: 'Special',
           actionLabel: 'Apply as Guide',

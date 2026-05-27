@@ -2,8 +2,11 @@
 <app-loader></app-loader>
 }@else{
 <div class="swgt-container page-card">
-  <div class="page-header">
-    <h1 class="page-head">Application List</h1>
+  <div class="header">
+    <div class="title-area">
+      <h2>Applications List</h2>
+      <p class="subtitle">service &amp; department wise applications</p>
+    </div>
   </div>
 
   <div class="search-filters-container">
@@ -42,14 +45,14 @@
       </div>
 
       <div class="filter-row">
-     <app-ilogi-select 
-  fieldId="serviceName" 
-  fieldLabel="Service" 
-  [(ngModel)]="selectedServiceId" 
+     <app-ilogi-select
+  fieldId="serviceName"
+  fieldLabel="Service"
+  [(ngModel)]="selectedServiceId"
   name="serviceName"
-  [selectOptions]="serviceFilterOptions" 
-  placeholder="Select Service" 
-  [mandatory]="false" 
+  [selectOptions]="serviceFilterOptions"
+  placeholder="Select Service"
+  [mandatory]="false"
   [readonly]="false"
   (ngModelChange)="onSearch()">
 </app-ilogi-select>
@@ -79,7 +82,7 @@
   [showPagination]="true"
   (pageChange)="onPageChange($event)"
    (pageSizeChange)="onPageSizeChange($event)"
-     [pageSize]="serverPagination.pageSize" 
+     [pageSize]="serverPagination.pageSize"
   (rowAction)="onRowAction($event)">
 </app-dynamic-table>
       </ng-container>
