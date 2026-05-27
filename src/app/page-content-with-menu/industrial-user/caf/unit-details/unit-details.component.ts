@@ -100,7 +100,7 @@ interface SubDivisionResponse {
 
 export class UnitDetailsComponent implements OnInit {
 
-  
+
   visibility = {
     showEstateFields: false,
     showUrbanFields: false,
@@ -169,7 +169,7 @@ loadingSubdivisions = false;
 
   constructor(private fb: FormBuilder, private apiService: GenericService) {}
 
-  
+
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -285,7 +285,7 @@ loadingSubdivisions = false;
         }));
         // console.log('Loaded districts:', this.districtOptions);
       } else {
-        this.apiService.openSnackBar('Failed to load districts.', 'error');
+        // this.apiService.openSnackBar('Failed to load districts.', 'error');
       }
     },
     error: (err) => {
@@ -298,7 +298,7 @@ loadingSubdivisions = false;
 
 onDistrictChange(district: string): void {
   // console.log(district, 'batao');
-  
+
   this.form.get('subDivision')?.reset();
   this.subDivisionOptions = [];
   if (!district) return;
@@ -582,7 +582,7 @@ onDistrictChange(district: string): void {
         error: (err: any) => {
           console.error('API Error:', err);
 
-          const errorResponse = err?.error; 
+          const errorResponse = err?.error;
           if (errorResponse?.errors) {
             const allErrors: string[] = [];
 
@@ -596,7 +596,7 @@ onDistrictChange(district: string): void {
             allErrors.forEach((msg, index) => {
               setTimeout(() => {
                 this.apiService.openSnackBar(msg, 'error');
-              }, index * 1200); 
+              }, index * 1200);
             });
           } else {
             this.apiService.openSnackBar(
@@ -616,11 +616,11 @@ onDistrictChange(district: string): void {
 //     }
 //     if (control.errors['pattern']) {
 //       switch (fieldName) {
-//         case 'pinNo':  
+//         case 'pinNo':
 //           return 'Pin must be 6 digits';
-//         case 'contactNo':  
+//         case 'contactNo':
 //           return 'Mobile must be 10 digits';
-//         case 'email':  
+//         case 'email':
 //           return 'Please enter valid email';
 //         default:
 //           return 'Invalid format';
@@ -637,7 +637,7 @@ getFieldLabel(fieldName: string): string {
   const labels: { [key: string]: string } = {
     pinNo: 'Pin',
     email: 'Email',
-    contactNo: 'Mobile',  
+    contactNo: 'Mobile',
   };
   return labels[fieldName] || fieldName;
 }

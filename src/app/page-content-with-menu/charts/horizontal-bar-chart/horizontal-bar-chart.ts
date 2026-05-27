@@ -70,7 +70,14 @@ export class HorizontalBarChartComponent implements OnChanges {
         toolbar: { show: true },
         animations: { enabled: true }
       },
-      colors: ['#3B82F6'],
+      colors: [
+        '#1B5E20',
+        '#2E7D32',
+        '#388E3C',
+        '#43A047',
+        '#66BB6A',
+        '#81C784'
+      ],
       plotOptions: {
         bar: {
           horizontal: true,

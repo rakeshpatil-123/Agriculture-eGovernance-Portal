@@ -28,7 +28,7 @@ type FontSize = 'small' | 'normal' | 'large';
   styleUrls: ['./header-new.component.scss']
 })
 export class HeaderNewComponent implements OnInit, AfterViewInit, OnDestroy {
-  logoPath = 'assets/logo/tripura-agriculture.png';
+  logoPath = 'assets/logo/National-Emblem.png';
 
   isLoggedIn = false;
   private loginSubscription?: Subscription;

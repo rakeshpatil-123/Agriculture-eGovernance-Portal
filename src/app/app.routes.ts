@@ -1,8 +1,12 @@
 import { Routes } from '@angular/router';
-import { HomeNewComponent } from './page-content/home-new/home-new.component';
 
 export const routes: Routes = [
-    {path: '', component: HomeNewComponent},
+    {
+        path: '',
+        loadComponent: () =>
+            import('./page-content/home-new/home-new.component')
+                .then(m => m.HomeNewComponent)
+    },
     {
         path: 'dashboard',
         loadChildren: () =>

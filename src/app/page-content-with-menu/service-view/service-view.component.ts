@@ -1519,7 +1519,7 @@ private buildPdfDefinition(app: any): any {
       margin: [28, 18, 28, 0],
       stack: [
         { text: 'GOVERNMENT OF TRIPURA', style: 'topGov' },
-        { text: 'TOURISM DEPARTMENT', style: 'dept' },
+        { text: 'Agriculture Department', style: 'dept' },
         { text: 'APPLICATION PRINT / PREVIEW', style: 'title' },
         {
           text: `${serviceName}  |  ${applicationNo}`,

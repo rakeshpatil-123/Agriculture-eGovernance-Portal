@@ -1,198 +1,277 @@
 .summary-cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
   margin-bottom: 2rem;
+  align-items: stretch;
+}
+
+.summary-cards.shrink {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --card-color: #2e7d32;
+  --card-soft: rgba(46, 125, 50, 0.12);
+  --icon-from: #1b5e20;
+  --icon-to: #43a047;
+
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdfb 100%);
+  border: 1px solid #e6efe7;
+  border-radius: 18px;
+  padding: 1.25rem 1.25rem 1rem;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
   position: relative;
   overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  min-height: 165px;
 
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    inset: 0 auto auto 0;
+    width: 100%;
     height: 4px;
     background: var(--card-color);
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform 0.3s ease;
+    transition: transform 0.28s ease;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: -30px;
+    top: -30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 70%);
+    pointer-events: none;
+    opacity: 0.7;
   }
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+    border-color: rgba(46, 125, 50, 0.22);
 
     &::before {
       transform: scaleX(1);
     }
 
     .icon {
-      transform: scale(1.1) rotate(5deg);
-    }
-  }
-  &[data-color="blue"] {
-    --card-color: #1976D2;
-    .icon {
-      background: linear-gradient(135deg, #1976D2 0%, #2196F3 100%);
-    }
-    .card-body .value {
-      color: #1976D2;
+      transform: scale(1.05);
     }
   }
 
-  &[data-color="green"] {
-    --card-color: #4CAF50;
-    .icon {
-      background: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
-    }
-    .card-body .value {
-      color: #4CAF50;
-    }
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
   }
-
-  &[data-color="orange"] {
-    --card-color: #FF9800;
-    .icon {
-      background: linear-gradient(135deg, #FF9800 0%, #FFB74D 100%);
-    }
-    .card-body .value {
-      color: #FF9800;
-    }
-  }
-
-  &[data-color="red"] {
-    --card-color: #F44336;
-    .icon {
-      background: linear-gradient(135deg, #F44336 0%, #E57373 100%);
-    }
-    .card-body .value {
-      color: #F44336;
-    }
-  }
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
 
   .icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 10px;
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--icon-from) 0%, var(--icon-to) 100%);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    transition: transform 0.25s ease;
+
+    .material-symbols-rounded {
+      font-size: 28px;
+      line-height: 1;
+      font-variation-settings:
+        'FILL' 1,
+        'wght' 600,
+        'GRAD' 0,
+        'opsz' 24;
+    }
+  }
+
+  .meta {
+    min-width: 0;
+
+    .title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #20303c;
+      line-height: 1.35;
+      margin-top: 0.1rem;
+    }
+
+    .change {
+      margin-top: 0.35rem;
+      font-size: 0.82rem;
+      color: #6b7280;
+      line-height: 1.35;
+    }
+  }
+
+  .card-body {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    position: relative;
+    z-index: 1;
   }
 
-  .title {
-    font-size: 0.95rem;
-    color: #64748b;
-    font-weight: 500;
-  }
-}
-
-.card-body {
-  position: relative;
   .value {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 0.5rem;
+    font-size: clamp(2rem, 3vw, 2.6rem);
+    font-weight: 800;
     line-height: 1;
+    letter-spacing: -0.03em;
+    color: #1f2937;
   }
 
   .percentage {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 8px;
-    background: rgba(0,0,0,0.06);
+    flex-shrink: 0;
+    align-self: flex-end;
+    border-radius: 999px;
+    padding: 0.42rem 0.8rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border: 1px solid transparent;
+    background: rgba(0, 0, 0, 0.04);
     backdrop-filter: blur(4px);
-    animation: fadeInUp 0.4s ease-in-out;
-    opacity: 0.9;
-  }
-  .percentage.blue {
-    color: #1976D2;
-    box-shadow: 0 0 10px rgba(25, 118, 210, 0.35);
+    white-space: nowrap;
   }
 
-  .percentage.green {
-    color: #4CAF50;
-    box-shadow: 0 0 10px rgba(76, 175, 80, 0.35);
+  &[data-color='forest'] {
+    --card-color: #2e7d32;
+    --card-soft: rgba(46, 125, 50, 0.12);
+    --icon-from: #1b5e20;
+    --icon-to: #43a047;
+
+    .value,
+    .percentage {
+      color: #1b5e20;
+    }
+
+    .percentage {
+      background: rgba(46, 125, 50, 0.1);
+      border-color: rgba(46, 125, 50, 0.18);
+    }
   }
 
-  .percentage.orange {
-    color: #FF9800;
-    box-shadow: 0 0 10px rgba(255, 152, 0, 0.35);
+  &[data-color='success'] {
+    --card-color: #388e3c;
+    --card-soft: rgba(56, 142, 60, 0.12);
+    --icon-from: #2e7d32;
+    --icon-to: #66bb6a;
+
+    .value,
+    .percentage {
+      color: #2e7d32;
+    }
+
+    .percentage {
+      background: rgba(56, 142, 60, 0.1);
+      border-color: rgba(56, 142, 60, 0.18);
+    }
   }
 
-  .percentage.red {
-    color: #F44336;
-    box-shadow: 0 0 10px rgba(244, 67, 54, 0.35);
+  &[data-color='warning'] {
+    --card-color: #c98a00;
+    --card-soft: rgba(201, 138, 0, 0.12);
+    --icon-from: #9a6700;
+    --icon-to: #f0b429;
+
+    .value,
+    .percentage {
+      color: #9a6700;
+    }
+
+    .percentage {
+      background: rgba(201, 138, 0, 0.1);
+      border-color: rgba(201, 138, 0, 0.18);
+    }
+  }
+
+  &[data-color='danger'] {
+    --card-color: #b3261e;
+    --card-soft: rgba(179, 38, 30, 0.12);
+    --icon-from: #8f1d16;
+    --icon-to: #d94b41;
+
+    .value,
+    .percentage {
+      color: #8f1d16;
+    }
+
+    .percentage {
+      background: rgba(179, 38, 30, 0.1);
+      border-color: rgba(179, 38, 30, 0.18);
+    }
   }
 }
 
-@keyframes fadeInUp {
-  from {
-    transform: translateY(8px);
-    opacity: 0;
+@media (max-width: 1200px) {
+  .summary-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.summary-cards.sidebar-collapsed {
-   grid-template-columns: repeat(3, 1fr);
 }
 
 @media (max-width: 768px) {
   .summary-cards {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .card {
+    min-height: auto;
+    padding: 1.1rem;
+  }
+
+  .card .card-body {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .card .percentage {
+    align-self: flex-start;
   }
 }
 
 @media (max-width: 480px) {
   .summary-cards {
-    grid-template-columns: 1fr;
+    gap: 0.9rem;
   }
-  
-  
-  @media (max-width: 480px) {
-    .summary-cards {
-      grid-template-columns: 1fr;
+
+  .card .icon {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+
+    .material-symbols-rounded {
+      font-size: 24px;
     }
   }
-  
-  .summary-cards.shrink {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    transition: all 0.3s ease;
+
+  .card .meta .title {
+    font-size: 0.94rem;
   }
-  
-  .summary-cards.shrink .card {
-    transform: scale(0.95);
-    transition: transform 0.3s ease;
+
+  .card .meta .change {
+    font-size: 0.78rem;
   }
-  
-  .summary-cards:not(.shrink) .card {
-    transform: scale(1);
-  }
+}
+.material-symbols-rounded {
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 500,
+    'GRAD' 0,
+    'opsz' 24;
+
+  font-size: 28px;
+  line-height: 1;
 }

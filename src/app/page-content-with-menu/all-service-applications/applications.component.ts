@@ -472,8 +472,8 @@ private capitalizeFirstLetter(str: string): string {
         this.loadingDistricts = false;
       },
       error: (err: any) => {
-        console.error('Failed to load districts:', err);
-        this.apiService.openSnackBar('Failed to load districts', 'Error');
+        // console.error('Failed to load districts:', err);
+        this.apiService.openSnackBar(err.error.message || err.message || 'Failed to load districts', 'error');
         this.loadingDistricts = false;
       }
     });

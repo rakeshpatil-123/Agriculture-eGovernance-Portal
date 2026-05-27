@@ -1,15 +1,27 @@
 <div class="summary-cards" [class.shrink]="sidebarCollapsed">
   @for (card of cards; track card.title) {
-    <div class="card" [attr.data-color]="card.color">
+    <article class="card" [attr.data-color]="card.color">
       <div class="card-header">
-        <div class="icon">{{ card.icon }}</div>
-        <div class="title">{{ card.title }}</div>
+        <div class="icon" aria-hidden="true">
+          <span class="material-symbols-rounded">{{ card.icon }}</span>
+        </div>
+
+        <div class="meta">
+          <div class="title">{{ card.title }}</div>
+
+          @if (card.change) {
+            <div class="change">{{ card.change }}</div>
+          }
+        </div>
       </div>
+
       <div class="card-body">
         <div class="value">{{ card.value }}</div>
-        <div class="percentage {{ card.color }}">
-      {{ card.percentage.toFixed(2) }}%</div>
+
+        <div class="percentage" [ngClass]="card.color">
+          {{ card.percentage | number:'1.0-2' }}%
+        </div>
       </div>
-    </div>
+    </article>
   }
 </div>

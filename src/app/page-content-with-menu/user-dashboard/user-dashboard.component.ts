@@ -126,31 +126,35 @@ export class UserDashboardComponent implements OnInit {
     private sanitizer: DomSanitizer
   ) {}
 
+  dashboardData: any = null;
+
   ngOnInit(): void {
     this.isLoading = true;
     this.loaderService.showLoader();
+
     this.dashboardService.dashboardData$.subscribe({
       next: (data: any) => {
-        if (data) {
-          this.clarification_required = data.clarification_required || [];
-          this.noc_issued_per_service = data.noc_issued_per_service || [];
-          this.buildClarificationFilterOptions();
-          this.loaderService.hideLoader();
-          this.isLoading = false;
-        } else {
-          this.loaderService.hideLoader();
-          // this.clarification_required = [];
-        }
+        this.dashboardData = data || null;
+
+        this.clarification_required = data?.clarification_required || [];
+        this.noc_issued_per_service = data?.noc_issued_per_service || [];
+        this.buildClarificationFilterOptions();
+
+        this.loaderService.hideLoader();
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error fetching dashboard data', error);
+        this.dashboardData = null;
         this.clarification_required = [];
+        this.noc_issued_per_service = [];
         this.loaderService.hideLoader();
+        this.isLoading = false;
       },
     });
+
     this.unpaidPayments(this.currentPagePending, this.itemsPerPagePending);
   }
-
   formatApplicationDate(isoString: string): string {
     if (!isoString) return 'N/A';
 

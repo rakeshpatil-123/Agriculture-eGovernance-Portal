@@ -23,7 +23,7 @@ export class SummaryCardsComponent implements OnInit {
   cards: SummaryCard[] = [];
   dashboardData: any = null;
 
-  constructor(private dashboardService: DashboardService) {}
+  constructor(private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
     // Subscribe to the shared observable
@@ -46,35 +46,34 @@ export class SummaryCardsComponent implements OnInit {
         {
           title: 'Total Applications',
           value: this.dashboardData.total_applications_for_this_user || 0,
-          icon: 'description',
-          color: 'blue',
-         change:'',
+          icon: 'agriculture',
+          color: 'forest',
+          change: 'All applications'
         },
         {
           title: 'Approved',
           value:
             this.dashboardData.total_count_approved_application_in_user || 0,
-          icon: 'check_circle',
-          color: 'green',
-          change:'',
+          icon: 'verified',
+          color: 'success',
+          change: 'Approved applications'
         },
         {
           title: 'Pending',
           value:
             this.dashboardData.total_count_pending_application_in_user || 0,
-          icon: 'hourglass_empty',
-          color: 'orange',
-          change:''
+          icon: 'pending_actions',
+          color: 'warning',
+          change: 'Pending Applications'
         },
         {
-          title: 'Rejected',
+          title: 'Rejected Applications',
           value:
-              this.dashboardData.total_count_rejected_application_in_user
-             || 0,
-          icon: 'cancel',
-          color: 'red',
-          change:''
-        },
+            this.dashboardData.total_count_rejected_application_in_user || 0,
+          icon: 'highlight_off',
+          color: 'danger',
+          change: 'Rejected Applications'
+        }
       ];
     }
   }

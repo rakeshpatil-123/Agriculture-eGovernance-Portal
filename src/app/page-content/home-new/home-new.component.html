@@ -1,11 +1,198 @@
-<!-- <main >
-    <app-new-slider></app-new-slider>
-    <app-new-notification></app-new-notification>
-    <app-new-quick-access-tools></app-new-quick-access-tools>
-    <app-new-success-storys></app-new-success-storys>
-    <app-key-feature-for-success></app-key-feature-for-success>
-    <app-new-focus-sector></app-new-focus-sector>
-    <app-new-timeline></app-new-timeline>
-    <app-new-performance-analytics></app-new-performance-analytics>
-    <app-user-experience-success-stories></app-user-experience-success-stories>
-</main> -->
+<main class="agri-landing">
+  <section class="hero-slider" aria-label="Agriculture business approval highlights">
+    <div
+      class="hero-slide"
+      *ngFor="let slide of slides; let i = index"
+      [class.hero-slide--active]="i === activeSlide"
+    >
+      <img [src]="slide.image" [alt]="slide.title" />
+      <div class="hero-slide__shade"></div>
+
+      <div class="hero-slide__content">
+        <span class="eyebrow">{{ slide.kicker }}</span>
+        <h1>{{ slide.title }}</h1>
+        <h2>{{ slide.subtitle }}</h2>
+        <p>{{ slide.description }}</p>
+
+        <div class="hero-actions">
+          <button type="button" class="primary-btn" (click)="navigateToLogin()">
+            Apply Now
+          </button>
+          <a class="secondary-btn" href="#approval-process">View Process</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-panel" aria-label="Portal summary">
+      <div class="hero-panel__item" *ngFor="let stat of quickStats">
+        <strong>{{ stat.value }}</strong>
+        <span>{{ stat.label }}</span>
+      </div>
+    </div>
+
+    <div class="hero-controls" aria-label="Slider controls">
+      <button type="button" (click)="previousSlide()" aria-label="Previous slide">
+        &lt;
+      </button>
+      <button type="button" (click)="nextSlide()" aria-label="Next slide">&gt;</button>
+    </div>
+
+    <div class="hero-thumbs" aria-label="Choose slide">
+      <button
+        type="button"
+        *ngFor="let slide of slides; let i = index"
+        [class.hero-thumbs__button--active]="i === activeSlide"
+        (click)="goToSlide(i)"
+        [attr.aria-label]="'Show ' + slide.title"
+      >
+        <img [src]="slide.image" [alt]="slide.kicker" />
+      </button>
+    </div>
+  </section>
+
+  <section class="approval-strip reveal">
+    <div>
+      <span class="eyebrow">Single Window Agriculture Services</span>
+      <h2>Business approvals for agriculture establishments in Tripura</h2>
+    </div>
+    <button type="button" class="primary-btn primary-btn--dark" (click)="navigateToLogin()">
+      Start Application
+    </button>
+  </section>
+
+  <section id="approval-process" class="page-section reveal">
+    <div class="section-heading">
+      <span class="eyebrow">Approval Journey</span>
+      <h2>Simple Step-By-Step Process</h2>
+      <p>Clear stages from registration to final approval.</p>
+    </div>
+
+    <div class="process-grid">
+      <article class="process-card" *ngFor="let step of approvalSteps">
+        <div class="process-card__icon">{{ step.icon }}</div>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.description }}</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="page-section page-section--soft reveal">
+    <div class="split-layout">
+      <div class="split-copy">
+        <span class="eyebrow">Why Use The Portal</span>
+        <h2>Less paperwork. Better visibility. Faster follow-up.</h2>
+        <p>
+          Applicants can apply online, answer clarification requests, pay fees,
+          and track department movement without losing visibility.
+        </p>
+        <button type="button" class="primary-btn" (click)="navigateToLogin()">
+          Login To Continue
+        </button>
+      </div>
+
+      <div class="benefit-grid">
+        <article class="benefit-card" *ngFor="let benefit of benefits">
+          <div class="benefit-card__icon">{{ benefit.icon }}</div>
+          <div>
+            <h3>{{ benefit.title }}</h3>
+            <p>{{ benefit.description }}</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section reveal">
+    <div class="section-heading">
+      <span class="eyebrow">Online Services</span>
+      <h2>Agriculture Approval Categories</h2>
+      <p>Focused services for business establishment and renewal workflows.</p>
+    </div>
+
+    <div class="service-grid">
+      <article class="service-card" *ngFor="let service of services">
+        <div class="service-card__top">
+          <span>{{ service.icon }}</span>
+          <button type="button" (click)="navigateToLogin()" aria-label="Apply">
+            &rarr;
+          </button>
+        </div>
+        <h3>{{ service.title }}</h3>
+        <p>{{ service.description }}</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="page-section track-section reveal">
+    <div class="track-card">
+      <div>
+        <span class="eyebrow">Track And Respond</span>
+        <h2>Know exactly what needs action</h2>
+        <p>Applications, payments, document queries, and approvals stay visible.</p>
+      </div>
+
+      <div class="status-board" aria-label="Application status example">
+        <div class="status-board__row">
+          <span>Application submitted</span>
+          <strong>Done</strong>
+        </div>
+        <div class="status-board__row">
+          <span>Department verification</span>
+          <strong>In Review</strong>
+        </div>
+        <div class="status-board__row">
+          <span>Clarification response</span>
+          <strong>Online</strong>
+        </div>
+        <div class="status-board__row">
+          <span>Final approval certificate</span>
+          <strong>Download</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta reveal">
+    <span class="eyebrow">Ready To Apply</span>
+    <h2>Start your agriculture business approval online.</h2>
+    <p>Use one digital portal for application, payment, tracking, and approval.</p>
+    <button type="button" class="primary-btn" (click)="navigateToLogin()">
+      Start Application
+    </button>
+  </section>
+
+  <section class="partner-links reveal" aria-label="Important government links">
+    <div class="partner-links__heading">
+      <span class="eyebrow">Important Links</span>
+      <h2>Connected Digital Governance Platforms</h2>
+    </div>
+
+    <div class="partner-marquee">
+      <div class="partner-marquee__track">
+        <ng-container *ngFor="let row of partnerLinkRows">
+          <a
+            class="partner-card"
+            *ngFor="let partner of row"
+            [href]="partner.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.aria-label]="'Open ' + partner.name"
+          >
+            <span class="partner-card__logo">
+              <img
+                *ngIf="partner.image; else textLogo"
+                [src]="partner.image"
+                [alt]="partner.name"
+                loading="lazy"
+              />
+              <ng-template #textLogo>
+                <strong>{{ partner.shortName }}</strong>
+              </ng-template>
+            </span>
+            <span class="partner-card__name">{{ partner.name }}</span>
+          </a>
+        </ng-container>
+      </div>
+    </div>
+  </section>
+</main>

@@ -20,6 +20,7 @@ import Swal from 'sweetalert2';
 export class GenericService {
 
   //ng build --configuration production --base-href /onlineservice/ --deploy-url /onlineservice/
+  //ng build --configuration production --base-href /agricultureservice/ --deploy-url /agricultureservice/
  //command for build with base href and deploy url
 
 // <<<<<<< changes-for-landing-page
@@ -38,17 +39,17 @@ export class GenericService {
 //   static PRODUCTION_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
 // =======
   // Development / Staging and Production URLs
-  // static DEV_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
-  // static QA_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
-  // static UAT_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
-  // static CERTIN_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
-  // static PRODUCTION_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
-  // Development / Staging and Production URLs
   static DEV_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
   static QA_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
   static UAT_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
   static CERTIN_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
   static PRODUCTION_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
+  // Development / Staging and Production URLs
+  // static DEV_BACKEND_URL = 'http://agriculturebackend.tripura.cloud';
+  // static QA_BACKEND_URL = 'http://agriculturebackend.tripura.cloud';
+  // static UAT_BACKEND_URL = 'http://agriculturebackend.tripura.cloud';
+  // static CERTIN_BACKEND_URL = 'http://agriculturebackend.tripura.cloud';
+  // static PRODUCTION_BACKEND_URL = 'http://agriculturebackend.tripura.cloud';
 
 
   public static BACKEND_URL(): string {
