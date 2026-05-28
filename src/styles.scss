@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use "@angular/material" as mat;
 @use "../theme-colors" as theme-colors;
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
@@ -28,6 +29,43 @@
       // Consistent row height
     )
   );
+$ms-border: #d7d7d7;
+$ms-border: #d7d7d7;
+$ms-placeholder: #9a9a9a;
+$ms-radius: 6px;
+$ms-font-size: 0.85rem;
+
+
+:root {
+  --select-bg: #ffffff;
+  --select-text: #000000;
+  --select-overlay-bg: #ffffff;
+  --select-overlay-text: #000000;
+  --select-overlay-border: #d7d7d7;
+
+  --select-option-bg: #ffffff;
+  --select-option-text: #000000;
+  --select-option-hover-bg: #f0f0f0;
+  --select-option-hover-text: #000000;
+  --select-option-selected-bg: #000000;
+  --select-option-selected-text: #ffffff;
+}
+
+body.theme-dark {
+  --select-bg: #000000;
+  --select-text: #ffffff;
+  --select-overlay-bg: #000000;
+  --select-overlay-text: #ffffff;
+  --select-overlay-border: #333333;
+
+  --select-option-bg: #000000;
+  --select-option-text: #ffffff;
+  --select-option-hover-bg: #222222;
+  --select-option-hover-text: #ffffff;
+  --select-option-selected-bg: #000000;
+  --select-option-selected-text: #ffffff;
+}
+
 
   /* Main Theme Colors - 5 Colors Only */
   --color-primary: hsl(199, 56, 199); /* #fefae0 */
@@ -568,106 +606,101 @@ body.sidebar-open {
 }
 
 :host {
-  ::ng-deep .p-select {
-    background-color: #ffffff !important;
-    color: #000000 !important;
-    border-color: #c9d2da !important;
-    transition: background-color 0.3s ease, color 0.3s ease;
+  ::ng-deep .p-select-overlay,
+  ::ng-deep .p-select-panel,
+  ::ng-deep .p-select-list,
+  ::ng-deep .p-multiselect-panel,
+  ::ng-deep .p-multiselect-overlay {
+    background-color: var(--select-overlay-bg) !important;
+    color: var(--select-overlay-text) !important;
+    border: 1px solid var(--select-overlay-border) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
   }
 
-  ::ng-deep .p-select-label {
-    background-color: #ffffff !important;
-    color: #000000 !important;
-  }
-
-  ::ng-deep .p-select-overlay {
-    background-color: #ffffff !important;
-    color: #000000 !important;
-    border: 1px solid #c9d2da !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-  }
-
-  ::ng-deep .p-select-list {
-    background-color: #ffffff !important;
-    color: #000000 !important;
-  }
-
-  ::ng-deep .p-select-option {
-    background-color: #ffffff !important;
-    color: #000000 !important;
+  ::ng-deep .p-select-option,
+  ::ng-deep .p-select-item,
+  ::ng-deep .p-multiselect-option,
+  ::ng-deep .p-multiselect-item {
+    background-color: var(--select-option-bg) !important;
+    color: var(--select-option-text) !important;
     transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  ::ng-deep .p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
-    background-color: #f0f0f0 !important;
-    color: #000000 !important;
-  }
-
-  ::ng-deep .p-select-option.p-select-option-selected {
-    background-color: #eaeaea !important;
-    color: #000000 !important;
+  ::ng-deep .p-select-option:hover,
+  ::ng-deep .p-select-option.p-focus,
+  ::ng-deep .p-select-option.p-select-option-selected,
+  ::ng-deep .p-select-option.p-select-option-selected.p-focus,
+  ::ng-deep .p-select-item:hover,
+  ::ng-deep .p-select-item.p-highlight,
+  ::ng-deep .p-multiselect-option:hover,
+  ::ng-deep .p-multiselect-option.p-multiselect-option-selected,
+  ::ng-deep .p-multiselect-item:hover,
+  ::ng-deep .p-multiselect-item.p-highlight {
+    background-color: var(--select-option-active-bg) !important;
+    color: var(--select-option-active-text) !important;
+    box-shadow: none !important;
   }
 }
-
-.p-select {
-  background-color: #ffffff !important;
-  color: #000000 !important;
-  border-color: #c9d2da !important;
-}
-
 .p-select-label {
-  background-color: #ffffff !important;
+  padding: 4px 8px;
+  font-size: 0.8rem;
   color: #000000 !important;
 }
 
-.p-select-overlay {
-  background-color: #ffffff !important;
+.p-multiselect .p-multiselect-label,
+.p-select .p-select-label {
   color: #000000 !important;
-  border: 1px solid #c9d2da !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  font-size: 0.82rem !important;
+}
+:root {
+  --select-list-bg: #000000;
+  --select-list-text: #ffffff;
 }
 
-.p-select-list {
-  background-color: #ffffff !important;
-  color: #000000 !important;
+.theme-dark,
+html.theme-dark,
+body.theme-dark {
+  --select-list-bg: #000000;
+  --select-list-text: #ffffff;
 }
 
-.p-select-option {
-  background-color: #ffffff !important;
-  color: #000000 !important;
-  transition: background-color 0.2s ease, color 0.2s ease;
+:host ::ng-deep .p-select-overlay,
+:host ::ng-deep .p-select-panel,
+:host ::ng-deep .p-select-list {
+  background-color: var(--select-list-bg) !important;
+  color: var(--select-list-text) !important;
 }
 
-.p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
-  background-color: #f5f5f5 !important;
-  color: #000000 !important;
+
+:host ::ng-deep .p-select-list,
+:host ::ng-deep .p-select-panel,
+:host ::ng-deep .p-select-overlay {
+  background-color: var(--select-overlay-bg) !important;
+  color: var(--select-text) !important;
 }
 
-.p-select-option.p-select-option-selected {
-  background-color: #eaeaea !important;
-  color: #000000 !important;
+:host ::ng-deep .p-select-option,
+:host ::ng-deep .p-select-item,
+:host ::ng-deep .p-multiselect-option,
+:host ::ng-deep .p-multiselect-item {
+  background: var(--select-option-bg) !important;
+  color: var(--select-option-text) !important;
+  padding: 10px 12px !important;
+  transition: none !important;
 }
 
-.p-datatable-filter-constraint:not(.p-datatable-filter-constraint-selected):not(.p-disabled):hover {
-  background-color: #ffffff !important;
-  color: #000000 !important;
+:host ::ng-deep .p-select-option:hover,
+:host ::ng-deep .p-select-item:hover,
+:host ::ng-deep .p-multiselect-option:hover,
+:host ::ng-deep .p-multiselect-item:hover,
+:host ::ng-deep .p-select-option.p-select-option-selected,
+:host ::ng-deep .p-select-item.p-highlight,
+:host ::ng-deep .p-multiselect-option.p-multiselect-option-selected,
+:host ::ng-deep .p-multiselect-item.p-highlight {
+  background: var(--select-option-selected-bg) !important;
+  color: var(--select-option-selected-text) !important;
+  box-shadow: none !important;
 }
-
-.p-multiselect-option:not(.p-multiselect-option-selected):not(.p-disabled).p-focus {
-  background-color: #ffffff !important;
-  color: #000000 !important;
-}
-
-.p-multiselect-label.p-placeholder {
-  color: #000000 !important;
-}
-
-.p-multiselect-dropdown {
-  background-color: #ffffff !important;
-  color: #000000 !important;
-  border-color: #c9d2da !important;
-}
-
 .my-activity-table {
   ::ng-deep .p-datatable-filter-constraint {
     background-color: #ffffff !important;
@@ -820,9 +853,15 @@ body.sidebar-open {
 :host ::ng-deep .p-select-label {
   padding: 4px 8px;
   font-size: 0.8rem;
-  color: #3b3b3b;
+  background-color: var(--select-bg, #ffffff) !important;
+  color: var(--select-text, #000000) !important;
 }
 
+:host-context(.theme-dark) ::ng-deep .p-select-label,
+body.theme-dark :host ::ng-deep .p-select-label {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
 :host ::ng-deep .p-select-label.p-placeholder {
   font-size: 0.75rem;
   color: #999;
@@ -835,125 +874,66 @@ body.sidebar-open {
   box-shadow: none;
 
 }
-
-:host ::ng-deep .p-select-panel {
-  background-color: transparent !important;
-  color: #3b3b3b;
-  border: 1px solid #b8b8b8;
-
-}
-
-:host ::ng-deep .p-select-filter {
-  background-color: #fff !important;
-  color: #3b3b3b;
-  border: 1px solid #b8b8b8;
-  font-size: 0.8rem;
-  height: 28px;
-}
-
-:host ::ng-deep .p-select-empty-message {
-  color: #666 !important;
-  background-color: #fff;
-  font-size: 0.8rem;
-}
-
-:host ::ng-deep .ng-star-inserted .p-select-option {
-  font-size: 0.8rem;
-  color: #000;
-
-}
-
-:host ::ng-deep .p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
-  background-color: #003c5b !important;
-}
-
-:host ::ng-deep .ng-star-inserted li:hover,
-:host ::ng-deep .ng-star-inserted li span:hover {
-  background-color: #003c5b !important;
-  color: #fff !important;
-}
-
-:host ::ng-deep .p-select-item.p-highlight {
-  background-color: #003c5b !important;
-  color: #fff !important;
-}
-
 :host ::ng-deep .p-select-panel,
-:host ::ng-deep .p-select-items-wrapper {
-  background-color: #fff !important;
+:host ::ng-deep .p-select-overlay,
+:host ::ng-deep .p-select-list,
+:host ::ng-deep .p-select-items-wrapper,
+:host ::ng-deep .p-multiselect-panel,
+:host ::ng-deep .p-multiselect-overlay,
+:host ::ng-deep .p-multiselect-items-wrapper,
+:host ::ng-deep .p-multiselect-list {
+  background-color: var(--select-overlay-bg) !important;
+  color: var(--select-overlay-text) !important;
+  border: 1px solid var(--select-overlay-border) !important;
 }
 
-:host ::ng-deep .p-select-overlay {
-  background-color: #fff !important;
-  border: 1px solid #b8b8b8;
+:host ::ng-deep .p-select-option,
+:host ::ng-deep .p-select-item,
+:host ::ng-deep .p-multiselect-option,
+:host ::ng-deep .p-multiselect-item {
+  background-color: var(--select-option-bg) !important;
+  color: var(--select-option-text) !important;
+  font-size: 0.8rem;
 }
 
-:host ::ng-deep .p-select-item.p-highlight {
-  background-color: #003c5b !important;
-  color: #fff !important;
-}
-
-
-:host ::ng-deep .p-floatlabel.p-floatlabel-on label {
-  background-color: #fff !important;
-  font-size: 0.75rem;
-}
-
-label {
-  font-size: 0.75rem;
-  color: #003c5b;
-
-}
-
-.required-indicator {
-  color: var(--color-poppy-red, #dc3545);
-  margin-left: 0.25rem;
-}
-
-$ms-border: #d7d7d7;
-$ms-placeholder: #9a9a9a;
-$ms-radius: 6px;
-$ms-font-size: 0.85rem;
-
-.p-component .p-multiselect,
-.p-component .p-select {
-  width: 100% !important;
-  background-color: #ffffff !important;
-  color: #000000 !important;
-  border: 1px solid $ms-border !important;
-  border-radius: $ms-radius !important;
-  font-size: $ms-font-size !important;
+:host ::ng-deep .p-select-option:hover,
+:host ::ng-deep .p-select-option.p-focus,
+:host ::ng-deep .p-select-item:hover,
+:host ::ng-deep .p-select-item.p-highlight,
+:host ::ng-deep .p-multiselect-option:hover,
+:host ::ng-deep .p-multiselect-option.p-multiselect-option-selected,
+:host ::ng-deep .p-multiselect-item:hover,
+:host ::ng-deep .p-multiselect-item.p-highlight {
+  background-color: var(--select-option-hover-bg) !important;
+  color: var(--select-option-hover-text) !important;
   box-shadow: none !important;
-  padding: 6px 8px !important;
-  min-height: 40px !important;
 }
 
-.p-multiselect .p-multiselect-label,
-.p-select .p-select-label {
-  color: #000 !important;
-  font-size: 0.82rem !important;
-}
-
-.p-multiselect .p-multiselect-label.p-placeholder,
-.p-select .p-select-label.p-placeholder {
-  color: $ms-placeholder !important;
-  font-weight: 500 !important;
-  font-size: 0.78rem !important;
-}
-
-.p-multiselect .p-multiselect-token {
-  background: #ffffff !important;
-  color: #000 !important;
-  border: 1px solid $ms-border !important;
-  padding: 2px 6px !important;
-  border-radius: 4px !important;
-  margin-right: 6px !important;
+:host ::ng-deep .p-select-option.p-select-option-selected,
+:host ::ng-deep .p-select-option.p-select-option-selected.p-focus,
+:host ::ng-deep .p-multiselect-option.p-multiselect-option-selected,
+:host ::ng-deep .p-multiselect-item.p-highlight {
+  background-color: var(--select-option-selected-bg) !important;
+  color: var(--select-option-selected-text) !important;
   box-shadow: none !important;
+}
+
+:host ::ng-deep .p-select-filter,
+:host ::ng-deep .p-multiselect .p-multiselect-filter {
+  background-color: var(--select-bg) !important;
+  color: var(--select-text) !important;
+  border: 1px solid var(--select-overlay-border) !important;
+}
+
+:host ::ng-deep .p-select-empty-message,
+:host ::ng-deep .p-multiselect .p-multiselect-empty-message {
+  background-color: var(--select-overlay-bg) !important;
+  color: var(--select-text) !important;
 }
 
 .p-checkbox-box {
   background: #ffffff !important;
-  border: 1px solid $ms-border !important;
+  border: 1px solid #dddddd !important;
   box-shadow: none !important;
 }
 
@@ -969,6 +949,12 @@ $ms-font-size: 0.85rem;
 .p-checkbox-box.p-highlight .p-checkbox-icon {
   color: #000 !important;
 }
+
+$ms-border: #d7d7d7;
+$ms-placeholder: #9a9a9a;
+$ms-radius: 6px;
+$ms-font-size: 0.85rem;
+
 
 .p-multiselect-panel,
 .p-multiselect-overlay,
@@ -995,17 +981,42 @@ $ms-font-size: 0.85rem;
   transition: none !important;
 }
 
-.p-multiselect-item:hover,
-.p-multiselect-option:hover,
-.p-select-item:hover,
-.p-select-option:hover,
-.p-multiselect-item.p-highlight,
-.p-multiselect-option.p-multiselect-option-selected,
-.p-select-item.p-highlight,
-.p-select-option.p-select-option-selected {
-  background: #ffffff !important;
-  color: #000 !important;
-  box-shadow: none !important;
+:host {
+  ::ng-deep .p-select-overlay,
+  ::ng-deep .p-select-panel,
+  ::ng-deep .p-select-list,
+  ::ng-deep .p-multiselect-panel,
+  ::ng-deep .p-multiselect-overlay {
+    background: var(--select-overlay-bg) !important;
+    color: var(--select-overlay-text) !important;
+    border: 1px solid var(--select-overlay-border) !important;
+  }
+
+  ::ng-deep .p-select-option,
+  ::ng-deep .p-select-item,
+  ::ng-deep .p-multiselect-option,
+  ::ng-deep .p-multiselect-item {
+    background: var(--select-option-bg) !important;
+    color: var(--select-option-text) !important;
+  }
+
+  ::ng-deep .p-select-option:hover,
+  ::ng-deep .p-select-option.p-focus,
+  ::ng-deep .p-select-item:hover,
+  ::ng-deep .p-select-item.p-highlight,
+  ::ng-deep .p-multiselect-option:hover,
+  ::ng-deep .p-multiselect-item:hover {
+    background: var(--select-option-hover-bg) !important;
+    color: var(--select-option-hover-text) !important;
+  }
+
+  ::ng-deep .p-select-option.p-select-option-selected,
+  ::ng-deep .p-select-option.p-select-option-selected.p-focus,
+  ::ng-deep .p-multiselect-option.p-multiselect-option-selected,
+  ::ng-deep .p-multiselect-item.p-highlight {
+    background: var(--select-option-selected-bg) !important;
+    color: var(--select-option-selected-text) !important;
+  }
 }
 
 .p-multiselect .p-multiselect-filter,
@@ -1158,4 +1169,160 @@ textarea,
 select {
   transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease,
     box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+/* =========================================
+   GLOBAL SNACKBAR STYLES
+========================================= */
+
+.snack-bar-global {
+  margin-top: 18px !important;
+
+  .mdc-snackbar__surface {
+    min-width: 320px !important;
+    max-width: 520px !important;
+
+    padding: 0 !important;
+    overflow: hidden;
+
+    border-radius: 18px !important;
+
+    backdrop-filter: blur(14px);
+
+    box-shadow:
+      0 14px 40px rgba(15, 23, 42, 0.18),
+      0 4px 12px rgba(15, 23, 42, 0.1) !important;
+
+    animation: snackbarSlideDown 0.35s ease;
+  }
+
+  .mat-mdc-snack-bar-label {
+    padding: 16px 18px !important;
+
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.5;
+
+    letter-spacing: 0.02em;
+  }
+
+  .mat-mdc-snack-bar-action {
+    margin-right: 12px !important;
+
+    .mdc-button__label {
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+  }
+}
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+.snack-bar-success {
+  .mdc-snackbar__surface {
+    background:
+      linear-gradient(
+        135deg,
+        rgba(15, 118, 110, 0.96),
+        rgba(20, 184, 166, 0.92)
+      ) !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .mat-mdc-snack-bar-label {
+    color: #ffffff !important;
+  }
+
+  .mat-mdc-snack-bar-action {
+    color: #ccfbf1 !important;
+  }
+}
+
+/* =========================================
+   ERROR
+========================================= */
+
+.snack-bar-error {
+  .mdc-snackbar__surface {
+    background:
+      linear-gradient(
+        135deg,
+        rgba(185, 28, 28, 0.96),
+        rgba(239, 68, 68, 0.92)
+      ) !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .mat-mdc-snack-bar-label {
+    color: #ffffff !important;
+  }
+
+  .mat-mdc-snack-bar-action {
+    color: #fee2e2 !important;
+  }
+}
+
+/* =========================================
+   INFO
+========================================= */
+
+.snack-bar-info {
+  .mdc-snackbar__surface {
+    background:
+      linear-gradient(
+        135deg,
+        rgba(30, 64, 175, 0.96),
+        rgba(59, 130, 246, 0.92)
+      ) !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .mat-mdc-snack-bar-label {
+    color: #ffffff !important;
+  }
+
+  .mat-mdc-snack-bar-action {
+    color: #dbeafe !important;
+  }
+}
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes snackbarSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-18px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+  .snack-bar-global {
+    .mdc-snackbar__surface {
+      min-width: unset !important;
+      width: calc(100vw - 24px) !important;
+
+      border-radius: 16px !important;
+    }
+
+    .mat-mdc-snack-bar-label {
+      font-size: 0.9rem;
+      padding: 14px 16px !important;
+    }
+  }
 }

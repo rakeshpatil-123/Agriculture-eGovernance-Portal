@@ -239,6 +239,7 @@ export class BusinessUsersComponent implements OnInit {
             localStorage.setItem('subdivision', d.subdivision ?? '');
             localStorage.setItem('ulb', d.ulb ?? '');
             localStorage.setItem('ward', d.ward ?? '');
+            localStorage.setItem('site-theme', 'light');
           } catch (e) {
             console.warn('Setting plain localStorage items failed', e);
           }
