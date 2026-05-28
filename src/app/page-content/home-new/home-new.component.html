@@ -1,22 +1,49 @@
 <main class="agri-landing">
-  <section class="hero-slider" aria-label="Agriculture business approval highlights">
+  <section
+    class="hero-slider"
+    aria-label="Agriculture business approval highlights"
+    (mouseenter)="pauseSlider()"
+    (mouseleave)="startSlider()"
+  >
     <div
       class="hero-slide"
       *ngFor="let slide of slides; let i = index"
       [class.hero-slide--active]="i === activeSlide"
     >
-      <img [src]="slide.image" [alt]="slide.title" />
+      <img
+        *ngIf="shouldLoadSlide(i)"
+        [src]="slide.image"
+        [alt]="slide.title"
+        [attr.loading]="i === activeSlide ? 'eager' : 'lazy'"
+        [attr.fetchpriority]="i === activeSlide ? 'high' : 'low'"
+        decoding="async"
+      />
       <div class="hero-slide__shade"></div>
 
       <div class="hero-slide__content">
         <span class="eyebrow">{{ slide.kicker }}</span>
-        <h1>{{ slide.title }}</h1>
-        <h2>{{ slide.subtitle }}</h2>
+        <h2>
+          <span
+            class="typewriter--title"
+            [class.typewriter--done]="i === activeSlide && titleTypedDone"
+          >
+            {{ i === activeSlide ? typedTitle : slide.title }}
+          </span>
+        </h2>
+        <h3>
+          <span
+            class="typewriter typewriter--subtitle"
+            [class.typewriter--done]="i === activeSlide && subtitleTypedDone"
+          >
+            {{ i === activeSlide ? typedSubtitle : slide.subtitle }}
+          </span>
+        </h3>
         <p>{{ slide.description }}</p>
 
         <div class="hero-actions">
           <button type="button" class="primary-btn" (click)="navigateToLogin()">
-            Apply Now
+            <span>Apply Now</span>
+            <!-- <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> -->
           </button>
           <a class="secondary-btn" href="#approval-process">View Process</a>
         </div>
@@ -31,52 +58,95 @@
     </div>
 
     <div class="hero-controls" aria-label="Slider controls">
-      <button type="button" (click)="previousSlide()" aria-label="Previous slide">
-        &lt;
+      <button
+        type="button"
+        class="hero-control hero-control--prev"
+        (click)="previousSlide()"
+        aria-label="Previous slide"
+      >
+        <span class="hero-control__icon" aria-hidden="true"></span>
       </button>
-      <button type="button" (click)="nextSlide()" aria-label="Next slide">&gt;</button>
+      <button
+        type="button"
+        class="hero-control hero-control--next"
+        (click)="nextSlide()"
+        aria-label="Next slide"
+      >
+        <span class="hero-control__icon" aria-hidden="true"></span>
+      </button>
     </div>
 
-    <div class="hero-thumbs" aria-label="Choose slide">
+    <div class="hero-dots" aria-label="Choose slide">
       <button
         type="button"
         *ngFor="let slide of slides; let i = index"
-        [class.hero-thumbs__button--active]="i === activeSlide"
+        [class.hero-dots__button--active]="i === activeSlide"
         (click)="goToSlide(i)"
         [attr.aria-label]="'Show ' + slide.title"
-      >
-        <img [src]="slide.image" [alt]="slide.kicker" />
-      </button>
+      ></button>
+    </div>
+
+    <div class="hero-progress" aria-hidden="true">
+      <span [style.animation-duration.ms]="slideProgressDelay"></span>
     </div>
   </section>
 
-  <section class="approval-strip reveal">
+  <section class="approval-strip scroll-reveal">
     <div>
       <span class="eyebrow">Single Window Agriculture Services</span>
-      <h2>Business approvals for agriculture establishments in Tripura</h2>
+      <h3>Business approvals for establishments in Tripura</h3>
     </div>
     <button type="button" class="primary-btn primary-btn--dark" (click)="navigateToLogin()">
       Start Application
     </button>
   </section>
 
-  <section id="approval-process" class="page-section reveal">
+  <section id="approval-process" class="page-section scroll-reveal">
     <div class="section-heading">
       <span class="eyebrow">Approval Journey</span>
-      <h2>Simple Step-By-Step Process</h2>
-      <p>Clear stages from registration to final approval.</p>
+      <h2 style="color: white;">Simple Step-By-Step Process</h2>
+      <p style="color: white;">Clear stages from registration to final approval.</p>
     </div>
 
     <div class="process-grid">
-      <article class="process-card" *ngFor="let step of approvalSteps">
+      <article
+        class="process-card"
+        *ngFor="let step of approvalSteps; let i = index"
+        [style.--reveal-delay.ms]="i * 90"
+      >
         <div class="process-card__icon">{{ step.icon }}</div>
         <h3>{{ step.title }}</h3>
         <p>{{ step.description }}</p>
       </article>
     </div>
   </section>
+<section class="page-section services-license-section scroll-reveal">
+  <div class="section-heading">
+    <span class="eyebrow">Agriculture Online Services</span>
+    <h2 style="color: white">Insecticide & Seed Licensing Services</h2>
+    <p style="color: rgb(227, 227, 227)">Apply for manufacturing, sales, pest control, renewal, and seed-related licenses online.</p>
+  </div>
 
-  <section class="page-section page-section--soft reveal">
+  <div class="license-grid">
+    <article
+      class="license-card"
+      *ngFor="let item of insecticideServices; let i = index"
+      [style.--reveal-delay.ms]="i * 110"
+    >
+      <div class="license-card__icon">{{ item.icon }}</div>
+      <div class="license-card__content">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.description }}</p>
+      </div>
+      <button type="button" class="license-card__action" (click)="navigateToLogin()">
+        Apply
+      </button>
+    </article>
+  </div>
+</section>
+  <section
+    class="page-section page-section--soft scroll-reveal"
+  >
     <div class="split-layout">
       <div class="split-copy">
         <span class="eyebrow">Why Use The Portal</span>
@@ -91,8 +161,17 @@
       </div>
 
       <div class="benefit-grid">
-        <article class="benefit-card" *ngFor="let benefit of benefits">
-          <div class="benefit-card__icon">{{ benefit.icon }}</div>
+        <article
+          class="benefit-card"
+          *ngFor="let benefit of benefits; let i = index"
+          [style.--reveal-delay.ms]="i * 110"
+        >
+          <div class="benefit-card__icon" [attr.data-fallback]="benefit.shortName">
+            <span class="material-symbols-rounded" aria-hidden="true">
+              {{ benefit.icon }}
+            </span>
+            <b>{{ benefit.shortName }}</b>
+          </div>
           <div>
             <h3>{{ benefit.title }}</h3>
             <p>{{ benefit.description }}</p>
@@ -101,20 +180,31 @@
       </div>
     </div>
   </section>
-
-  <section class="page-section reveal">
+  <section
+    class="page-section services-section scroll-reveal"
+  >
     <div class="section-heading">
       <span class="eyebrow">Online Services</span>
-      <h2>Agriculture Approval Categories</h2>
-      <p>Focused services for business establishment and renewal workflows.</p>
+      <h2 style="color: white;">Agriculture Approval Categories</h2>
+      <p style="color: white;">Focused services for business establishment and renewal workflows.</p>
     </div>
 
     <div class="service-grid">
-      <article class="service-card" *ngFor="let service of services">
+      <article
+        class="service-card"
+        *ngFor="let service of services; let i = index"
+        [style.--reveal-delay.ms]="i * 110"
+        >
         <div class="service-card__top">
-          <span>{{ service.icon }}</span>
+          <span class="service-card__icon" [attr.data-fallback]="service.shortName">
+            <span class="material-symbols-rounded" aria-hidden="true">
+              {{ service.icon }}
+            </span>
+            <b>{{ service.shortName }}</b>
+          </span>
           <button type="button" (click)="navigateToLogin()" aria-label="Apply">
-            &rarr;
+            <!-- <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> -->
+            <span  aria-hidden="true">Apply</span>
           </button>
         </div>
         <h3>{{ service.title }}</h3>
@@ -123,7 +213,48 @@
     </div>
   </section>
 
-  <section class="page-section track-section reveal">
+  <section class="services-section">
+  <div class="services-shell">
+    <div class="services-heading">
+      <span class="eyebrow">Agriculture Online Services</span>
+      <h2 style="color: white;">Insecticide & Seed Licensing Services</h2>
+      <p style="color: #dddddd">
+        Apply for manufacturing, sales, pest control, renewal, wholesaler, retailer, and seed licensing services online.
+      </p>
+    </div>
+
+    <div class="services-grid">
+      <article
+        class="service-card"
+        *ngFor="let service of staticServices; let i = index"
+        [style.--delay.ms]="i * 90"
+      >
+        <div class="service-card__top">
+          <div class="service-card__icon">
+            <span class="material-symbols-rounded" aria-hidden="true">{{ service.icon }}</span>
+          </div>
+
+          <span class="badge" [ngClass]="getBadgeClass(service.nocType)">
+            {{ service.nocType }}
+          </span>
+        </div>
+
+        <h3>{{ service.name }}</h3>
+
+        <p>{{ service.description }}</p>
+
+        <div class="service-card__footer">
+          <span class="dept-chip">{{ service.department }}</span>
+          <button type="button" class="apply-btn" (click)="navigateToLogin()">
+            Apply Now
+          </button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+  <section class="page-section track-section scroll-reveal">
     <div class="track-card">
       <div>
         <span class="eyebrow">Track And Respond</span>
@@ -145,14 +276,14 @@
           <strong>Online</strong>
         </div>
         <div class="status-board__row">
-          <span>Final approval certificate</span>
+          <span>Final NOC (approval) certificate</span>
           <strong>Download</strong>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="final-cta reveal">
+  <section class="final-cta scroll-reveal">
     <span class="eyebrow">Ready To Apply</span>
     <h2>Start your agriculture business approval online.</h2>
     <p>Use one digital portal for application, payment, tracking, and approval.</p>
@@ -160,11 +291,29 @@
       Start Application
     </button>
   </section>
+<section class="amap-section">
+  <div class="amap-container">
+    <div class="amap-header">
+      <h2>Our Location</h2>
+    </div>
+    <div class="amap-wrapper">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14598.438774533779!2d91.2706581!3d23.8324744!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x44bda6bde53a1e89!2sKrishi%20Bhavan!5e0!3m2!1sen!2sin!4v1643112198332!5m2!1sen!2sin"
+        width="100%"
+        height="450"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</section>
 
-  <section class="partner-links reveal" aria-label="Important government links">
+  <section class="partner-links scroll-reveal" aria-label="Important government links">
     <div class="partner-links__heading">
       <span class="eyebrow">Important Links</span>
-      <h2>Connected Digital Governance Platforms</h2>
+      <h4>Connected Digital Governance Platforms</h4>
     </div>
 
     <div class="partner-marquee">

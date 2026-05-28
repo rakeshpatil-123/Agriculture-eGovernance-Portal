@@ -479,7 +479,6 @@ export class GenericService {
   private handleUnauthenticated(): void {
     localStorage.clear();
     this.setLoginStatus(false);
-
     window.location.href = '/page/login';
   }
 
@@ -507,12 +506,18 @@ export class GenericService {
   }
 
   openSnackBar(message: string, action: string): void {
-    const panelClass = action === 'Success' ? 'snack-bar-cumtom-style' : 'red';
+    const normalizedAction = action?.trim().toLowerCase();
+    const panelClass = normalizedAction === 'success'
+      ? 'snack-bar-success'
+      : normalizedAction === 'error' || normalizedAction === 'failed'
+      ? 'snack-bar-error'
+      : 'snack-bar-info';
+
     this.snackBar.open(message, action, {
       duration: 3000,
       verticalPosition: 'top',
       horizontalPosition: 'center',
-      panelClass: [panelClass, 'snack-bar-global'],
+      panelClass: [panelClass, 'snack-bar-global']
     });
   }
 
@@ -715,6 +720,7 @@ export class GenericService {
           this.removeSessionData();
           // this.router.navigate(['/']);
           window.location.href = this.getRedirectUrl('/');//also handle here for the base path /onlineservice
+          localStorage.setItem('site-theme', 'light');
         });
       },
       error: (error) => {
