@@ -30,10 +30,10 @@
                   placeholder="Enter user type">
                 </app-ilogi-input>
                 <!-- PAN Number -->
-                <ng-container *ngIf="profileForm.get('userType')?.value === 'individual'">
+                <!-- <ng-container *ngIf="profileForm.get('userType')?.value === 'individual'">
                   <app-ilogi-input fieldLabel="PAN Number" [readonly]="isPANNull"
                     formControlName="pan"></app-ilogi-input>
-                </ng-container>
+                </ng-container> -->
                 <app-ilogi-select [isReadOnly]="true" *ngIf="profileForm.get('userType')?.value === 'department'"
                   class="mb-10" fieldId="department_id" fieldLabel="Department" formControlName="department_id"
                   [selectOptions]="departments" placeholder="Select department">
@@ -96,7 +96,7 @@
               <app-ilogi-input fieldLabel="Current Password" type="password" formControlName="currentPassword"
                 placeholder="Enter current password">
               </app-ilogi-input>
-            
+
 
                 <app-ilogi-input fieldLabel="New Password" type="password" formControlName="newPassword"
                   placeholder="Enter new password">
@@ -111,7 +111,7 @@
                 <small class="error-text" *ngIf="passwordForm.get('newPassword')?.hasError('pattern')">
                   Password must contain uppercase, lowercase, and a special character.
                 </small>
-            
+
 
               <app-ilogi-input fieldLabel="Confirm Password" type="password" formControlName="confirmPassword"
                 placeholder="Confirm new password">

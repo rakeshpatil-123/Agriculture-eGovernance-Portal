@@ -206,7 +206,7 @@ private lastPdfDefinition: any = null;
     if (!obj.hasOwnProperty(key)) continue;
 
     // Skip workflow, application_data, applied_fee, approved_fee
-    if (['workflow', 'application_data', 'applied_fee', 'approved_fee', 'service_id', 'id', 'just_before_final_step', 'history_data', 'is_finally_approved', 'application_id', 'is_certificate_generated', 'application_data_structured', 'payment_details'].includes(key)) {
+    if (['workflow', 'application_data', 'applied_fee', 'approved_fee', 'service_id', 'id', 'just_before_final_step', 'history_data', 'is_finally_approved', 'application_id', 'is_certificate_generated', 'application_data_structured', 'payment_details', 'is_eligible_for_certificate_action', 'created_at', 'updated_at', 'license_details', 'land_allotment_details', 'renewal', 'previous_application_id', ].includes(key)) {
       continue;
     }
 

@@ -200,17 +200,17 @@ export class UserProfileComponent implements OnInit {
         });
     }
      this.profileForm.get('userType')?.valueChanges.subscribe((type) => {
-      const panCtrl = this.profileForm.get('pan');
+      // const panCtrl = this.profileForm.get('pan');
 
-      if (type === 'individual') {
-        panCtrl?.setValidators([
-          Validators.pattern(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/),
-        ]);
-      } else {
-        panCtrl?.clearValidators();
-      }
+      // if (type === 'individual') {
+      //   panCtrl?.setValidators([
+      //     Validators.pattern(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/),
+      //   ]);
+      // } else {
+      //   panCtrl?.clearValidators();
+      // }
 
-      panCtrl?.updateValueAndValidity();
+      // panCtrl?.updateValueAndValidity();
     });
     this.genericService
       .getProfile()
@@ -393,7 +393,7 @@ export class UserProfileComponent implements OnInit {
       authorized_person_name: ['', Validators.required],
       // lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      pan: ['', [Validators.pattern(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/)]],
+      pan: ['',],
       phone: ['', Validators.required],
       whatsapp_no: ['', Validators.required],
       address: ['', Validators.required],

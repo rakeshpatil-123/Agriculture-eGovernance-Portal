@@ -39,11 +39,11 @@ export class GenericService {
 //   static PRODUCTION_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
 // =======
   // Development / Staging and Production URLs
-  static DEV_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
-  static QA_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
-  static UAT_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
-  static CERTIN_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
-  static PRODUCTION_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
+  static DEV_BACKEND_URL = 'https://agriculturebackend.tripura.cloud';
+  static QA_BACKEND_URL = 'https://agriculturebackend.tripura.cloud';
+  static UAT_BACKEND_URL = 'https://agriculturebackend.tripura.cloud';
+  static CERTIN_BACKEND_URL = 'https://agriculturebackend.tripura.cloud';
+  static PRODUCTION_BACKEND_URL = 'https://agriculturebackend.tripura.cloud';
   // Development / Staging and Production URLs
   // static DEV_BACKEND_URL = 'http://agriculturebackend.tripura.cloud';
   // static QA_BACKEND_URL = 'http://agriculturebackend.tripura.cloud';

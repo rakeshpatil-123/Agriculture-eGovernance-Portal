@@ -104,8 +104,10 @@ export class UserApplicationViewComponent implements OnInit {
     '22': 'Sub Division',
     '23': 'S-S Division',
   };
-  private readonly fileBaseUrl = 'http://tripuratourism.gov.in/onlineservices/storage/';
-
+  // private readonly fileBaseUrl4 = 'http://tripuratourism.gov.in/onlineservices/storage/';
+  // private readonly fileBaseUrl: string | (() => string) = GenericService.BACKEND_URL + "/storage/";
+  private readonly fileBaseUrl: string | (() => string) =
+    () => `${GenericService.BACKEND_URL()}/storage/`;
 private lastPdfDefinition: any = null;
   defineHistoryColumns(): void {
     this.historyColumns = [
@@ -452,15 +454,16 @@ private formatPdfDateOnly(value: any): string {
   return d.toLocaleDateString('en-GB');
 }
 
-private resolveFileUrl(url: any): string {
-  const raw = this.safeText(url);
-  if (raw === '—') return '—';
-  if (/^https?:\/\//i.test(raw)) return raw;
-
-  const base = this.fileBaseUrl.endsWith('/') ? this.fileBaseUrl : `${this.fileBaseUrl}/`;
-  return `${base}${raw.replace(/^\/+/, '')}`;
-}
-
+  private resolveFileUrl(url: any): string {
+    const raw = this.safeText(url);
+    if (!raw || raw === '—') {
+      return '—';
+    }
+    if (/^https?:\/\//i.test(raw)) {
+      return raw;
+    }
+    return `${GenericService.BACKEND_URL()}/storage/${raw.replace(/^\/+/, '')}`;
+  }
 private fileNameFromUrl(url: any): string {
   const resolved = this.resolveFileUrl(url);
   if (resolved === '—') return 'View File';

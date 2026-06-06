@@ -167,10 +167,17 @@ export class ApplicationsComponent implements OnInit {
   }
 
   loadApplications(): void {
-    const payload = {
-      department_id: this.departmentId,
-      service_id: this.serviceId,
-    };
+    const payload: any = {};
+    if (this.departmentId != null) {
+      payload.department_id = Array.isArray(this.departmentId)
+        ? this.departmentId
+        : [this.departmentId];
+    }
+    if (this.serviceId != null) {
+      payload.service_id = Array.isArray(this.serviceId)
+        ? this.serviceId
+        : [this.serviceId];
+    }
     this.loaderService.showLoader();
     const uid = this.apiService.getDecryptedUserId();
     const api1 = `api/department/user/${uid}/assigned-applications`;
@@ -537,8 +544,18 @@ private capitalizeFirstLetter(str: string): string {
   }
   private applyFilters(): void {
     const payload: any = {};
-    if (this.departmentId != null) payload.department_id = this.departmentId;
-    if (this.serviceId != null) payload.service_id = this.serviceId;
+
+    if (this.departmentId != null) {
+      payload.department_id = Array.isArray(this.departmentId)
+        ? this.departmentId
+        : [this.departmentId];
+    }
+
+    if (this.serviceId != null) {
+      payload.service_id = Array.isArray(this.serviceId)
+        ? this.serviceId
+        : [this.serviceId];
+    }
 
     const status = this.remarkForm.get('current_status')?.value;
     if (status) payload.status = status;
