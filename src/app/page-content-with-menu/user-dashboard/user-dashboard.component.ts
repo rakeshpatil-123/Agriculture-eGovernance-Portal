@@ -40,11 +40,16 @@ interface Payment {
     FormsModule,
     CommonModule,
     LoaderComponent
-],
+  ],
   templateUrl: './user-dashboard.component.html',
   styleUrls: ['./user-dashboard.component.scss'],
 })
 export class UserDashboardComponent implements OnInit {
+  pestManufacture: boolean = false;
+  pestSell: boolean = false;
+  pestControl: boolean = false;
+  wholesale: boolean = false;
+  retail: boolean = false;
   service: string | null = null;
   applicationId: string | null = null;
   appNumber: string | null = null;
@@ -54,7 +59,10 @@ export class UserDashboardComponent implements OnInit {
   totalPagesPendingCalculated = 1;
   totalPendingCount = 0;
   clarification_required: any[] = [];
-
+  showLicenceSection: boolean = false;
+  showFertilizer: boolean = false;
+  showPest: boolean = false;
+  showSeed: boolean = false;
   // Clarification filters
   clarificationAppNumber: string | null = null;
   clarificationService: string | null = null;
@@ -124,7 +132,7 @@ export class UserDashboardComponent implements OnInit {
     private loaderService: LoaderService,
     private apiService: GenericService,
     private sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   dashboardData: any = null;
 
@@ -451,5 +459,143 @@ export class UserDashboardComponent implements OnInit {
       console.log('Submitting payment form to:', newForm.action);
       newForm.submit();
     }, 1000);
+  }
+
+  onApplyForClick(): void {
+    this.showLicenceSection = !this.showLicenceSection;
+    this.showFertilizer = false;
+    this.showPest = false;
+    this.showSeed = false;
+    this.wholesale = false;
+    this.retail = false;
+    this.pestManufacture = false;
+    this.pestSell = false;
+    this.pestControl = false;
+  }
+  selectLic(lic: string): void {
+    this.showLicenceSection = false;
+    switch (lic) {
+      case 'fertilizer':
+        this.showFertilizer = !this.showFertilizer;
+        break;
+      case 'pest':
+        this.showPest = !this.showPest;
+
+        break;
+
+      case 'seed':
+        this.showSeed = !this.showSeed;
+
+        break;
+    }
+  }
+
+
+  selectApplicationType(type: string): void {
+    if (type === 'wholesale') {
+      this.wholesale = !this.wholesale;
+      this.retail = false;
+
+    } else if (type === 'retail') {
+      this.retail = !this.retail;
+      this.wholesale = false;
+
+    } else if (type === 'pestManufacture') {
+      this.pestManufacture = !this.pestManufacture;
+      this.pestSell = false;
+      this.pestControl = false;
+    } else if (type === 'pestSell') {
+      this.pestSell = !this.pestSell;
+      this.pestControl = false;
+      this.pestManufacture = false;
+    } else if (type === 'pestControl') {
+      this.pestControl = !this.pestControl;
+      this.pestManufacture = false;
+      this.pestSell = false;
+    }
+  }
+
+  goToApp(service: string, type: string): void {
+
+    console.log(service, type);
+
+    switch (service) {
+      case 'wholesaleFertilizer':
+        if (type === 'new') {
+          this.router.navigate(['/dashboard/service-application/1']);
+        }
+        break;
+      case 'wholesaleFertilizer-renewal':
+        if (type === 'renewal') {
+          this.router.navigate(['/dashboard/renewal-application-list'], {
+            queryParams: { id: 1 }
+          });
+        }
+        break;
+      case 'retailFertilizer':
+        if (type === 'new') {
+          this.router.navigate(['/dashboard/service-application/2']);
+        }
+        break;
+
+      case 'retailFertilizer-renewal':
+        if (type === 'renewal') {
+          this.router.navigate(['/dashboard/renewal-application-list'], {
+            queryParams: { id: 2 }
+          });
+        }
+        break;
+      case 'pest-manufacture':
+        if (type === 'new') {
+          this.router.navigate(['/dashboard/service-application/3']);
+        }
+        break;
+      case 'pest-manufacture-renewal':
+        if (type === 'renewal') {
+          this.router.navigate(['/dashboard/renewal-application-list'], {
+            queryParams: { id: 3 }
+          });
+        }
+        break;
+      case 'pest-sell-renewal':
+        if (type === 'renewal') {
+          this.router.navigate(['/dashboard/renewal-application-list'], {
+            queryParams: { id: 4 }
+          });
+        }
+        break;
+
+      case 'pest-sell':
+        if (type === 'new') {
+          this.router.navigate(['/dashboard/service-application/4']);
+        }
+        break;
+      case 'pest-control':
+        if (type === 'new') {
+          this.router.navigate(['/dashboard/service-application/5']);
+        }
+        break;
+
+      case 'pest-control-renewal':
+        if (type === 'renewal') {
+          this.router.navigate(['/dashboard/renewal-application-list'], {
+            queryParams: { id: 5 }
+          });
+        }
+        break;
+      case 'seed':
+        if (type === 'new') {
+          this.router.navigate(['/dashboard/service-application/6']);
+        }
+        break;
+
+      case 'seed-renewal':
+        if (type === 'renewal') {
+          this.router.navigate(['/dashboard/renewal-application-list'], {
+            queryParams: { id: 6 }
+          });
+        }
+        break;
+    }
   }
 }

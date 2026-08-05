@@ -158,11 +158,11 @@
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  border: 1px solid rgba(245, 199, 102, 0.42);
   border-radius: 999px;
   padding: 0.42rem 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
-  color: #f5c766;
+  background: linear-gradient(135deg, #2f7d32, #83a846);
+
+  color: #ffffff;
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -181,10 +181,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 46px;
+  min-height: 66px;
   border-radius: 999px;
-  padding: 0.78rem 1.35rem;
-  font-size: 0.94rem;
+  padding: 0.78rem 1.75rem;
+  font-size: 1.75rem;
   font-weight: 800;
   text-decoration: none;
   cursor: pointer;
@@ -755,13 +755,14 @@
   width: 100%;
   max-width: none;
   margin-top: clamp(4rem, 7vw, 6.5rem);
-  padding: clamp(4rem, 7vw, 6rem) max(1rem, calc((100vw - 1180px) / 2));
+  // padding: clamp(4rem, 7vw, 6rem) max(1rem, calc((100vw - 1180px) / 2));
 }
 
 .partner-links__heading {
+  padding: 12px;
   display: flex;
-  align-items: end;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
   gap: 1rem;
   margin-bottom: 1.2rem;
 
@@ -771,9 +772,10 @@
   //   border-color: #d8ebd2;
   // }
 
-  h2 {
+  h4 {
     margin: 0.7rem 0 0;
-    font-size: clamp(1.45rem, 3vw, 2.35rem);
+    font-size: 1.5rem;
+    font-weight: 700;
     line-height: 1.08;
     letter-spacing: 0;
   }

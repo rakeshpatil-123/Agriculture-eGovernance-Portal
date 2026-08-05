@@ -10,10 +10,10 @@
 //   color: var(--color-text-dark, #333);
 // }
 
-// .required-indicator {
-//   color: var(--color-poppy-red, #dc3545);
-//   margin-left: 0.25rem;
-// }
+.required-indicator {
+  color: var(--color-poppy-red, #dc3545);
+  margin-left: 0.25rem;
+}
 
 // .readonly-display {
 //   padding: 0.75rem 1rem;
@@ -109,24 +109,24 @@
   --field-checkbox-icon: #000000;
 }
 
-:host-context(.theme-dark),
-:host-context(body.theme-dark) {
-  --field-bg: #1a2a3d;
-  --field-text: #f8fafc;
-  --field-border: #2a3a52;
-  --field-panel-bg: #1a2a3d;
-  --field-panel-border: #3a4a5d;
-  --field-focus-border: #76a9ff;
-  --field-hover-bg: #76a9ff;
-  --field-hover-text: #0b1220;
-  --field-selected-bg: #76a9ff;
-  --field-selected-text: #0b1220;
-  --field-label-text: #76a9ff;
-  --field-placeholder-text: #cbd5e1;
-  --field-empty-text: #cbd5e1;
-  --field-checkbox-border: #3a4a5d;
-  --field-checkbox-icon: #f8fafc;
-}
+// :host-context(.theme-dark),
+// :host-context(body.theme-dark) {
+//   --field-bg: #1a2a3d;
+//   --field-text: #f8fafc;
+//   --field-border: #2a3a52;
+//   --field-panel-bg: #1a2a3d;
+//   --field-panel-border: #3a4a5d;
+//   --field-focus-border: #76a9ff;
+//   --field-hover-bg: #76a9ff;
+//   --field-hover-text: #0b1220;
+//   --field-selected-bg: #76a9ff;
+//   --field-selected-text: #0b1220;
+//   --field-label-text: #76a9ff;
+//   --field-placeholder-text: #cbd5e1;
+//   --field-empty-text: #cbd5e1;
+//   --field-checkbox-border: #3a4a5d;
+//   --field-checkbox-icon: #f8fafc;
+// }
 
 label {
   font-size: 0.75rem;
@@ -153,11 +153,11 @@ label {
   color: var(--select-text, #000000) !important;
 }
 
-:host-context(.theme-dark) ::ng-deep .p-select-label,
-body.theme-dark :host ::ng-deep .p-select-label {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-}
+// :host-context(.theme-dark) ::ng-deep .p-select-label,
+// body.theme-dark :host ::ng-deep .p-select-label {
+//   background-color: #000000 !important;
+//   color: #ffffff !important;
+// }
 
 :host ::ng-deep .p-select-label.p-placeholder {
   font-size: 0.75rem;

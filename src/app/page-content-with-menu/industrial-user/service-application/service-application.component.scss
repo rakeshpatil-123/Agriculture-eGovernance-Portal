@@ -154,15 +154,80 @@
 .scroll-wrapper {
   width: 100%;
   overflow-x: auto;
+  overflow-y: visible;  // Allow vertical overflow for dropdowns
+  position: relative;
+  z-index: 1;
+  
+  // Create padding at bottom to give dropdown room
+  padding-bottom: 300px;
+  margin-bottom: -300px;
 }
 
 .table-container {
-  overflow: visible !important;
-}
-
-td {
+  margin-top: 80px;
   overflow: visible !important;
   position: relative;
+}
+
+.grid-table {
+  min-width: 100%;
+  white-space: nowrap;
+  border-collapse: collapse;
+  overflow: visible !important;
+
+  th,
+  td {
+    padding: 1rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+    overflow: visible !important;
+    position: relative;
+
+    &.no-wrap {
+      white-space: nowrap;
+      min-width: 150px;
+    }
+  }
+
+  th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+  }
+
+  // Make sure select components can overflow
+  app-ilogi-select {
+    position: relative;
+    z-index: 10;
+    
+    ::ng-deep .p-select-overlay,
+    ::ng-deep .p-multiselect-panel {
+      position: absolute !important;
+      z-index: 99999 !important;
+      max-height: 280px !important;
+      overflow-y: auto !important;
+    }
+  }
+
+  app-ilogi-input,
+  app-ilogi-radio,
+  app-ilogi-checkbox,
+  app-ilogi-file-upload,
+  app-ilogi-input-date {
+    width: 100%;
+    min-width: 150px;
+    display: block;
+
+    ::ng-deep .input-field,
+    ::ng-deep input,
+    ::ng-deep select,
+    ::ng-deep textarea {
+      width: 100% !important;
+      min-width: 120px !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }
 
 .mrg {
@@ -357,3 +422,4 @@ td {
   background-color: #fda00f;
   color: #fff;
 }
+

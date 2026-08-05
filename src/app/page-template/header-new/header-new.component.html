@@ -1,224 +1,145 @@
 <header class="brand-header" role="banner" aria-label="Tripura Agriculture header">
-  <!-- <a class="skip-link" href="#mainContent">Skip to main content</a> -->
-
   <div class="brand-shell">
-    <div class="brand-left">
-      <a
-        class="logo-link"
-        [routerLink]="['/']"
-        title="Tripura Agriculture Home"
-        aria-label="Tripura Agriculture Home">
-        <img [src]="logoPath" alt="Tripura Agriculture Logo" class="logo" />
-      </a>
+    <!-- Top Row: Accessibility Tools -->
+    <div class="top-toolbar">
 
-      <div class="brand-copy">
-        <div class="title-row">
-          <a [routerLink]="['/']" class="site-name" title="Tripura Agriculture Home">
-            Agriculture Online Services
-          </a>
-        </div>
 
-        <div class="subtitle-row" aria-label="Department information">
-          <span style="padding-bottom: 1px;">Agriculture Department of Tripura</span>
-        </div>
-      </div>
+
     </div>
 
-    <div class="action-section" role="navigation" aria-label="Header actions">
-      <div class="toolbar-row" role="group" aria-label="Accessibility tools">
-        <button
-          class="icon-btn"
-          type="button"
-          (click)="readPageContent()"
-          [disabled]="reading"
-          [attr.aria-pressed]="reading"
-          title="Read page"
-          aria-label="Read page">
-          <span class="icon" aria-hidden="true">🔊</span>
-        </button>
-
-        <button
-          class="icon-btn"
-          type="button"
-          (click)="stopReading()"
-          [disabled]="!reading"
-          title="Stop reading"
-          aria-label="Stop reading">
-          <span class="icon" aria-hidden="true">⏹</span>
-        </button>
-
-        <button
-          class="icon-btn"
-          type="button"
-          (click)="toggleBrowserTTS()"
-          [attr.aria-pressed]="useBrowserTTS"
-          [title]="useBrowserTTS ? 'Browser voice enabled' : 'Browser voice disabled'"
-          [attr.aria-label]="useBrowserTTS ? 'Disable browser voice' : 'Enable browser voice'">
-          <span class="icon" aria-hidden="true">
-            {{ useBrowserTTS ? '🗣' : '🎙' }}
-          </span>
-        </button>
-
-        <button
-          type="button"
-          class="icon-btn"
-          (click)="decreaseFont()"
-          [attr.aria-pressed]="fontSize === 'small'"
-          title="Decrease font size"
-          aria-label="Decrease font size">
-          <span class="icon" aria-hidden="true">A−</span>
-        </button>
-
-        <button
-          type="button"
-          class="icon-btn"
-          (click)="resetFont()"
-          [attr.aria-pressed]="fontSize === 'normal'"
-          title="Reset font size"
-          aria-label="Reset font size">
-          <span class="icon" aria-hidden="true">A</span>
-        </button>
-
-        <button
-          type="button"
-          class="icon-btn"
-          (click)="increaseFont()"
-          [attr.aria-pressed]="fontSize === 'large'"
-          title="Increase font size"
-          aria-label="Increase font size">
-          <span class="icon" aria-hidden="true">A+</span>
-        </button>
-
-        <app-theme-toggle class="theme-toggle-wrap"></app-theme-toggle>
-
-        <a
-          href="tel:03812325930"
-          class="icon-btn helpline-btn"
-          aria-label="Helpline number 0381 232 5930"
-          title="Call helpline">
-          <span class="icon" aria-hidden="true">☎</span>
-          <span class="helpline-text">0381 232 5930</span>
+    <!-- Bottom Row: Logo, Auth Buttons, Ministers Image -->
+    <!-- Bottom Row: Logo, Auth Buttons, Ministers Image -->
+    <div class="main-header-row">
+      <div class="brand-left">
+        <a class="logo-link" [routerLink]="['/']" title="Tripura Agriculture Home"
+          aria-label="Tripura Agriculture Home">
+          <img [src]="logoPath" alt="Tripura Agriculture Logo" class="logo" />
         </a>
+
+        <div class="brand-copy">
+          <div class="title-row">
+            <a [routerLink]="['/']" class="site-name" title="Tripura Agriculture Home">
+              Agriculture LMS
+            </a>
+          </div>
+
+          <div class="subtitle-row" aria-label="Department information">
+            <span style="padding-bottom: 1px;">Dept. of Agriculture & Farmer <br/> Welfare Govt. of Tripura</span>
+          </div>
+        </div>
       </div>
+      <div class="top-toolbar">
+        <div class="top-fixed" >
 
-      <div class="toolbar-row auth-row" aria-label="Authentication actions">
-        <ng-container *ngIf="!isLoggedIn">
-          <a
-            class="action-btn secondary login-btn"
-            aria-label="Login"
-            [routerLink]="['/page/login']">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="main-icon"
-              aria-hidden="true">
-              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"></path>
-            </svg>
-            <span class="auth-text">Login</span>
-          </a>
-
-          <a
-            class="action-btn primary register-btn"
-            aria-label="Register"
-            [routerLink]="['/page/registration']">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="main-icon"
-              aria-hidden="true">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-              <circle cx="9" cy="7" r="4"></circle>
-              <path d="m19 8 2 2-2 2"></path>
-              <path d="m19 10 2-2-2-2"></path>
-            </svg>
-            <span class="auth-text">Register</span>
-          </a>
-        </ng-container>
-
-        <ng-container *ngIf="isLoggedIn">
-          <a
-            class="action-btn secondary dashboard-btn"
-            aria-label="Dashboard"
-            [routerLink]="['/dashboard/home']">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="main-icon"
-              aria-hidden="true">
-              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            <span class="auth-text">Dashboard</span>
-          </a>
-
-          <button
-            type="button"
-            class="action-btn primary logout-btn"
-            aria-label="Logout"
-            (click)="logout()">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="main-icon"
-              aria-hidden="true">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path>
-            </svg>
-            <span class="auth-text">Logout</span>
+          <div id="google_translate_element" class="translate-box" aria-hidden="false">
+          </div>
+        </div>
+        <div class="toolbar-row" role="group" aria-label="Accessibility tools">
+          <button class="icon-btn" type="button" (click)="readPageContent()" [disabled]="reading"
+            [attr.aria-pressed]="reading" title="Read page" aria-label="Read page">
+            <span class="icon" aria-hidden="true">🔊</span>
           </button>
-        </ng-container>
-      </div>
 
-      <div
-        id="google_translate_element"
-        class="translate-box"
-        aria-hidden="false">
+          <button class="icon-btn" type="button" (click)="stopReading()" [disabled]="!reading" title="Stop reading"
+            aria-label="Stop reading">
+            <span class="icon" aria-hidden="true">⏹</span>
+          </button>
+
+          <button class="icon-btn" type="button" (click)="toggleBrowserTTS()" [attr.aria-pressed]="useBrowserTTS"
+            [title]="useBrowserTTS ? 'Browser voice enabled' : 'Browser voice disabled'"
+            [attr.aria-label]="useBrowserTTS ? 'Disable browser voice' : 'Enable browser voice'">
+            <span class="icon" aria-hidden="true">
+              {{ useBrowserTTS ? '🗣' : '🎙' }}
+            </span>
+          </button>
+
+          <button type="button" class="icon-btn" (click)="decreaseFont()" [attr.aria-pressed]="fontSize === 'small'"
+            title="Decrease font size" aria-label="Decrease font size">
+            <span class="icon" aria-hidden="true">A−</span>
+          </button>
+
+          <button type="button" class="icon-btn" (click)="resetFont()" [attr.aria-pressed]="fontSize === 'normal'"
+            title="Reset font size" aria-label="Reset font size">
+            <span class="icon" aria-hidden="true">A</span>
+          </button>
+
+          <button type="button" class="icon-btn" (click)="increaseFont()" [attr.aria-pressed]="fontSize === 'large'"
+            title="Increase font size" aria-label="Increase font size">
+            <span class="icon" aria-hidden="true">A+</span>
+          </button>
+
+          <a href="tel:03812325930" class="icon-btn helpline-btn" aria-label="Helpline number 0381 232 5930"
+            title="Call helpline">
+            <span class="icon" aria-hidden="true">☎</span>
+            <span class="helpline-text">0381 232 5930</span>
+          </a>
+        </div>
+        <div class="auth-section">
+          <ng-container *ngIf="!isLoggedIn">
+            <a class="action-btn secondary login-btn" aria-label="Login" [routerLink]="['/page/login']">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="main-icon"
+                aria-hidden="true">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"></path>
+              </svg>
+              <span class="auth-text">Login</span>
+            </a>
+
+            <a class="action-btn primary register-btn" aria-label="Register" [routerLink]="['/page/registration']">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="main-icon"
+                aria-hidden="true">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="m19 8 2 2-2 2"></path>
+                <path d="m19 10 2-2-2-2"></path>
+              </svg>
+              <span class="auth-text">Register</span>
+            </a>
+          </ng-container>
+
+          <ng-container *ngIf="isLoggedIn">
+            <a class="action-btn secondary dashboard-btn" aria-label="Dashboard" [routerLink]="['/dashboard/home']">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="main-icon"
+                aria-hidden="true">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span class="auth-text">Dashboard</span>
+            </a>
+
+            <button type="button" class="action-btn primary logout-btn" aria-label="Logout" (click)="logout()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="main-icon"
+                aria-hidden="true">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path>
+              </svg>
+              <span class="auth-text">Logout</span>
+            </button>
+          </ng-container>
+        </div>
+      </div>
+      <!-- Ministers Section with Background Pattern -->
+      <div class="ministers-image-wrapper">
+        <!-- Background Agricultural Pattern -->
+        <div class="agri-bg-pattern"></div>
+
+        <!-- Ministers Photo (Sits on top) -->
+        <div class="ministers-photo-container">
+          <img src="/assets/landing-page/Ministers.png" alt="Ministers" class="ministers-image">
+        </div>
       </div>
     </div>
   </div>
 
-  <div
-    #srDialog
-    id="srDialog"
-    class="sr-dialog-overlay"
-    *ngIf="dialogOpen"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="srTitle"
-    aria-describedby="srDesc">
+  <div #srDialog id="srDialog" class="sr-dialog-overlay" *ngIf="dialogOpen" role="dialog" aria-modal="true"
+    aria-labelledby="srTitle" aria-describedby="srDesc">
     <div class="sr-dialog" role="document" tabindex="-1">
       <h2 id="srTitle">Accessibility tools</h2>
       <p id="srDesc">Quick tools for screen reader users and font controls.</p>
 
       <div class="sr-dialog-actions">
-        <!-- <button type="button" (click)="skipToMainContent()">Skip to main content</button> -->
         <button type="button" (click)="enableScreenReaderMode()">Enable screen reader mode</button>
         <button type="button" (click)="closeSrDialog()">Close</button>
       </div>
