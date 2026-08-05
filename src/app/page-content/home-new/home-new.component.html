@@ -1,89 +1,62 @@
 <main class="agri-landing">
-  <section
-    class="hero-slider"
-    aria-label="Agriculture business approval highlights"
-    (mouseenter)="pauseSlider()"
-    (mouseleave)="startSlider()"
-  >
-    <div
-      class="hero-slide"
-      *ngFor="let slide of slides; let i = index"
-      [class.hero-slide--active]="i === activeSlide"
-    >
-      <img
-        *ngIf="shouldLoadSlide(i)"
-        [src]="slide.image"
-        [alt]="slide.title"
-        [attr.loading]="i === activeSlide ? 'eager' : 'lazy'"
-        [attr.fetchpriority]="i === activeSlide ? 'high' : 'low'"
-        decoding="async"
-      />
+  <section class="hero-slider" aria-label="Agriculture business approval highlights" (mouseenter)="pauseSlider()"
+    (mouseleave)="startSlider()">
+    <div class="hero-slide" *ngFor="let slide of slides; let i = index" [class.hero-slide--active]="i === activeSlide">
+      <img *ngIf="shouldLoadSlide(i)" [src]="slide.image" [alt]="slide.title"
+        [attr.loading]="i === activeSlide ? 'eager' : 'lazy'" [attr.fetchpriority]="i === activeSlide ? 'high' : 'low'"
+        decoding="async" />
       <div class="hero-slide__shade"></div>
 
       <div class="hero-slide__content">
         <span class="eyebrow">{{ slide.kicker }}</span>
         <h2>
-          <span
-            class="typewriter--title"
-            [class.typewriter--done]="i === activeSlide && titleTypedDone"
-          >
+          <span class="typewriter--title" [class.typewriter--done]="i === activeSlide && titleTypedDone">
             {{ i === activeSlide ? typedTitle : slide.title }}
           </span>
         </h2>
         <h3>
-          <span
-            class="typewriter typewriter--subtitle"
-            [class.typewriter--done]="i === activeSlide && subtitleTypedDone"
-          >
+          <span class="typewriter typewriter--subtitle"
+            [class.typewriter--done]="i === activeSlide && subtitleTypedDone">
             {{ i === activeSlide ? typedSubtitle : slide.subtitle }}
           </span>
         </h3>
         <p>{{ slide.description }}</p>
 
         <div class="hero-actions">
-          <button type="button" class="primary-btn" (click)="navigateToLogin()">
+          <button type="button" class="primary-btn" (click)="navigateTo('login')">
             <span>Apply Now</span>
             <!-- <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> -->
           </button>
-          <a class="secondary-btn" href="#approval-process">View Process</a>
+          <button type="button" class="primary-btn" (click)="navigateTo('register')">
+            <span>Register Now</span>
+            <!-- <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> -->
+          </button>
+          <!-- <a class="secondary-btn" href="#approval-process">View Process</a> -->
         </div>
       </div>
     </div>
 
-    <div class="hero-panel" aria-label="Portal summary">
+    <!-- <div class="hero-panel" aria-label="Portal summary">
       <div class="hero-panel__item" *ngFor="let stat of quickStats">
         <strong>{{ stat.value }}</strong>
         <span>{{ stat.label }}</span>
       </div>
-    </div>
+    </div> -->
 
     <div class="hero-controls" aria-label="Slider controls">
-      <button
-        type="button"
-        class="hero-control hero-control--prev"
-        (click)="previousSlide()"
-        aria-label="Previous slide"
-      >
+      <button type="button" class="hero-control hero-control--prev" (click)="previousSlide()"
+        aria-label="Previous slide">
         <span class="hero-control__icon" aria-hidden="true"></span>
       </button>
-      <button
-        type="button"
-        class="hero-control hero-control--next"
-        (click)="nextSlide()"
-        aria-label="Next slide"
-      >
+      <button type="button" class="hero-control hero-control--next" (click)="nextSlide()" aria-label="Next slide">
         <span class="hero-control__icon" aria-hidden="true"></span>
       </button>
     </div>
 
     <div class="hero-dots" aria-label="Choose slide">
-      <button
-        type="button"
-        *ngFor="let slide of slides; let i = index"
-        [class.hero-dots__button--active]="i === activeSlide"
-        (click)="goToSlide(i)"
-        [attr.aria-label]="'Show ' + slide.title"
-      ></button>
+      <button type="button" *ngFor="let slide of slides; let i = index"
+        [class.hero-dots__button--active]="i === activeSlide" (click)="goToSlide(i)"
+        [attr.aria-label]="'Show ' + slide.title"></button>
     </div>
 
     <div class="hero-progress" aria-hidden="true">
@@ -91,7 +64,7 @@
     </div>
   </section>
 
-  <section class="approval-strip scroll-reveal">
+  <!-- <section class="approval-strip scroll-reveal">
     <div>
       <span class="eyebrow">Single Window Agriculture Services</span>
       <h3>Business approvals for establishments in Tripura</h3>
@@ -99,9 +72,9 @@
     <button type="button" class="primary-btn primary-btn--dark" (click)="navigateToLogin()">
       Start Application
     </button>
-  </section>
+  </section> -->
 
-  <section id="approval-process" class="page-section scroll-reveal">
+  <!-- <section id="approval-process" class="page-section scroll-reveal">
     <div class="section-heading">
       <span class="eyebrow">Approval Journey</span>
       <h2 style="color: white;">Simple Step-By-Step Process</h2>
@@ -203,7 +176,6 @@
             <b>{{ service.shortName }}</b>
           </span>
           <button type="button" (click)="navigateToLogin()" aria-label="Apply">
-            <!-- <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> -->
             <span  aria-hidden="true">Apply</span>
           </button>
         </div>
@@ -308,32 +280,21 @@
       </iframe>
     </div>
   </div>
-</section>
+</section> -->
 
   <section class="partner-links scroll-reveal" aria-label="Important government links">
     <div class="partner-links__heading">
+      <!-- <h4>Connected Digital Governance Platforms</h4> -->
       <span class="eyebrow">Important Links</span>
-      <h4>Connected Digital Governance Platforms</h4>
     </div>
 
     <div class="partner-marquee">
       <div class="partner-marquee__track">
         <ng-container *ngFor="let row of partnerLinkRows">
-          <a
-            class="partner-card"
-            *ngFor="let partner of row"
-            [href]="partner.url"
-            target="_blank"
-            rel="noopener noreferrer"
-            [attr.aria-label]="'Open ' + partner.name"
-          >
+          <a class="partner-card" *ngFor="let partner of row" [href]="partner.url" target="_blank"
+            rel="noopener noreferrer" [attr.aria-label]="'Open ' + partner.name">
             <span class="partner-card__logo">
-              <img
-                *ngIf="partner.image; else textLogo"
-                [src]="partner.image"
-                [alt]="partner.name"
-                loading="lazy"
-              />
+              <img *ngIf="partner.image; else textLogo" [src]="partner.image" [alt]="partner.name" loading="lazy" />
               <ng-template #textLogo>
                 <strong>{{ partner.shortName }}</strong>
               </ng-template>

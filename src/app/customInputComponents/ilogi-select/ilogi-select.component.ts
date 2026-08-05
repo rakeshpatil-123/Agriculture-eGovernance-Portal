@@ -34,7 +34,7 @@ export interface SelectOption {
     CommonModule,
     FormsModule,
     FloatLabelModule,
-    SelectModule, 
+    SelectModule,
     MultiSelectModule
   ],
   templateUrl: './ilogi-select.component.html',
@@ -48,8 +48,7 @@ export interface SelectOption {
   ],
 })
 export class IlogiSelectComponent
-  implements OnInit, AfterViewInit, ControlValueAccessor, OnChanges
-{
+  implements OnInit, AfterViewInit, ControlValueAccessor, OnChanges {
   @ViewChild('searchInput') searchInputRef!: ElementRef<HTMLInputElement>;
   @Input() submitted = false;
   @Input() fieldLabel: string = '';
@@ -83,10 +82,10 @@ export class IlogiSelectComponent
   value: any = null;
   isDisabled = false;
 
-  private onChange: (value: any) => void = () => {};
-  private onTouched: () => void = () => {};
+  private onChange: (value: any) => void = () => { };
+  private onTouched: () => void = () => { };
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     if (this.fieldId) {
@@ -102,18 +101,42 @@ export class IlogiSelectComponent
   get hasErrors(): boolean {
     return !!this.errors && Object.keys(this.errors).length > 0;
   }
+  // onSearch(term: string): void {
+  //   if (!this.enableSearch) return;
+  //   this.searchTerm = term;
+  //   const lowerTerm = term.toLowerCase();
+  //   this.filteredOptions = this.selectOptions.filter((opt) =>
+  //     opt.name.toLowerCase().includes(lowerTerm)
+  //   );
+  // }
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (changes['selectOptions']) {
+  //     this.filteredOptions = [...this.selectOptions];
+  //     this.cdr.detectChanges();
+  //   }
+  // }
+
+
   onSearch(term: string): void {
     if (!this.enableSearch) return;
     this.searchTerm = term;
-    const lowerTerm = term.toLowerCase();
-    this.filteredOptions = this.selectOptions.filter((opt) =>
-      opt.name.toLowerCase().includes(lowerTerm)
-    );
+    this.applyFilter(term);
   }
+
+
+  private applyFilter(term: string): void {
+    const opts = this.selectOptions ?? [];
+    if (!term) {
+      this.filteredOptions = [...opts];
+    } else {
+      const t = term.toLowerCase();
+      this.filteredOptions = opts.filter(o => o.name.toLowerCase().includes(t));
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectOptions']) {
-      this.filteredOptions = [...this.selectOptions];
-      this.cdr.detectChanges();
+      this.applyFilter(this.searchTerm); // keep the filter alive
     }
   }
 
@@ -141,8 +164,8 @@ export class IlogiSelectComponent
   //   }
   // }
   writeValue(value: any): void {
-  if (value === undefined) {
-  this.value = this.multiple ? [] : null;
+    if (value === undefined) {
+      this.value = this.multiple ? [] : null;
       this.cdr.detectChanges();
       return;
     }
@@ -157,7 +180,7 @@ export class IlogiSelectComponent
       }
     }
     setTimeout(() => this.cdr.detectChanges());
-}
+  }
 
   registerOnChange(fn: (value: any) => void): void {
     this.onChange = fn;

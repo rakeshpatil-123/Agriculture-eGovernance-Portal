@@ -24,29 +24,29 @@
   display: block;
 }
 
-:host-context(.theme-dark),
-:host-context(body.theme-dark) {
-  --header-bg: rgba(8, 15, 25, 0.88);
-  --header-border: rgba(148, 163, 184, 0.12);
-  --surface: #0b1220;
-  --surface-soft: #101a2b;
-  --surface-elevated: #0f172a;
-  --text-main: #f8fafc;
-  --text-muted: #cbd5e1;
-  --text-soft: #94a3b8;
-  --primary: #76a9ff;
-  --primary-2: #8bc5ff;
-  --accent: #39c98d;
-  --gold: #f2c66d;
-  --shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
-  --shadow-strong: 0 24px 54px rgba(0, 0, 0, 0.35);
-  --ring: rgba(118, 169, 255, 0.18);
-  --dialog-overlay: rgba(2, 6, 23, 0.78);
-  --dialog-surface: linear-gradient(135deg, #101a2b 0%, #0b1220 100%);
-  --btn-soft: rgba(255, 255, 255, 0.05);
-  --btn-soft-hover: rgba(255, 255, 255, 0.09);
-  --focus: 0 0 0 4px rgba(118, 169, 255, 0.18);
-}
+// :host-context(.theme-dark),
+// :host-context(body.theme-dark) {
+//   --header-bg: rgba(8, 15, 25, 0.88);
+//   --header-border: rgba(148, 163, 184, 0.12);
+//   --surface: #0b1220;
+//   --surface-soft: #101a2b;
+//   --surface-elevated: #0f172a;
+//   --text-main: #f8fafc;
+//   --text-muted: #cbd5e1;
+//   --text-soft: #94a3b8;
+//   --primary: #76a9ff;
+//   --primary-2: #8bc5ff;
+//   --accent: #39c98d;
+//   --gold: #f2c66d;
+//   --shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+//   --shadow-strong: 0 24px 54px rgba(0, 0, 0, 0.35);
+//   --ring: rgba(118, 169, 255, 0.18);
+//   --dialog-overlay: rgba(2, 6, 23, 0.78);
+//   --dialog-surface: linear-gradient(135deg, #101a2b 0%, #0b1220 100%);
+//   --btn-soft: rgba(255, 255, 255, 0.05);
+//   --btn-soft-hover: rgba(255, 255, 255, 0.09);
+//   --focus: 0 0 0 4px rgba(118, 169, 255, 0.18);
+// }
 
 .skip-link {
   position: absolute;
@@ -62,30 +62,32 @@
   box-shadow: var(--shadow);
   transition: top 0.22s ease, transform 0.22s ease;
 
+
   &:focus {
     top: 12px;
     outline: none;
     box-shadow: var(--shadow-strong);
   }
+
 }
 
-.brand-header {
-  position: fixed;
-  inset: 0 0 auto 0;
-  z-index: 1000;
-  width: 100%;
-  min-height: 84px;
-  display: block;
-  background:
-    linear-gradient(180deg, color.change(#ffffff, $alpha: 0.94), color.change(#f8fbff, $alpha: 0.92)),
-    var(--header-bg);
-  color: var(--text-main);
-  border-bottom: 1px solid var(--header-border);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(18px) saturate(1.2);
-  -webkit-backdrop-filter: blur(18px) saturate(1.2);
-  overflow: clip;
-}
+// .brand-header {
+//   position: fixed;
+//   inset: 0 0 auto 0;
+//   z-index: 1000;
+//   width: 100%;
+//   min-height: 84px;
+//   display: block;
+//   background:
+//     linear-gradient(180deg, color.change(#ffffff, $alpha: 0.94), color.change(#f8fbff, $alpha: 0.92)),
+//     var(--header-bg);
+//   color: var(--text-main);
+//   border-bottom: 1px solid var(--header-border);
+//   box-shadow: var(--shadow);
+//   backdrop-filter: blur(18px) saturate(1.2);
+//   -webkit-backdrop-filter: blur(18px) saturate(1.2);
+//   overflow: clip;
+// }
 
 .brand-header::before {
   content: '';
@@ -95,16 +97,279 @@
   background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 52%, var(--gold) 100%);
 }
 
+// .brand-shell {
+//   max-width: 1600px;
+//   margin: 0 auto;
+//   min-height: 84px;
+//   padding: 8px 0 0 8px;
+//   display: grid;
+//   grid-template-columns: minmax(280px, 1.1fr) minmax(0, 2.2fr) auto; 
+//   gap: clamp(8px, 1vw, 16px);
+//   align-items: center;
+//   animation: headerFadeUp 520ms cubic-bezier(.2, .9, .2, 1) both;
+// }
+
+.brand-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 1000;
+  width: 100%;
+  min-height: 120px; // Increased to accommodate two rows
+  display: block;
+  background: #fff;
+  color: var(--text-main);
+  border-bottom: 1px solid var(--header-border);
+  // box-shadow: var(--shadow);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  overflow: visible; // Changed from clip to visible
+}
+
 .brand-shell {
-  max-width: 1600px;
+  // max-width: 1600px;
   margin: 0 auto;
-  min-height: 84px;
-  padding: 8px clamp(10px, 1.3vw, 22px);
-  display: grid;
-  grid-template-columns: minmax(280px, 1.1fr) minmax(0, 2.2fr);
-  gap: clamp(8px, 1vw, 16px);
-  align-items: center;
+  // padding: 0 clamp(10px, 1.3vw, 22px);
+  display: flex;
+  flex-direction: column;
+  // gap: 8px;
   animation: headerFadeUp 520ms cubic-bezier(.2, .9, .2, 1) both;
+}
+
+// Top Toolbar Row
+.top-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 12px;
+  padding:4px 8px 0 8px;
+  // background: linear-gradient(#0e9f6e) ;
+  border-bottom: 1px solid color.change(#0b4ea2, $alpha: 0.08);
+}
+
+// Main Header Row (Logo + Auth + Ministers)
+.main-header-row {
+  width: 100%;
+  display: flex;
+  // grid-template-columns: minmax(280px, 1fr) auto auto;
+  // gap: clamp(12px, 2vw, 24px);
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 0 12px;
+}
+
+.brand-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+// Auth Section (Login/Register)
+.auth-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+// Ministers Wrapper - Acts as the positioning anchor
+.ministers-image-wrapper {
+  display: flex;
+  align-items: flex-end; // Aligns items to bottom so ministers stand on "ground"
+  justify-content: flex-end;
+  margin-left: auto;
+  position: relative; // Crucial for absolute positioning of children
+  height: 140px; // Fixed height to contain the pattern
+  width: clamp(300px, 40vw, 500px);
+  overflow: hidden; // Keeps pattern within bounds
+}
+
+// The Agricultural Background Pattern
+.agri-bg-pattern {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/landing-page/agriculture-pattern.png'); 
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+  opacity: 0.85;
+  z-index: 1;
+  pointer-events: none;
+  
+  // Fade effect from left (transparent) to right (visible)
+  mask-image: linear-gradient(to right, transparent 0%, transparent 20%, black 60%, black 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 20%, black 60%, black 100%);
+  
+  // Fallback for browsers that don't support mask-image
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 20%, rgba(255,255,255,0) 60%, rgba(255,255,255,0) 100%);
+    z-index: 2;
+    pointer-events: none;
+  }
+}
+
+// Ministers Photo Container - Sits ON TOP of the pattern
+.ministers-photo-container {
+  position: relative;
+  z-index: 2; // Higher than pattern
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+}
+
+.ministers-image {
+  height: clamp(130px, 14vh, 140px);
+  width: auto;
+  object-fit: contain;
+  object-position: bottom center;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1)); // Adds depth separation from pattern
+}
+
+// Responsive adjustments
+@media (max-width: 1024px) {
+  .ministers-image-wrapper {
+    width: clamp(200px, 30vw, 350px);
+    height: 100px;
+  }
+  
+  .ministers-image {
+    height: clamp(80px, 10vh, 100px);
+  }
+}
+
+@media (max-width: 768px) {
+  .ministers-image-wrapper {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: center;
+    margin-left: 0;
+    margin-top: 8px;
+    width: 100%;
+    height: 80px;
+  }
+  
+  .agri-bg-pattern {
+    opacity: 0.4; // More subtle on mobile
+  }
+}
+
+.toolbar-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+  min-width: max-content;
+  padding: 5px 7px;
+  border-radius: 16px;
+  background: color.change(#0b4ea2, $alpha: 0.04);
+  border: 1px solid color.change(#0b4ea2, $alpha: 0.08);
+  box-shadow: 0 8px 20px rgba(2, 18, 43, 0.04);
+}
+
+.translate-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  height: 36px;
+  flex: 0 0 120px;
+  overflow: visible;
+}
+
+// Rest of your existing styles remain the same...
+// (logo, brand-copy, action-btn, icon-btn styles etc.)
+
+@media (max-width: 1024px) {
+  .main-header-row {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+  }
+  
+  .brand-left {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  
+  .auth-section {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  
+  .ministers-image-wrapper {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: center;
+    margin-left: 0;
+    margin-top: 8px;
+  }
+  
+  .ministers-image {
+    height: clamp(60px, 8vh, 80px);
+  }
+}
+
+@media (max-width: 768px) {
+  .brand-header {
+    min-height: auto;
+  }
+  
+  .top-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .toolbar-row {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .translate-box {
+    justify-content: center;
+  }
+  
+  .main-header-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .auth-section {
+    justify-content: center;
+  }
+  
+  .ministers-image-wrapper {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .helpline-text {
+    display: none;
+  }
+  
+  .auth-text {
+    display: none;
+  }
+  
+  .action-btn {
+    padding: 0 10px;
+  }
+}
+
+.header-image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.header-image {
+  height: 150px; 
+  width: auto;
+  object-fit: contain;
 }
 
 .brand-left {
@@ -124,8 +389,8 @@
 }
 
 .logo {
-  width: clamp(40px, 3vw, 52px);
-  height: clamp(40px, 3vw, 52px);
+  width: clamp(60px, 3vw, 60px);
+  height: clamp(60px, 3vw, 60px);
   object-fit: contain;
   border-radius: 14px;
   background: white;
@@ -156,15 +421,16 @@
 }
 
 .site-name {
-  font-size: clamp(0.95rem, 0.55vw + 0.84rem, 1.18rem);
-  font-weight: 900;
+  // font-size: clamp(1.2rem, 1.55vw + 0.84rem, 1.75rem);
+  font-size: 1.75rem;
+  font-weight: bolder;
   letter-spacing: 0.2px;
   text-decoration: none;
   color: var(--primary);
   line-height: 1.05;
   min-width: 0;
   white-space: nowrap;
-  overflow: hidden;
+  // overflow: hidden;
   text-overflow: ellipsis;
   transition: color 0.24s ease, transform 0.24s ease;
 
@@ -183,13 +449,13 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 2px;
-  font-size: clamp(0.66rem, 0.16vw + 0.62rem, 0.78rem);
+  margin-top: 4px;
+  font-size: 0.8rem;
   color: black;
   line-height: 1.2;
   white-space: nowrap;
   min-width: 0;
-  overflow: hidden;
+  // overflow: hidden;
   text-overflow: ellipsis;
 }
 
@@ -218,7 +484,7 @@
   }
 }
 
-.toolbar-row {
+.toolbar-row {  
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -773,4 +1039,13 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+
+.top-fixed{
+  position: absolute;
+  top: 0;
+  // left: 0;
+  width: 100%;
+  z-index: 1001; /* Ensure it's above other elements */
 }

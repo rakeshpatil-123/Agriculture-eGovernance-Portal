@@ -145,6 +145,7 @@ export class ServiceApplicationComponent implements OnInit {
   serviceName: string | null = null;
   successFullySubmitted: boolean = false;
   succesResponse!: succesRes;
+  selectOptionsFormatted?: SelectOption[];
 private static digitLengthValidator(min?: number, max?: number): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
