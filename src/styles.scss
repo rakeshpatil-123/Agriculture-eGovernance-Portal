@@ -1330,3 +1330,62 @@ select {
 
 
 
+/* Global dropdown panel styles */
+.ilogi-select-panel {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+  background: #ffffff !important;
+  border: 1px solid #b8b8b8 !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+  
+  /* Content-fit width */
+  width: auto !important;
+  min-width: 150px !important;
+  max-width: calc(100vw - 32px) !important;
+  box-sizing: border-box !important;
+}
+
+.ilogi-select-panel .p-select-list,
+.ilogi-select-panel .p-multiselect-list {
+  /* Let the list size to content */
+  width: auto !important;
+  min-width: 100% !important;
+}
+
+.ilogi-select-panel .p-select-option,
+.ilogi-select-panel .p-multiselect-option {
+  padding: 8px 12px !important;
+  font-size: 0.85rem !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;  /* Prevent text wrapping */
+}
+
+.ilogi-select-panel .p-select-option:hover,
+.ilogi-select-panel .p-multiselect-option:hover {
+  background-color: #003c5b !important;
+  color: #ffffff !important;
+}
+
+.ilogi-select-panel .p-select-option.p-highlight,
+.ilogi-select-panel .p-multiselect-option.p-highlight {
+  background-color: #003c5b !important;
+  color: #ffffff !important;
+}
+
+.ilogi-select-panel .p-select-header,
+.ilogi-select-panel .p-multiselect-header {
+  position: sticky !important;
+  top: 0 !important;
+  background: #ffffff !important;
+  z-index: 1 !important;
+  padding: 8px !important;
+  border-bottom: 1px solid #e9ecef !important;
+  width: 100% !important;
+}
+
+.ilogi-select-panel .p-select-header input,
+.ilogi-select-panel .p-multiselect-header input {
+  width: 100% !important;
+}

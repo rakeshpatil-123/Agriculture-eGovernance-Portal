@@ -146,180 +146,182 @@ label {
   border: 1px solid var(--field-border) !important;
 }
 
-:host ::ng-deep .p-select-label {
-  padding: 4px 8px;
-  font-size: 0.8rem;
-  background-color: var(--select-bg, #ffffff) !important;
-  color: var(--select-text, #000000) !important;
-}
-
-// :host-context(.theme-dark) ::ng-deep .p-select-label,
-// body.theme-dark :host ::ng-deep .p-select-label {
-//   background-color: #000000 !important;
-//   color: #ffffff !important;
+// :host ::ng-deep .p-select-label {
+//   padding: 4px 8px;
+//   font-size: 0.8rem;
+//   background-color: var(--select-bg, #ffffff) !important;
+//   color: var(--select-text, #000000) !important;
 // }
 
-:host ::ng-deep .p-select-label.p-placeholder {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--field-placeholder-text) !important;
-}
+// // :host-context(.theme-dark) ::ng-deep .p-select-label,
+// // body.theme-dark :host ::ng-deep .p-select-label {
+// //   background-color: #000000 !important;
+// //   color: #ffffff !important;
+// // }
 
-:host ::ng-deep .p-select.p-focus {
-  border-color: var(--field-focus-border) !important;
-  box-shadow: none !important;
-}
+// :host ::ng-deep .p-select-label.p-placeholder {
+//   font-size: 0.75rem;
+//   font-weight: 500;
+//   color: var(--field-placeholder-text) !important;
+// }
 
-:host ::ng-deep .p-select-panel,
-:host ::ng-deep .p-select-overlay {
-  background-color: var(--field-panel-bg) !important;
-  color: var(--field-text) !important;
-  border: 1px solid var(--field-panel-border) !important;
-}
+// :host ::ng-deep .p-select.p-focus {
+//   border-color: var(--field-focus-border) !important;
+//   box-shadow: none !important;
+// }
 
-:host ::ng-deep .p-select-items-wrapper {
-  background-color: var(--field-panel-bg) !important;
-}
+// :host ::ng-deep .p-select-panel,
+// :host ::ng-deep .p-select-overlay {
+//   background-color: var(--field-panel-bg) !important;
+//   color: var(--field-text) !important;
+//   border: 1px solid var(--field-panel-border) !important;
+// }
 
-:host ::ng-deep .p-select-filter {
-  background-color: var(--field-bg) !important;
-  color: var(--field-text) !important;
-  border: 1px solid var(--field-border) !important;
-  font-size: 0.8rem;
-  height: 28px;
-}
+// :host ::ng-deep .p-select-items-wrapper {
+//   background-color: var(--field-panel-bg) !important;
+// }
 
-:host ::ng-deep .p-select-empty-message {
-  color: var(--field-empty-text) !important;
-  background-color: var(--field-panel-bg) !important;
-  font-size: 0.8rem;
-}
+// :host ::ng-deep .p-select-filter {
+//   background-color: var(--field-bg) !important;
+//   color: var(--field-text) !important;
+//   border: 1px solid var(--field-border) !important;
+//   font-size: 0.8rem;
+//   height: 28px;
+// }
 
-:host ::ng-deep .p-select-option {
-  font-size: 0.8rem;
-  color: var(--field-text) !important;
-  background-color: var(--field-panel-bg) !important;
-}
+// :host ::ng-deep .p-select-empty-message {
+//   color: var(--field-empty-text) !important;
+//   background-color: var(--field-panel-bg) !important;
+//   font-size: 0.8rem;
+// }
 
-:host ::ng-deep .p-select-option:not(.p-select-option-selected):not(.p-disabled):hover,
-:host ::ng-deep .p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
-  background-color: var(--field-hover-bg) !important;
-  color: var(--field-hover-text) !important;
-}
+// :host ::ng-deep .p-select-option {
+//   font-size: 0.8rem;
+//   color: var(--field-text) !important;
+//   background-color: var(--field-panel-bg) !important;
+// }
 
-:host ::ng-deep .p-select-option.p-select-option-selected,
-:host ::ng-deep .p-select-item.p-highlight {
-  background-color: var(--field-selected-bg) !important;
-  color: var(--field-selected-text) !important;
-}
+// :host ::ng-deep .p-select-option:not(.p-select-option-selected):not(.p-disabled):hover,
+// :host ::ng-deep .p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
+//   background-color: var(--field-hover-bg) !important;
+//   color: var(--field-hover-text) !important;
+// }
 
-:host ::ng-deep .p-floatlabel.p-floatlabel-on label {
-  background-color: var(--field-panel-bg) !important;
-  font-size: 0.75rem;
-}
+// :host ::ng-deep .p-select-option.p-select-option-selected,
+// :host ::ng-deep .p-select-item.p-highlight {
+//   background-color: var(--field-selected-bg) !important;
+//   color: var(--field-selected-text) !important;
+// }
 
-:host ::ng-deep .p-multiselect {
-  width: 100%;
-  background-color: var(--field-bg) !important;
-  color: var(--field-text) !important;
-  border: 1px solid var(--field-border) !important;
-}
+// :host ::ng-deep .p-floatlabel.p-floatlabel-on label {
+//   background-color: var(--field-panel-bg) !important;
+//   font-size: 0.75rem;
+// }
 
-:host ::ng-deep .p-multiselect .p-multiselect-label {
-  background-color: var(--field-bg) !important;
-  color: var(--field-text) !important;
-}
+// :host ::ng-deep .p-multiselect {
+//   width: 100%;
+//   background-color: var(--field-bg) !important;
+//   color: var(--field-text) !important;
+//   border: 1px solid var(--field-border) !important;
+// }
 
-:host ::ng-deep .p-multiselect .p-multiselect-token {
-  background-color: var(--field-bg) !important;
-  color: var(--field-text) !important;
-}
+// :host ::ng-deep .p-multiselect .p-multiselect-label {
+//   background-color: var(--field-bg) !important;
+//   color: var(--field-text) !important;
+// }
 
-:host ::ng-deep .p-multiselect-panel,
-:host ::ng-deep .p-multiselect-overlay {
-  background-color: var(--field-panel-bg) !important;
-  color: var(--field-text) !important;
-  border: 1px solid var(--field-panel-border) !important;
-  box-shadow: none !important;
-  min-width: 100% !important;
-}
+// :host ::ng-deep .p-multiselect .p-multiselect-token {
+//   background-color: var(--field-bg) !important;
+//   color: var(--field-text) !important;
+// }
 
-:host ::ng-deep .p-multiselect-items-wrapper {
-  background-color: var(--field-panel-bg) !important;
-}
+// :host ::ng-deep .p-multiselect-panel,
+// :host ::ng-deep .p-multiselect-overlay {
+//   background-color: var(--field-panel-bg) !important;
+//   color: var(--field-text) !important;
+//   border: 1px solid var(--field-panel-border) !important;
+//   box-shadow: none !important;
+//   min-width: 100% !important;
+// }
 
-:host ::ng-deep .p-multiselect-option {
-  background: var(--field-panel-bg) !important;
-  color: var(--field-text) !important;
-  transition: none !important;
-}
+// :host ::ng-deep .p-multiselect-items-wrapper {
+//   background-color: var(--field-panel-bg) !important;
+// }
 
-:host ::ng-deep .p-multiselect-option:hover,
-:host ::ng-deep .p-multiselect-option.p-focus {
-  background: var(--field-hover-bg) !important;
-  color: var(--field-hover-text) !important;
-  box-shadow: none !important;
-}
+// :host ::ng-deep .p-multiselect-option {
+//   background: var(--field-panel-bg) !important;
+//   color: var(--field-text) !important;
+//   transition: none !important;
+// }
 
-:host ::ng-deep .p-multiselect-option.p-multiselect-option-selected {
-  background-color: var(--field-selected-bg) !important;
-  color: var(--field-selected-text) !important;
-  box-shadow: none !important;
-}
+// :host ::ng-deep .p-multiselect-option:hover,
+// :host ::ng-deep .p-multiselect-option.p-focus {
+//   background: var(--field-hover-bg) !important;
+//   color: var(--field-hover-text) !important;
+//   box-shadow: none !important;
+// }
 
-:host ::ng-deep .p-checkbox-box {
-  background: var(--field-bg) !important;
-  border: 1px solid var(--field-checkbox-border) !important;
-  box-shadow: none !important;
-}
+// :host ::ng-deep .p-multiselect-option.p-multiselect-option-selected {
+//   background-color: var(--field-selected-bg) !important;
+//   color: var(--field-selected-text) !important;
+//   box-shadow: none !important;
+// }
 
-:host ::ng-deep .p-checkbox-box.p-highlight {
-  background: var(--field-bg) !important;
-  border-color: var(--field-focus-border) !important;
-}
+// :host ::ng-deep .p-checkbox-box {
+//   background: var(--field-bg) !important;
+//   border: 1px solid var(--field-checkbox-border) !important;
+//   box-shadow: none !important;
+// }
 
-:host ::ng-deep .p-checkbox-box .p-checkbox-icon {
-  color: var(--field-checkbox-icon) !important;
-}
+// :host ::ng-deep .p-checkbox-box.p-highlight {
+//   background: var(--field-bg) !important;
+//   border-color: var(--field-focus-border) !important;
+// }
 
-:host ::ng-deep .p-multiselect-list,
-.p-multiselect-list,
-:host ::ng-deep .p-multiselect-items-wrapper,
-.p-multiselect-items-wrapper,
-:host ::ng-deep .p-multiselect .p-multiselect-token,
-.p-multiselect .p-multiselect-token {
-  background: #ffffff !important;
-  color: #3b3b3b !important;
-}
+// :host ::ng-deep .p-checkbox-box .p-checkbox-icon {
+//   color: var(--field-checkbox-icon) !important;
+// }
 
-:host ::ng-deep .p-multiselect-option[style*="color-mix"],
-.p-multiselect-option[style*="color-mix"] {
-  background-color: #ffffff !important;
-  color: #3b3b3b !important;
-}
+// :host ::ng-deep .p-multiselect-list,
+// .p-multiselect-list,
+// :host ::ng-deep .p-multiselect-items-wrapper,
+// .p-multiselect-items-wrapper,
+// :host ::ng-deep .p-multiselect .p-multiselect-token,
+// .p-multiselect .p-multiselect-token {
+//   background: #ffffff !important;
+//   color: #3b3b3b !important;
+// }
 
-:host ::ng-deep .p-multiselect,
-:host ::ng-deep .p-multiselect-panel,
-:host ::ng-deep .p-multiselect-overlay,
-:host ::ng-deep .p-multiselect .p-multiselect-items-wrapper,
-:host ::ng-deep .p-multiselect .p-multiselect-option,
-:host ::ng-deep .p-multiselect .p-multiselect-token,
-:host ::ng-deep .p-multiselect .p-checkbox-box {
-  background-color: #ffffff !important;
-  color: #3b3b3b !important;
-}
+// :host ::ng-deep .p-multiselect-option[style*="color-mix"],
+// .p-multiselect-option[style*="color-mix"] {
+//   background-color: #ffffff !important;
+//   color: #3b3b3b !important;
+// }
 
-:host ::ng-deep .p-multiselect-list,
-:host ::ng-deep .p-multiselect-items-wrapper,
-:host ::ng-deep .p-multiselect-panel .p-multiselect-item,
-.p-multiselect-panel,
-.p-multiselect-overlay {
-  background-color: #ffffff !important;
-  color: #3b3b3b !important;
-}
+// :host ::ng-deep .p-multiselect,
+// :host ::ng-deep .p-multiselect-panel,
+// :host ::ng-deep .p-multiselect-overlay,
+// :host ::ng-deep .p-multiselect .p-multiselect-items-wrapper,
+// :host ::ng-deep .p-multiselect .p-multiselect-option,
+// :host ::ng-deep .p-multiselect .p-multiselect-token,
+// :host ::ng-deep .p-multiselect .p-checkbox-box {
+//   background-color: #ffffff !important;
+//   color: #3b3b3b !important;
+// }
 
-:host ::ng-deep .p-multiselect .p-multiselect-option,
-:host ::ng-deep .p-multiselect .p-multiselect-item {
-  background: transparent !important;
-  color: #3b3b3b !important;
-}
+// :host ::ng-deep .p-multiselect-list,
+// :host ::ng-deep .p-multiselect-items-wrapper,
+// :host ::ng-deep .p-multiselect-panel .p-multiselect-item,
+// .p-multiselect-panel,
+// .p-multiselect-overlay {
+//   background-color: #ffffff !important;
+//   color: #3b3b3b !important;
+// }
+
+// :host ::ng-deep .p-multiselect .p-multiselect-option,
+// :host ::ng-deep .p-multiselect .p-multiselect-item {
+//   background: transparent !important;
+//   color: #3b3b3b !important;
+// }
+
+

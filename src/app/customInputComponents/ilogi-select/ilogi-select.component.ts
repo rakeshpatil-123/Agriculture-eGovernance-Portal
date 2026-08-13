@@ -1,6 +1,3 @@
-
-
-
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -9,6 +6,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -48,8 +46,13 @@ export interface SelectOption {
   ],
 })
 export class IlogiSelectComponent
-  implements OnInit, AfterViewInit, ControlValueAccessor, OnChanges {
+  implements OnInit, AfterViewInit, ControlValueAccessor, OnChanges, OnDestroy {
+  
   @ViewChild('searchInput') searchInputRef!: ElementRef<HTMLInputElement>;
+  
+  // Unique panel class for this instance
+  panelClass = 'ilogi-select-panel ilogi-' + Math.random().toString(36).slice(2, 9);
+  
   @Input() submitted = false;
   @Input() fieldLabel: string = '';
   @Input() hideLabel = false;
@@ -67,6 +70,7 @@ export class IlogiSelectComponent
   searchTerm: string = '';
   @Input() errors: { [key: string]: any } | null = null;
   @Input() multiple: boolean = false;
+  
   @Input('multi') set multiAttr(val: any) {
     if (val === '' || val === true || val === 'true') {
       this.multiple = true;
@@ -74,6 +78,7 @@ export class IlogiSelectComponent
       this.multiple = false;
     }
   }
+  
   @Output() change = new EventEmitter<{ value: any }>();
   @Output() blur = new EventEmitter<void>();
 
@@ -82,10 +87,13 @@ export class IlogiSelectComponent
   value: any = null;
   isDisabled = false;
 
-  private onChange: (value: any) => void = () => { };
-  private onTouched: () => void = () => { };
+  private onChange: (value: any) => void = () => {};
+  private onTouched: () => void = () => {};
+  
+  // For repositioning on scroll/resize
+  private readonly reposition = () => requestAnimationFrame(() => this.pinOverlay());
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef) {}
 
   ngOnInit() {
     if (this.fieldId) {
@@ -98,31 +106,19 @@ export class IlogiSelectComponent
     this.cdr.detectChanges();
   }
 
+  ngOnDestroy(): void {
+    this.onDropdownHide();
+  }
+
   get hasErrors(): boolean {
     return !!this.errors && Object.keys(this.errors).length > 0;
   }
-  // onSearch(term: string): void {
-  //   if (!this.enableSearch) return;
-  //   this.searchTerm = term;
-  //   const lowerTerm = term.toLowerCase();
-  //   this.filteredOptions = this.selectOptions.filter((opt) =>
-  //     opt.name.toLowerCase().includes(lowerTerm)
-  //   );
-  // }
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   if (changes['selectOptions']) {
-  //     this.filteredOptions = [...this.selectOptions];
-  //     this.cdr.detectChanges();
-  //   }
-  // }
-
 
   onSearch(term: string): void {
     if (!this.enableSearch) return;
     this.searchTerm = term;
     this.applyFilter(term);
   }
-
 
   private applyFilter(term: string): void {
     const opts = this.selectOptions ?? [];
@@ -136,33 +132,58 @@ export class IlogiSelectComponent
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectOptions']) {
-      this.applyFilter(this.searchTerm); // keep the filter alive
+      this.applyFilter(this.searchTerm);
     }
   }
 
   onDropdownShow(): void {
     this.filteredOptions = this.selectOptions ? [...this.selectOptions] : [];
     this.searchTerm = '';
-    if (this.enableSearch) {
-      setTimeout(() => {
+    
+    setTimeout(() => {
+      if (this.enableSearch) {
         this.searchInputRef?.nativeElement.focus();
-      }, 100);
-    }
+      }
+      this.pinOverlay();
+      window.addEventListener('scroll', this.reposition, true);
+      window.addEventListener('resize', this.reposition);
+    }, 30);
   }
 
-  // writeValue(value: any): void {
-  //   this.value = value;
-  //   this.cdr.detectChanges();
-  // }
-  //   writeValue(value: any): void {
-  //   if (value !== undefined && value !== null) {
-  //   this.value = value;
-  //   setTimeout(() => {
-  //     this.value = value;
-  //     this.cdr.detectChanges();
-  //   });
-  //   }
-  // }
+  onDropdownHide(): void {
+    window.removeEventListener('scroll', this.reposition, true);
+    window.removeEventListener('resize', this.reposition);
+  }
+
+private pinOverlay(): void {
+  const overlay = document.querySelector<HTMLElement>(
+    '.' + this.panelClass.split(' ')[1]
+  );
+  const trigger = this.elementRef.nativeElement.querySelector('.p-select, .p-multiselect');
+  
+  if (!overlay || !trigger) return;
+
+  const rect = trigger.getBoundingClientRect();
+  const panelH = overlay.offsetHeight || 280;
+  const spaceBelow = window.innerHeight - rect.bottom;
+  const openUp = spaceBelow < panelH && rect.top > spaceBelow;
+
+  // Calculate max available width from trigger position to right edge
+  const maxAvailableWidth = window.innerWidth - rect.left - 16;
+
+  overlay.style.position = 'fixed';
+  overlay.style.zIndex = '2147483647';
+  overlay.style.top = (openUp ? Math.max(8, rect.top - panelH - 4) : rect.bottom + 4) + 'px';
+  overlay.style.left = rect.left + 'px';
+  
+  // DON'T set width - let it fit content
+  overlay.style.minWidth = rect.width + 'px';  // At least as wide as trigger
+  overlay.style.maxWidth = maxAvailableWidth + 'px';  // But not wider than viewport
+  overlay.style.width = 'auto';  // Auto-size to content
+  overlay.style.marginTop = '0';
+  overlay.style.boxSizing = 'border-box';
+}
+
   writeValue(value: any): void {
     if (value === undefined) {
       this.value = this.multiple ? [] : null;
@@ -218,12 +239,6 @@ export class IlogiSelectComponent
     this.blur.emit();
   }
 
-  // getDisplayName(value: any): string {
-  //   if (value === null || value === undefined) return '';
-
-  //   const option = this.selectOptions.find((opt) => opt.id === value);
-  //   return option ? option.name : '';
-  // }
   getDisplayName(value: any): string {
     if (value === null || value === undefined) return '';
     if (this.multiple && Array.isArray(value)) {

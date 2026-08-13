@@ -742,6 +742,7 @@ getFileHintText(question: ServiceQuestion): string {
     if (sectionGroup) {
       const newRow = this.createSectionRow(sectionGroup.questions);
       sectionGroup.formArray.push(newRow);
+        this.cdr.detectChanges();
     }
   }
 
@@ -1555,7 +1556,6 @@ onSubmit(): void {
       return false;
     }
 
-    // normalize operator and expected value
     const op = (operator || '').trim();
     const expectedRaw = expectedValue == null ? '' : String(expectedValue).trim();
 

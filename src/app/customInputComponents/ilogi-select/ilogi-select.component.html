@@ -16,11 +16,26 @@
   <ng-container *ngIf="!readonly">
     <div class="w-100 select-form-field" [ngClass]="{ 'is-invalid': submitted && errors }">
 
-  <p-select *ngIf="!multiple"  [readonly]="isReadOnly" [inputId]="fieldId" [options]="filteredOptions" optionLabel="name"
-    [(ngModel)]="value" optionValue="id" [placeholder]="placeholder" [disabled]="isDisabled" [filter]="false"
-    (onShow)="onDropdownShow()" (onChange)="onChangeControl($event.value)" (onFocus)="showErrorOnFieldHover()"
-    (onBlur)="onBlur()" [attr.aria-invalid]="submitted && errors ? 'true' : 'false'"
-    [attr.aria-describedby]="errorFieldId" styleClass="w-full">
+  <p-select *ngIf="!multiple" 
+  appendTo="body" 
+  [panelStyleClass]="panelClass" 
+  [readonly]="isReadOnly" 
+  [inputId]="fieldId" 
+  [options]="filteredOptions" 
+  optionLabel="name"
+  [(ngModel)]="value" 
+  optionValue="id" 
+  [placeholder]="placeholder" 
+  [disabled]="isDisabled" 
+  [filter]="false"
+  (onShow)="onDropdownShow()" 
+  (onHide)="onDropdownHide()"
+  (onChange)="onChangeControl($event.value)" 
+  (onFocus)="showErrorOnFieldHover()"
+  (onBlur)="onBlur()" 
+  [attr.aria-invalid]="submitted && errors ? 'true' : 'false'"
+  [attr.aria-describedby]="errorFieldId" 
+  styleClass="w-full">
     <ng-template pTemplate="header" *ngIf="enableSearch">
       <input #searchInput type="text" class="p-inputtext p-component" placeholder="Search..." [(ngModel)]="searchTerm"
         (ngModelChange)="onSearch($event)" style="background-color: #fff; color: #000;" />
@@ -36,11 +51,26 @@
     </ng-template>
   </p-select>
   
-  <p-multiSelect *ngIf="multiple" appendTo="body" [readonly]="isReadOnly" [inputId]="fieldId" [options]="filteredOptions" optionLabel="name"
-    [(ngModel)]="value" optionValue="id" [placeholder]="placeholder" [disabled]="disabled" [filter]="false"
-    (onShow)="onDropdownShow()" (onChange)="onChangeControl($event.value)" (onFocus)="showErrorOnFieldHover()"
-    (onBlur)="onBlur()" [attr.aria-invalid]="submitted && errors ? 'true' : 'false'"
-    [attr.aria-describedby]="errorFieldId" styleClass="w-full">
+ <p-multiSelect *ngIf="multiple" 
+  appendTo="body" 
+  [panelStyleClass]="panelClass" 
+  [readonly]="isReadOnly" 
+  [inputId]="fieldId" 
+  [options]="filteredOptions" 
+  optionLabel="name"
+  [(ngModel)]="value" 
+  optionValue="id" 
+  [placeholder]="placeholder" 
+  [disabled]="disabled" 
+  [filter]="false"
+  (onShow)="onDropdownShow()" 
+  (onHide)="onDropdownHide()"
+  (onChange)="onChangeControl($event.value)" 
+  (onFocus)="showErrorOnFieldHover()"
+  (onBlur)="onBlur()" 
+  [attr.aria-invalid]="submitted && errors ? 'true' : 'false'"
+  [attr.aria-describedby]="errorFieldId" 
+  styleClass="w-full">
     <ng-template pTemplate="header" *ngIf="enableSearch">
       <input #searchInput type="text" class="p-inputtext p-component" placeholder="Search..." [(ngModel)]="searchTerm"
         (ngModelChange)="onSearch($event)" style="background-color: #fff; color: #000;" />
