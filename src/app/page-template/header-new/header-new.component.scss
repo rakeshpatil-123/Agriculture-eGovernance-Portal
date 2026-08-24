@@ -1,7 +1,7 @@
 @use 'sass:color';
 
 :host {
-  --header-bg: rgba(255, 255, 255, 0.9);
+  --header-bg: rgba(255, 255, 255, 0.95);
   --header-border: rgba(3, 30, 66, 0.08);
   --surface: #ffffff;
   --surface-soft: #f7fafc;
@@ -24,30 +24,6 @@
   display: block;
 }
 
-// :host-context(.theme-dark),
-// :host-context(body.theme-dark) {
-//   --header-bg: rgba(8, 15, 25, 0.88);
-//   --header-border: rgba(148, 163, 184, 0.12);
-//   --surface: #0b1220;
-//   --surface-soft: #101a2b;
-//   --surface-elevated: #0f172a;
-//   --text-main: #f8fafc;
-//   --text-muted: #cbd5e1;
-//   --text-soft: #94a3b8;
-//   --primary: #76a9ff;
-//   --primary-2: #8bc5ff;
-//   --accent: #39c98d;
-//   --gold: #f2c66d;
-//   --shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
-//   --shadow-strong: 0 24px 54px rgba(0, 0, 0, 0.35);
-//   --ring: rgba(118, 169, 255, 0.18);
-//   --dialog-overlay: rgba(2, 6, 23, 0.78);
-//   --dialog-surface: linear-gradient(135deg, #101a2b 0%, #0b1220 100%);
-//   --btn-soft: rgba(255, 255, 255, 0.05);
-//   --btn-soft-hover: rgba(255, 255, 255, 0.09);
-//   --focus: 0 0 0 4px rgba(118, 169, 255, 0.18);
-// }
-
 .skip-link {
   position: absolute;
   left: 12px;
@@ -62,322 +38,82 @@
   box-shadow: var(--shadow);
   transition: top 0.22s ease, transform 0.22s ease;
 
-
   &:focus {
     top: 12px;
     outline: none;
     box-shadow: var(--shadow-strong);
   }
-
 }
-
-// .brand-header {
-//   position: fixed;
-//   inset: 0 0 auto 0;
-//   z-index: 1000;
-//   width: 100%;
-//   min-height: 84px;
-//   display: block;
-//   background:
-//     linear-gradient(180deg, color.change(#ffffff, $alpha: 0.94), color.change(#f8fbff, $alpha: 0.92)),
-//     var(--header-bg);
-//   color: var(--text-main);
-//   border-bottom: 1px solid var(--header-border);
-//   box-shadow: var(--shadow);
-//   backdrop-filter: blur(18px) saturate(1.2);
-//   -webkit-backdrop-filter: blur(18px) saturate(1.2);
-//   overflow: clip;
-// }
-
-.brand-header::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 52%, var(--gold) 100%);
-}
-
-// .brand-shell {
-//   max-width: 1600px;
-//   margin: 0 auto;
-//   min-height: 84px;
-//   padding: 8px 0 0 8px;
-//   display: grid;
-//   grid-template-columns: minmax(280px, 1.1fr) minmax(0, 2.2fr) auto; 
-//   gap: clamp(8px, 1vw, 16px);
-//   align-items: center;
-//   animation: headerFadeUp 520ms cubic-bezier(.2, .9, .2, 1) both;
-// }
 
 .brand-header {
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 1000;
   width: 100%;
-  min-height: 120px; // Increased to accommodate two rows
+  // min-height: 140px;
   display: block;
   background: #fff;
   color: var(--text-main);
   border-bottom: 1px solid var(--header-border);
-  // box-shadow: var(--shadow);
   backdrop-filter: blur(18px) saturate(1.2);
   -webkit-backdrop-filter: blur(18px) saturate(1.2);
-  overflow: visible; // Changed from clip to visible
+  overflow: visible;
+  padding: 12px 0 0 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 52%, var(--gold) 100%);
+  }
 }
 
 .brand-shell {
   // max-width: 1600px;
   margin: 0 auto;
-  // padding: 0 clamp(10px, 1.3vw, 22px);
+  padding: 0 0 0 10px;
   display: flex;
   flex-direction: column;
-  // gap: 8px;
+  gap: 8px;
   animation: headerFadeUp 520ms cubic-bezier(.2, .9, .2, 1) both;
 }
 
-// Top Toolbar Row
+// Top toolbar with accessibility controls
 .top-toolbar {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  gap: 12px;
-  padding:4px 8px 0 8px;
-  // background: linear-gradient(#0e9f6e) ;
-  border-bottom: 1px solid color.change(#0b4ea2, $alpha: 0.08);
-}
-
-// Main Header Row (Logo + Auth + Ministers)
-.main-header-row {
-  width: 100%;
-  display: flex;
-  // grid-template-columns: minmax(280px, 1fr) auto auto;
-  // gap: clamp(12px, 2vw, 24px);
   justify-content: space-between;
-  align-items: center;
-  padding: 0 0 0 12px;
-}
-
-.brand-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-// Auth Section (Login/Register)
-.auth-section {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  justify-content: flex-end;
-}
-
-// Ministers Wrapper - Acts as the positioning anchor
-.ministers-image-wrapper {
-  display: flex;
-  align-items: flex-end; // Aligns items to bottom so ministers stand on "ground"
-  justify-content: flex-end;
-  margin-left: auto;
-  position: relative; // Crucial for absolute positioning of children
-  height: 140px; // Fixed height to contain the pattern
-  width: clamp(300px, 40vw, 500px);
-  overflow: hidden; // Keeps pattern within bounds
-}
-
-// The Agricultural Background Pattern
-.agri-bg-pattern {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('/assets/landing-page/agriculture-pattern.png'); 
-  background-size: cover;
-  background-position: center right;
-  background-repeat: no-repeat;
-  opacity: 0.85;
-  z-index: 1;
-  pointer-events: none;
-  
-  // Fade effect from left (transparent) to right (visible)
-  mask-image: linear-gradient(to right, transparent 0%, transparent 20%, black 60%, black 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 20%, black 60%, black 100%);
-  
-  // Fallback for browsers that don't support mask-image
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 20%, rgba(255,255,255,0) 60%, rgba(255,255,255,0) 100%);
-    z-index: 2;
-    pointer-events: none;
-  }
-}
-
-// Ministers Photo Container - Sits ON TOP of the pattern
-.ministers-photo-container {
-  position: relative;
-  z-index: 2; // Higher than pattern
-  display: flex;
-  align-items: flex-end;
-  height: 100%;
-}
-
-.ministers-image {
-  height: clamp(130px, 14vh, 140px);
-  width: auto;
-  object-fit: contain;
-  object-position: bottom center;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1)); // Adds depth separation from pattern
-}
-
-// Responsive adjustments
-@media (max-width: 1024px) {
-  .ministers-image-wrapper {
-    width: clamp(200px, 30vw, 350px);
-    height: 100px;
-  }
-  
-  .ministers-image {
-    height: clamp(80px, 10vh, 100px);
-  }
-}
-
-@media (max-width: 768px) {
-  .ministers-image-wrapper {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    justify-content: center;
-    margin-left: 0;
-    margin-top: 8px;
-    width: 100%;
-    height: 80px;
-  }
-  
-  .agri-bg-pattern {
-    opacity: 0.4; // More subtle on mobile
-  }
-}
-
-.toolbar-row {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid color.change(#0b4ea2, $alpha: 0.08);
   flex-wrap: nowrap;
-  min-width: max-content;
-  padding: 5px 7px;
-  border-radius: 16px;
-  background: color.change(#0b4ea2, $alpha: 0.04);
-  border: 1px solid color.change(#0b4ea2, $alpha: 0.08);
-  box-shadow: 0 8px 20px rgba(2, 18, 43, 0.04);
 }
 
-.translate-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 120px;
-  height: 36px;
-  flex: 0 0 120px;
-  overflow: visible;
-}
-
-// Rest of your existing styles remain the same...
-// (logo, brand-copy, action-btn, icon-btn styles etc.)
-
-@media (max-width: 1024px) {
-  .main-header-row {
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-  }
-  
-  .brand-left {
-    grid-column: 1;
-    grid-row: 1;
-  }
-  
-  .auth-section {
-    grid-column: 2;
-    grid-row: 1;
-  }
-  
-  .ministers-image-wrapper {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    justify-content: center;
-    margin-left: 0;
-    margin-top: 8px;
-  }
-  
-  .ministers-image {
-    height: clamp(60px, 8vh, 80px);
-  }
-}
-
-@media (max-width: 768px) {
-  .brand-header {
-    min-height: auto;
-  }
-  
-  .top-toolbar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .toolbar-row {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .translate-box {
-    justify-content: center;
-  }
-  
-  .main-header-row {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  
-  .auth-section {
-    justify-content: center;
-  }
-  
-  .ministers-image-wrapper {
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .helpline-text {
-    display: none;
-  }
-  
-  .auth-text {
-    display: none;
-  }
-  
-  .action-btn {
-    padding: 0 10px;
-  }
-}
-
-.header-image-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.header-image {
-  height: 150px; 
-  width: auto;
-  object-fit: contain;
-}
-
-.brand-left {
+.top-fixed {
   display: flex;
   align-items: center;
   gap: 12px;
-  min-width: 0;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.main-header-row {
+  display: flex;
+  align-items: flex-start; // CHANGE from 'center' to 'flex-start'
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: nowrap;
+  height: 100%; // ADD THIS
+}
+
+// Left section: Logo + Title
+.brand-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   flex: 0 1 auto;
+  min-width: 0;
 }
 
 .logo-link {
@@ -389,8 +125,8 @@
 }
 
 .logo {
-  width: clamp(60px, 3vw, 60px);
-  height: clamp(60px, 3vw, 60px);
+  width: 64px;
+  height: 64px;
   object-fit: contain;
   border-radius: 14px;
   background: white;
@@ -410,6 +146,8 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  flex: 1;
+  max-width: 400px; // Give it a reasonable max width
 }
 
 .title-row {
@@ -417,22 +155,21 @@
   align-items: center;
   gap: 8px;
   min-width: 0;
-  flex-wrap: nowrap;
 }
 
 .site-name {
-  // font-size: clamp(1.2rem, 1.55vw + 0.84rem, 1.75rem);
-  font-size: 1.75rem;
+  font-size:1.4rem;
   font-weight: bolder;
   letter-spacing: 0.2px;
   text-decoration: none;
   color: var(--primary);
-  line-height: 1.05;
-  min-width: 0;
-  white-space: nowrap;
-  // overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.2;
+  // white-space: normal; // Allow text to wrap
+  overflow: visible; // Don't hide overflow
+  // word-break: break-word; // Break long words if needed
+  max-width: none; // Remove max-width constraint
   transition: color 0.24s ease, transform 0.24s ease;
+  display: inline-block; // Allow natural width
 
   &:hover {
     color: color.scale(#0b4ea2, $lightness: -8%);
@@ -440,90 +177,179 @@
   }
 }
 
-:host-context(.theme-dark) .site-name:hover,
-:host-context(body.theme-dark) .site-name:hover {
-  color: var(--primary-2);
-}
-
 .subtitle-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 4px;
-  font-size: 0.8rem;
-  color: black;
-  line-height: 1.2;
+  margin-top: 2px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.3;
   white-space: nowrap;
   min-width: 0;
-  // overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.brand-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  flex: 0 0 auto;
-}
-
-.action-section {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-  min-width: 0;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-.toolbar-row {  
+// Center section: Toolbar buttons
+.toolbar-row {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   flex-wrap: nowrap;
-  min-width: max-content;
-  padding: 5px 7px;
+  padding: 6px 10px;
   border-radius: 16px;
   background: color.change(#0b4ea2, $alpha: 0.04);
   border: 1px solid color.change(#0b4ea2, $alpha: 0.08);
   box-shadow: 0 8px 20px rgba(2, 18, 43, 0.04);
+  flex: 0 0 auto;
 }
 
-:host-context(.theme-dark) .toolbar-row,
-:host-context(body.theme-dark) .toolbar-row {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.08);
+.translate-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 130px;
+  height: 38px;
+  flex: 0 0 130px;
+  margin-left: 12px;
+
+  ::ng-deep #google_translate_element {
+    display: block !important;
+    width: 100%;
+  }
+
+  ::ng-deep .skiptranslate {
+    display: inline-flex !important;
+    align-items: center;
+  }
+
+  ::ng-deep iframe {
+    display: none !important;
+  }
+
+  ::ng-deep .goog-te-gadget {
+    display: flex !important;
+    align-items: center;
+    color: transparent !important;
+    font-size: 0 !important;
+  }
+
+  ::ng-deep .goog-te-gadget-simple {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    padding: 0 10px !important;
+    border-radius: 11px !important;
+    border: 1px solid rgba(11, 78, 162, 0.14) !important;
+    background: var(--surface) !important;
+    font-size: 0.8rem !important;
+    color: var(--text-main) !important;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(2, 18, 43, 0.04);
+  }
+
+  ::ng-deep .goog-te-menu-value {
+    color: var(--text-main) !important;
+    font-weight: 700;
+  }
+
+  ::ng-deep .goog-te-menu-value span {
+    border: 0 !important;
+  }
+
+  ::ng-deep img,
+  ::ng-deep .goog-te-gadget-icon {
+    display: none !important;
+  }
 }
 
-.auth-row {
-  background: transparent;
-  border: 0;
-  padding: 0;
-  box-shadow: none;
-  gap: 8px;
+// Right section: Auth buttons + Ministers
+.header-right-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 0 0 auto;
 }
 
+.auth-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+// Ministers section
+.ministers-image-wrapper {
+  display: flex;
+  align-items: flex-end; // CHANGE to 'flex-end'
+  justify-content: flex-end;
+  position: relative;
+  height: 140px;
+  width: 320px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  line-height: 0;
+}
+
+.agri-bg-pattern {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/landing-page/agriculture-pattern.png');
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+  opacity: 0.85;
+  z-index: 1;
+  pointer-events: none;
+
+  mask-image: linear-gradient(to right, transparent 0%, transparent 20%, black 60%, black 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 20%, black 60%, black 100%);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 20%, rgba(255,255,255,0) 60%, rgba(255,255,255,0) 100%);
+    z-index: 2;
+    pointer-events: none;
+  }
+}
+
+.ministers-photo-container {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+}
+
+.ministers-image {
+  height: 130px;
+  width: auto;
+  display: block; // ADD THIS
+  object-fit: contain;
+  object-position: bottom right; // CHANGE to 'bottom right'
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+  margin: 0; // ADD THIS
+  padding: 0; // ADD THIS
+}
+
+// Button styles
 .icon-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0;
-  min-width: 36px;
-  height: 36px;
-  padding: 0 9px;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 10px;
   border-radius: 11px;
   border: 1px solid color.change(#0b4ea2, $alpha: 0.14);
   background: var(--surface);
   color: var(--text-main);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 900;
   text-decoration: none;
   cursor: pointer;
@@ -565,18 +391,13 @@
   flex: 0 0 auto;
 }
 
-.theme-toggle-wrap {
-  display: inline-flex;
-  align-items: center;
-}
-
 .action-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 7px;
-  height: 36px;
-  padding: 0 12px;
+  height: 38px;
+  padding: 0 14px;
   border-radius: 11px;
   border: 1px solid color.change(#0b4ea2, $alpha: 0.14);
   background: var(--surface);
@@ -584,7 +405,7 @@
   text-decoration: none;
   cursor: pointer;
   font-weight: 800;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   white-space: nowrap;
   transition:
     transform 0.18s ease,
@@ -637,73 +458,13 @@
 }
 
 .helpline-text {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 800;
   line-height: 1;
   white-space: nowrap;
 }
 
-.translate-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 120px;
-  height: 36px;
-  flex: 0 0 120px;
-  overflow: visible;
-  margin-left: 4rem;
-}
-
-.translate-box ::ng-deep #google_translate_element {
-  display: block !important;
-  width: 100%;
-}
-
-.translate-box ::ng-deep .skiptranslate {
-  display: inline-flex !important;
-  align-items: center;
-}
-
-.translate-box ::ng-deep iframe {
-  display: none !important;
-}
-
-.translate-box ::ng-deep .goog-te-gadget {
-  display: flex !important;
-  align-items: center;
-  color: transparent !important;
-  font-size: 0 !important;
-}
-
-.translate-box ::ng-deep .goog-te-gadget-simple {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  height: 36px;
-  padding: 0 8px !important;
-  border-radius: 11px !important;
-  border: 1px solid rgba(11, 78, 162, 0.14) !important;
-  background: var(--surface) !important;
-  font-size: 0.78rem !important;
-  color: var(--text-main) !important;
-  cursor: pointer;
-  box-shadow: 0 8px 20px rgba(2, 18, 43, 0.04);
-}
-
-.translate-box ::ng-deep .goog-te-menu-value {
-  color: var(--text-main) !important;
-  font-weight: 700;
-}
-
-.translate-box ::ng-deep .goog-te-menu-value span {
-  border: 0 !important;
-}
-
-.translate-box ::ng-deep img,
-.translate-box ::ng-deep .goog-te-gadget-icon {
-  display: none !important;
-}
-
+// Dialog styles
 .sr-dialog-overlay {
   position: fixed;
   inset: 0;
@@ -823,6 +584,7 @@
   will-change: transform, opacity;
 }
 
+// Animations
 @keyframes floatLogo {
   0%   { transform: translateY(0) rotate(0deg); }
   50%  { transform: translateY(-4px) rotate(-0.5deg); }
@@ -856,141 +618,589 @@
   to { opacity: 1; }
 }
 
-@media (max-width: 1280px) {
+// RESPONSIVE BREAKPOINTS
+
+// Large tablets and small desktops (1285px and below)
+@media (max-width: 1350px) {
   .brand-shell {
-    grid-template-columns: minmax(260px, 1fr) minmax(0, 2fr);
-    gap: 10px;
+    padding: 0 16px;
   }
 
-  .site-name {
-    max-width: 170px;
-  }
-}
-
-@media (max-width: 1100px) {
-  .brand-shell {
-    grid-template-columns: minmax(240px, 0.95fr) minmax(0, 2.05fr);
+  .main-header-row {
+    gap: 16px;
+    align-items: flex-start; // ADD/CHANGE THIS
+    height: 100%; // ADD THIS
   }
 
-  .subtitle-row {
-    max-width: 240px;
-  }
-}
-
-@media (max-width: 920px) {
-  .brand-shell {
-    grid-template-columns: minmax(220px, 0.9fr) minmax(0, 2.1fr);
+ .site-name {
+    font-size: 1.3rem;
+    line-height: 1.2;
   }
 
-  .action-section {
-    justify-content: flex-end;
+   .ministers-image-wrapper {
+    width: 280px;
+    height: 120px;
+    align-items: flex-end; // ADD/CHANGE THIS
+    line-height: 0; // ADD THIS
   }
-
-  .toolbar-row {
-    gap: 5px;
-  }
-}
-
-@media (max-width: 768px) {
-  .brand-shell {
-    padding: 8px 10px;
-    gap: 8px;
-  }
-
-  .brand-left {
-    gap: 10px;
-  }
-
-  .title-row {
-    gap: 6px;
+  
+  .ministers-image {
+    height: 110px;
+    display: block; // ADD THIS
+    object-position: bottom right; // CHANGE THIS
   }
 
   .toolbar-row {
     gap: 4px;
-    padding: 5px 6px;
+    padding: 5px 8px;
   }
 
   .icon-btn {
-    min-width: 34px;
-    height: 34px;
+    min-width: 36px;
+    height: 36px;
     padding: 0 8px;
-    font-size: 0.78rem;
-  }
-
-  .action-btn {
-    height: 34px;
-    padding: 0 10px;
-    font-size: 0.74rem;
-  }
-
-  .translate-box {
-    min-width: 110px;
-    flex: 0 0 110px;
-  }
-
-  .translate-box ::ng-deep .goog-te-gadget-simple {
-    height: 34px;
-    padding: 0 7px !important;
-  }
-}
-
-@media (max-width: 640px) {
-  .brand-shell {
-    grid-template-columns: minmax(200px, 0.85fr) minmax(0, 2.15fr);
-    padding: 7px 8px;
-  }
-
-  .site-name {
-    font-size: 0.92rem;
-    max-width: 120px;
-  }
-
-  .subtitle-row {
-    font-size: 0.64rem;
-    max-width: 170px;
-  }
-
-  .logo {
-    width: 38px;
-    height: 38px;
-    border-radius: 11px;
-  }
-
-  .gov-badge {
-    font-size: 0.6rem;
-    padding: 4px 7px;
-  }
-
-  .icon-btn {
-    min-width: 32px;
-    height: 32px;
-    padding: 0 7px;
-    border-radius: 10px;
-  }
-
-  .action-btn {
-    height: 32px;
-    padding: 0 9px;
-    font-size: 0.72rem;
-    border-radius: 10px;
-  }
-
-  .helpline-btn {
-    padding: 0 9px;
+    font-size: 0.8rem;
   }
 
   .helpline-text {
     display: none;
   }
 
-  .translate-box {
-    min-width: 102px;
-    flex: 0 0 102px;
+  .action-btn {
+    height: 36px;
+    padding: 0 12px;
+    font-size: 0.8rem;
   }
 
-  .translate-box ::ng-deep .goog-te-gadget-simple {
+  .translate-box {
+    min-width: 110px;
+    height: 36px;
+    flex: 0 0 110px;
+    margin-left: 8px;
+
+    ::ng-deep .goog-te-gadget-simple {
+      height: 36px !important;
+      padding: 0 8px !important;
+      font-size: 0.75rem !important;
+    }
+  }
+}
+
+
+// Tablet / Small Desktop (1024px to 1279px) - Keep desktop layout, just smaller
+// Tablet / Small Desktop (1024px to 1279px) - Keep desktop layout with absolute positioned ministers
+@media  (min-width: 1024px) {
+  .brand-header {
+    min-height: auto;
+  }
+
+  .brand-shell {
+    padding: 0 16px;
+  }
+
+  .top-toolbar {
+    padding: 6px 0 6px 0;
+    gap: 10px;
+  }
+
+  .main-header-row {
+  
+        gap: 12px;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        padding-right: 240px;
+        padding: 12px 240px 12px 0;
+        height: 100%;
+  }
+  
+  .brand-left {
+    gap: 10px;
+    flex: 0 0 auto;
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .site-name {
+    font-size: 1.4rem;
+  }
+
+  .subtitle-row {
+    font-size: 0.75rem;
+    margin-top: 0;
+  }
+
+  .translate-box {
+    min-width: 110px;
+    height: 34px;
+    flex: 0 0 110px;
+
+    ::ng-deep .goog-te-gadget-simple {
+      height: 34px !important;
+      padding: 0 7px !important;
+      font-size: 0.7rem !important;
+    }
+  }
+
+  .toolbar-row {
+    gap: 4px;
+    padding: 4px 6px;
+    flex: 0 0 auto;
+  }
+
+  .icon-btn {
+    min-width: 34px;
+    height: 34px;
+    padding: 0 6px;
+    font-size: 0.75rem;
+  }
+
+  .helpline-text {
+    display: none;
+  }
+
+  .helpline-btn {
+    padding: 0 8px;
+  }
+
+  .action-btn {
+    height: 34px;
+    padding: 0 10px;
+    font-size: 0.75rem;
+    flex: 0 0 auto;
+  }
+
+  .header-right-section {
+    gap: 12px;
+    flex: 0 0 auto;
+  }
+
+  .auth-section {
+    gap: 8px;
+  }
+
+   .ministers-image-wrapper {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 220px;
+    height: 90px;
+    margin: 0;
+    z-index: 10;
+    max-width: 220px;
+    align-items: flex-end; // ADD/ENSURE THIS
+    display: flex; // ADD THIS
+    line-height: 0; // ADD THIS
+  }
+  
+  .ministers-image {
+    height: 90px; // Adjusted height
+    display: block; // ADD THIS
+    object-position: bottom right; // CHANGE THIS
+    margin: 0; // ADD THIS
+  }
+  .agri-bg-pattern {
+    opacity: 0.7;
+  }
+}
+
+// Medium Tablet (768px to 1023px) - Still desktop layout with absolute ministers
+@media (max-width: 1023px) and (min-width: 768px) {
+  .brand-header {
+    min-height: auto;
+  }
+
+  .brand-shell {
+    padding: 0 12px;
+    
+  }
+
+  .top-toolbar {
+    padding: 4px 0 6px 0;
+    gap: 8px;
+  }
+
+  .main-header-row {
+  
+        gap: 12px;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        padding-right: 240px;
+        padding: 12px 240px 12px 0;
+        height: 100%;
+  }
+
+  .brand-left {
+    gap: 8px;
+    flex: 0 0 auto;
+  }
+
+  .logo {
+    width: 44px;
+    height: 44px;
+  }
+
+  .site-name {
+    font-size: 1.25rem;
+  }
+
+  .subtitle-row {
+    display: none;
+  }
+
+  .translate-box {
+    min-width: 100px;
     height: 32px;
-    padding: 0 6px !important;
+    flex: 0 0 100px;
+
+    ::ng-deep .goog-te-gadget-simple {
+      height: 32px !important;
+      padding: 0 6px !important;
+      font-size: 0.65rem !important;
+    }
+  }
+
+  .toolbar-row {
+    gap: 3px;
+    padding: 3px 5px;
+    flex: 0 0 auto;
+  }
+
+  .icon-btn {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 5px;
+    font-size: 0.7rem;
+  }
+
+  .helpline-text {
+    display: none;
+  }
+
+  .action-btn {
+    height: 32px;
+    padding: 0 8px;
+    font-size: 0.7rem;
+    flex: 0 0 auto;
+    
+    .auth-text {
+      display: none;
+    }
+    
+    .main-icon {
+      margin: 0;
+    }
+  }
+
+  .header-right-section {
+    gap: 8px;
+    flex: 0 0 auto;
+  }
+
+  .auth-section {
+    gap: 6px;
+  }
+
+  .ministers-image-wrapper {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 180px;
+    height: 75px;
+    margin: 0;
+    z-index: 10;
+    align-items: flex-end; // ADD/ENSURE THIS
+    display: flex; // ADD THIS
+    line-height: 0; // ADD THIS
+  }
+  
+  .ministers-image {
+    height: 70px;
+    display: block; // ADD THIS
+    object-position: bottom right; // CHANGE THIS
+    margin: 0; // ADD THIS
+  }
+  
+
+  .agri-bg-pattern {
+    opacity: 0.6;
+  }
+}
+
+// Medium Tablet (768px to 1023px) - Still desktop layout, more compact
+@media (max-width: 1023px) and (min-width: 768px) {
+  .brand-header {
+    min-height: auto;
+  }
+
+  .brand-shell {
+    padding: 0 12px;
+  }
+
+  .top-toolbar {
+    padding: 4px 0 6px 0;
+    gap: 8px;
+  }
+
+  .main-header-row {
+    gap: 8px;
+    flex-wrap: nowrap; // Keep horizontal
+    align-items: center;
+  }
+
+  .brand-left {
+    gap: 8px;
+    flex: 0 0 auto;
+  }
+
+  .logo {
+    width: 44px;
+    height: 44px;
+  }
+
+  .site-name {
+    font-size: 1.25rem;
+  }
+
+  .subtitle-row {
+    display: none; // Hide subtitle to save horizontal space
+  }
+
+  .translate-box {
+    min-width: 100px;
+    height: 32px;
+    flex: 0 0 100px;
+
+    ::ng-deep .goog-te-gadget-simple {
+      height: 32px !important;
+      padding: 0 6px !important;
+      font-size: 0.65rem !important;
+    }
+  }
+
+  .toolbar-row {
+    gap: 3px;
+    padding: 3px 5px;
+    flex: 0 0 auto;
+  }
+
+  .icon-btn {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 5px;
+    font-size: 0.7rem;
+  }
+
+  .helpline-text {
+    display: none;
+  }
+
+  .action-btn {
+    height: 32px;
+    padding: 0 8px;
+    font-size: 0.7rem;
+    flex: 0 0 auto;
+    
+    .auth-text {
+      display: none; // Hide button text, show only icons
+    }
+    
+    .main-icon {
+      margin: 0;
+    }
+  }
+
+  .header-right-section {
+    gap: 8px;
+    flex: 0 0 auto;
+  }
+
+  .auth-section {
+    gap: 6px;
+  }
+
+  .ministers-image-wrapper {
+    width: 180px; // Smaller but still visible
+    height: 85px;
+    flex: 0 0 auto; // CRITICAL: Keep visible
+  }
+
+  .ministers-image {
+    height: 75px;
+  }
+
+  .agri-bg-pattern {
+    opacity: 0.6;
+  }
+}
+
+// Small tablets and large phones (768px and below)
+@media (max-width: 768px) {
+  .brand-shell {
+    padding: 0 10px;
+  }
+
+  .top-toolbar {
+    padding: 6px 0;
+  }
+
+  .translate-box {
+    order: 1;
+    min-width: 100px;
+    height: 34px;
+    flex: 0 0 100px;
+
+    ::ng-deep .goog-te-gadget-simple {
+      height: 34px !important;
+      padding: 0 6px !important;
+    }
+  }
+
+  .toolbar-row {
+    order: 2;
+    gap: 3px;
+    padding: 4px 6px;
+  }
+
+  .icon-btn {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 6px;
+    font-size: 0.7rem;
+
+    // Hide less critical buttons
+    &:nth-child(3), // Browser TTS
+    &:nth-child(4) { // A-
+      display: none;
+    }
+  }
+
+  .brand-left {
+    gap: 10px;
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+  }
+
+ .site-name {
+    font-size: 1.3rem;
+    line-height: 1.2;
+  }
+
+  .subtitle-row {
+    font-size: 0.75rem;
+  }
+
+  .action-btn {
+    height: 34px;
+    padding: 0 12px;
+    font-size: 0.75rem;
+
+    .auth-text {
+      display: none;
+    }
+
+    .main-icon {
+      margin: 0;
+    }
+  }
+
+  .ministers-image-wrapper {
+    height: 80px;
+    max-width: 300px;
+  }
+
+  .ministers-image {
+    height: 75px;
+  }
+
+  .agri-bg-pattern {
+    opacity: 0.5;
+  }
+}
+
+// Mobile phones (640px and below)
+@media (max-width: 640px) {
+  .brand-header {
+    min-height: auto;
+  }
+
+  .brand-shell {
+    padding: 0 8px;
+    gap: 6px;
+  }
+
+  .top-toolbar {
+    gap: 8px;
+    padding: 4px 0;
+  }
+
+  .main-header-row {
+    gap: 12px;
+    padding: 6px 0 10px 0;
+  }
+
+  .logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 11px;
+  }
+
+  .site-name {
+    font-size: 1.2rem;
+    line-height: 1.2;
+  }
+
+  .subtitle-row {
+    font-size: 0.7rem;
+    line-height: 1.3;
+  }
+
+  .toolbar-row {
+    gap: 2px;
+    padding: 4px 5px;
+    border-radius: 12px;
+  }
+
+  .icon-btn {
+    min-width: 30px;
+    height: 30px;
+    padding: 0 5px;
+    font-size: 0.65rem;
+    border-radius: 9px;
+
+    // Show only essential buttons
+    &:nth-child(5), // A (reset)
+    &:nth-child(6) { // A+
+      display: none;
+    }
+  }
+
+  .action-btn {
+    height: 32px;
+    padding: 0 10px;
+    font-size: 0.7rem;
+    border-radius: 10px;
+  }
+
+  .translate-box {
+    min-width: 90px;
+    height: 32px;
+    flex: 0 0 90px;
+
+    ::ng-deep .goog-te-gadget-simple {
+      height: 32px !important;
+      padding: 0 5px !important;
+      font-size: 0.7rem !important;
+    }
+  }
+
+  .ministers-image-wrapper {
+    display: none; // Hide on small mobile
   }
 
   .sr-dialog {
@@ -1004,32 +1214,70 @@
   }
 }
 
-@media (max-width: 420px) {
+// Very small phones (480px and below)
+@media (max-width: 480px) {
   .brand-shell {
-    padding: 6px 6px;
+    padding: 0 6px;
   }
 
-  .site-name {
-    max-width: 100px;
+   .site-name {
+    font-size: 0.95rem;
+    line-height: 1.2;
   }
 
   .subtitle-row {
-    max-width: 140px;
+    font-size: 0.65rem;
   }
 
-  .toolbar-row {
-    gap: 3px;
-  }
-
-  .auth-text {
-    display: none;
+  .icon-btn {
+    min-width: 28px;
+    height: 28px;
+    font-size: 0.6rem;
   }
 
   .action-btn {
+    height: 30px;
     padding: 0 8px;
+    font-size: 0.65rem;
+  }
+
+  .translate-box {
+    min-width: 85px;
+    height: 30px;
+    flex: 0 0 85px;
+
+    ::ng-deep .goog-te-gadget-simple {
+      height: 30px !important;
+    }
   }
 }
 
+// Extra small phones (420px and below)
+@media (max-width: 420px) {
+  .site-name {
+    font-size: 1.1rem;
+  }
+
+  .subtitle-row {
+    font-size: 0.6rem;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .toolbar-row {
+    gap: 2px;
+  }
+
+  .icon-btn {
+    min-width: 26px;
+    height: 26px;
+  }
+}
+
+// Reduced motion preference
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1039,13 +1287,4 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
-
-
-.top-fixed{
-  position: absolute;
-  top: 0;
-  // left: 0;
-  width: 100%;
-  z-index: 1001; /* Ensure it's above other elements */
 }

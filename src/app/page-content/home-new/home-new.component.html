@@ -1,4 +1,6 @@
 <main class="agri-landing">
+
+
   <section class="hero-slider" aria-label="Agriculture business approval highlights" (mouseenter)="pauseSlider()"
     (mouseleave)="startSlider()">
     <div class="hero-slide" *ngFor="let slide of slides; let i = index" [class.hero-slide--active]="i === activeSlide">
@@ -63,7 +65,9 @@
       <span [style.animation-duration.ms]="slideProgressDelay"></span>
     </div>
   </section>
-
+  <section class="maintenance-section"> 
+    SITE IS UNDER MAINTENANCE DO NOT APPLY FOR ANY SERVICE
+  </section>
   <!-- <section class="approval-strip scroll-reveal">
     <div>
       <span class="eyebrow">Single Window Agriculture Services</span>
@@ -281,6 +285,7 @@
     </div>
   </div>
 </section> -->
+
 
   <section class="partner-links scroll-reveal" aria-label="Important government links">
     <div class="partner-links__heading">

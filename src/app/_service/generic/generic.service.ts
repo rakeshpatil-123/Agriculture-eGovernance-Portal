@@ -21,29 +21,29 @@ export class GenericService {
 
   //ng build --configuration production --base-href /onlineservice/ --deploy-url /onlineservice/
   //ng build --configuration production --base-href /agricultureservice/ --deploy-url /agricultureservice/
- //command for build with base href and deploy url
+  //command for build with base href and deploy url
 
-// <<<<<<< changes-for-landing-page
-//   // Development URLs
-//   // static DEV_BACKEND_URL = 'http://swaagatstaging.tripura.cloud';
-//   // static QA_BACKEND_URL = 'http://swaagatstaging.tripura.cloud';
-//   // static UAT_BACKEND_URL = 'http://swaagatstaging.tripura.cloud';
-//   // static CERTIN_BACKEND_URL = 'http://swaagatstaging.tripura.cloud';
-//   // static PRODUCTION_BACKEND_URL = 'http://swaagatstaging.tripura.cloud';
+  // <<<<<<< changes-for-landing-page
+  //   // Development URLs
+  //   // static DEV_BACKEND_URL = 'http://swaagatstaging.tripura.cloud';
+  //   // static QA_BACKEND_URL = 'http://swaagatstaging.tripura.cloud';
+  //   // static UAT_BACKEND_URL = 'http://swaagatstaging.tripura.cloud';
+  //   // static CERTIN_BACKEND_URL = 'http://swaagatstaging.tripura.cloud';
+  //   // static PRODUCTION_BACKEND_URL = 'http://swaagatstaging.tripura.cloud';
 
-//   //Production URLs
-//   static DEV_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
-//   static QA_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
-//   static UAT_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
-//   static CERTIN_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
-//   static PRODUCTION_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
-// =======
+  //   //Production URLs
+  //   static DEV_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
+  //   static QA_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
+  //   static UAT_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
+  //   static CERTIN_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
+  //   static PRODUCTION_BACKEND_URL = 'https://tripuratourism.gov.in/onlineservices';
+  // =======
   // Development / Staging and Production URLs
-  static DEV_BACKEND_URL = 'https://agriculturebackend.tripura.cloud';
+  static DEV_BACKEND_URL = 'https://agrilicense.tripura.gov.in';
   static QA_BACKEND_URL = 'https://agriculturebackend.tripura.cloud';
-  static UAT_BACKEND_URL = 'https://agriculturebackend.tripura.cloud';
-  static CERTIN_BACKEND_URL = 'https://agriculturebackend.tripura.cloud';
-  static PRODUCTION_BACKEND_URL = 'https://agriculturebackend.tripura.cloud';
+  static UAT_BACKEND_URL = 'https://agrilicense.tripura.gov.in/';
+  static CERTIN_BACKEND_URL = 'https://agrilicense.tripura.gov.in/';
+  static PRODUCTION_BACKEND_URL = 'https://agrilicense.tripura.gov.in';
   // Development / Staging and Production URLs
   // static DEV_BACKEND_URL = 'http://agriculturebackend.tripura.cloud';
   // static QA_BACKEND_URL = 'http://agriculturebackend.tripura.cloud';
@@ -458,7 +458,7 @@ export class GenericService {
     );
   }
 
-   postAsText(endpoint: string, body: any): Observable<string> {
+  postAsText(endpoint: string, body: any): Observable<string> {
     const url = `${this.baseUrl}/${endpoint}`;
 
     let headers = new HttpHeaders({
@@ -510,8 +510,8 @@ export class GenericService {
     const panelClass = normalizedAction === 'success'
       ? 'snack-bar-success'
       : normalizedAction === 'error' || normalizedAction === 'failed'
-      ? 'snack-bar-error'
-      : 'snack-bar-info';
+        ? 'snack-bar-error'
+        : 'snack-bar-info';
 
     this.snackBar.open(message, action, {
       duration: 3000,
@@ -754,79 +754,79 @@ export class GenericService {
     });
   }
   clearRedirectData(): void {
-  try {
-    sessionStorage.removeItem('returnUrl');
-    sessionStorage.removeItem('returnUrl_timestamp');
-  } catch (error) {
-    console.warn('Failed to clear redirect data:', error);
-  }
-}
-
-autoLogout(): void {
-  const currentUrl = window.location.pathname;
-  this.clearRedirectData();
-  let storedReturnUrl: string | null = null;
-  if (
-    currentUrl &&
-    !currentUrl.startsWith('/page/') &&
-    !currentUrl.startsWith('/unauthorized') &&
-    currentUrl !== '/'
-  ) {
     try {
-      storedReturnUrl = currentUrl;
+      sessionStorage.removeItem('returnUrl');
+      sessionStorage.removeItem('returnUrl_timestamp');
     } catch (error) {
-      console.warn('Could not store route for recovery:', error);
+      console.warn('Failed to clear redirect data:', error);
     }
   }
-  localStorage.clear();
-  if (storedReturnUrl) {
-    try {
-      sessionStorage.setItem('returnUrl', storedReturnUrl);
-      sessionStorage.setItem('returnUrl_timestamp', Date.now().toString());
-    } catch (error) {
-      console.warn('Could not store return URL:', error);
+
+  autoLogout(): void {
+    const currentUrl = window.location.pathname;
+    this.clearRedirectData();
+    let storedReturnUrl: string | null = null;
+    if (
+      currentUrl &&
+      !currentUrl.startsWith('/page/') &&
+      !currentUrl.startsWith('/unauthorized') &&
+      currentUrl !== '/'
+    ) {
+      try {
+        storedReturnUrl = currentUrl;
+      } catch (error) {
+        console.warn('Could not store route for recovery:', error);
+      }
     }
+    localStorage.clear();
+    if (storedReturnUrl) {
+      try {
+        sessionStorage.setItem('returnUrl', storedReturnUrl);
+        sessionStorage.setItem('returnUrl_timestamp', Date.now().toString());
+      } catch (error) {
+        console.warn('Could not store return URL:', error);
+      }
+    }
+    this.setLoginStatus(false);
+
+    Swal.fire({
+      title: 'Session Expired!',
+      html: `<strong>Your session has ended. Please log in again to continue.</strong>`,
+      icon: 'warning',
+      iconColor: '#f59e0b',
+      background: '#fff7ed',
+      color: '#b45309',
+      timer: 3500,
+      timerProgressBar: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown animate__faster',
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp animate__faster',
+      },
+    }).then(() => {
+      const { origin, pathname } = window.location;
+      const firstSegment = pathname.split('/')[1];
+      const basePath = firstSegment === 'onlineservice' ? '/onlineservice' : '';
+
+      const returnUrl = sessionStorage.getItem('returnUrl');
+      let loginUrl = `${origin}${basePath}/page/login`;
+
+      if (returnUrl) {
+        loginUrl += `?returnUrl=${encodeURIComponent(returnUrl)}`;
+      }
+
+      sessionStorage.removeItem('returnUrl');
+      sessionStorage.removeItem('returnUrl_timestamp');
+
+      window.location.href = loginUrl;
+    });
   }
-  this.setLoginStatus(false);
-
-  Swal.fire({
-    title: 'Session Expired!',
-    html: `<strong>Your session has ended. Please log in again to continue.</strong>`,
-    icon: 'warning',
-    iconColor: '#f59e0b',
-    background: '#fff7ed',
-    color: '#b45309',
-    timer: 3500,
-    timerProgressBar: true,
-    allowOutsideClick: false,
-    allowEscapeKey: false,
-    didOpen: () => {
-      Swal.showLoading();
-    },
-    showClass: {
-      popup: 'animate__animated animate__fadeInDown animate__faster',
-    },
-    hideClass: {
-      popup: 'animate__animated animate__fadeOutUp animate__faster',
-    },
-  }).then(() => {
-   const { origin, pathname } = window.location;
-const firstSegment = pathname.split('/')[1];
-const basePath = firstSegment === 'onlineservice' ? '/onlineservice' : '';
-
-    const returnUrl = sessionStorage.getItem('returnUrl');
-    let loginUrl = `${origin}${basePath}/page/login`;
-
-    if (returnUrl) {
-      loginUrl += `?returnUrl=${encodeURIComponent(returnUrl)}`;
-    }
-
-    sessionStorage.removeItem('returnUrl');
-    sessionStorage.removeItem('returnUrl_timestamp');
-
-    window.location.href = loginUrl;
-  });
-}
   getRedirectUrl(path: string): string {
     if (!path) return path;
     if (/^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(path)) {
@@ -1641,58 +1641,58 @@ const basePath = firstSegment === 'onlineservice' ? '/onlineservice' : '';
       { headers }
     );
   }
-getDepartmentalUserProfile(params?: any): Observable<any> {
-  const body = params ?? {};
-  const headers = this.ensureJsonHeaders(this.getHeaders());
-  return this.http.post<any>(
-    `${this.baseUrl}/api/department/get-department-users`,
-    body,
-    { headers }
-  );
-}
-exportDepartmentalUsersExcelAdmin(params?: any): Observable<HttpResponse<Blob>> {
-  const body = { ...(params ?? {}), export: 'excel' };
-  const headers = this.ensureJsonHeaders(this.getHeaders());
-  return this.http.post(
-    `${this.baseUrl}/api/admin/fetch-all-department-users`,
-    body,
-    {
-      headers,
-      responseType: 'blob' as 'blob',
-      observe: 'response' as 'response'
-    }
-  );
-}
+  getDepartmentalUserProfile(params?: any): Observable<any> {
+    const body = params ?? {};
+    const headers = this.ensureJsonHeaders(this.getHeaders());
+    return this.http.post<any>(
+      `${this.baseUrl}/api/department/get-department-users`,
+      body,
+      { headers }
+    );
+  }
+  exportDepartmentalUsersExcelAdmin(params?: any): Observable<HttpResponse<Blob>> {
+    const body = { ...(params ?? {}), export: 'excel' };
+    const headers = this.ensureJsonHeaders(this.getHeaders());
+    return this.http.post(
+      `${this.baseUrl}/api/admin/fetch-all-department-users`,
+      body,
+      {
+        headers,
+        responseType: 'blob' as 'blob',
+        observe: 'response' as 'response'
+      }
+    );
+  }
 
-exportDepartmentalUsersExcelDept(params?: any): Observable<HttpResponse<Blob>> {
-  const body = { ...(params ?? {}), export: 'excel' };
-  const headers = this.ensureJsonHeaders(this.getHeaders());
-  return this.http.post(
-    `${this.baseUrl}/api/department/get-department-users`,
-    body,
-    {
-      headers,
-      responseType: 'blob' as 'blob',
-      observe: 'response' as 'response'
-    }
-  );
-}
+  exportDepartmentalUsersExcelDept(params?: any): Observable<HttpResponse<Blob>> {
+    const body = { ...(params ?? {}), export: 'excel' };
+    const headers = this.ensureJsonHeaders(this.getHeaders());
+    return this.http.post(
+      `${this.baseUrl}/api/department/get-department-users`,
+      body,
+      {
+        headers,
+        responseType: 'blob' as 'blob',
+        observe: 'response' as 'response'
+      }
+    );
+  }
 
 
-getAdminDepartmentalUserProfile(params?: any): Observable<any> {
-  const body = params ?? {};
-  const headers = this.ensureJsonHeaders(this.getHeaders());
-  return this.http.post<any>(
-    `${this.baseUrl}/api/admin/fetch-all-department-users`,
-    body,
-    { headers }
-  );
-}
+  getAdminDepartmentalUserProfile(params?: any): Observable<any> {
+    const body = params ?? {};
+    const headers = this.ensureJsonHeaders(this.getHeaders());
+    return this.http.post<any>(
+      `${this.baseUrl}/api/admin/fetch-all-department-users`,
+      body,
+      { headers }
+    );
+  }
 
   private ensureJsonHeaders(headers?: HttpHeaders): HttpHeaders {
-  const base = headers ?? this.getHeaders();
-  return base.has('Content-Type') ? base : base.set('Content-Type', 'application/json');
-}
+    const base = headers ?? this.getHeaders();
+    return base.has('Content-Type') ? base : base.set('Content-Type', 'application/json');
+  }
   updateProfile(payload: any): Observable<any> {
     return this.http.post<any>(
       `${this.baseUrl}/api/user/profile-update`,
@@ -1714,37 +1714,37 @@ getAdminDepartmentalUserProfile(params?: any): Observable<any> {
       { headers: this.getHeaders() }
     );
   }
-// inside GenericService
-getBusinessUsersDetails(page: number = 1, rowCount: number = 10, search?: string) {
-  const body: any = {
-    page,
-    per_page: rowCount
-  };
+  // inside GenericService
+  getBusinessUsersDetails(page: number = 1, rowCount: number = 10, search?: string) {
+    const body: any = {
+      page,
+      per_page: rowCount
+    };
 
-  if (search && search.toString().trim()) {
-    body.search = search.toString().trim();
+    if (search && search.toString().trim()) {
+      body.search = search.toString().trim();
+    }
+
+    return this.http.post<any>(
+      `${this.baseUrl}/api/admin/fetch-all-business-users`,
+      body,
+      { headers: this.getHeaders() }
+    );
   }
 
-  return this.http.post<any>(
-    `${this.baseUrl}/api/admin/fetch-all-business-users`,
-    body,
-    { headers: this.getHeaders() }
-  );
-}
-
-/**
- * Export business users Excel. Returns HttpResponse<Blob> so the component can
- * examine headers & body (file or JSON error).
- */
-exportBusinessUsersExcel(params?: any): Observable<HttpResponse<Blob>> {
-  const body = { ...(params ?? {}), export: 'excel' };
-  const headers = this.ensureJsonHeaders(this.getHeaders());
-  return this.http.post(`${this.baseUrl}/api/admin/fetch-all-business-users`, body, {
-    headers,
-    responseType: 'blob' as 'blob',
-    observe: 'response' as 'response'
-  });
-}
+  /**
+   * Export business users Excel. Returns HttpResponse<Blob> so the component can
+   * examine headers & body (file or JSON error).
+   */
+  exportBusinessUsersExcel(params?: any): Observable<HttpResponse<Blob>> {
+    const body = { ...(params ?? {}), export: 'excel' };
+    const headers = this.ensureJsonHeaders(this.getHeaders());
+    return this.http.post(`${this.baseUrl}/api/admin/fetch-all-business-users`, body, {
+      headers,
+      responseType: 'blob' as 'blob',
+      observe: 'response' as 'response'
+    });
+  }
 
   addHoliday(body: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/api/holidays-store`, body, {
@@ -2037,38 +2037,38 @@ exportBusinessUsersExcel(params?: any): Observable<HttpResponse<Blob>> {
     }) as unknown as Observable<HttpResponse<Blob>>;
   }
 
-exportDepartmentalUsersExcel(payload: any): Observable<Blob> {
-  const form = new FormData();
-  form.append('export', 'excel');
+  exportDepartmentalUsersExcel(payload: any): Observable<Blob> {
+    const form = new FormData();
+    form.append('export', 'excel');
 
-  if (payload?.search && payload.search.trim() !== '') {
-    form.append('search', payload.search.trim());
-  }
+    if (payload?.search && payload.search.trim() !== '') {
+      form.append('search', payload.search.trim());
+    }
 
-  if (payload?.department_id !== undefined && payload.department_id !== null && payload.department_id !== '') {
-    form.append('department_id', String(payload.department_id));
-  } else if (payload?.deptId !== undefined && payload.deptId !== null && payload.deptId !== '') {
-    form.append('department_id', String(payload.deptId));
-  }
+    if (payload?.department_id !== undefined && payload.department_id !== null && payload.department_id !== '') {
+      form.append('department_id', String(payload.department_id));
+    } else if (payload?.deptId !== undefined && payload.deptId !== null && payload.deptId !== '') {
+      form.append('department_id', String(payload.deptId));
+    }
 
-  if (payload?.page !== undefined && payload.page !== null) {
-    form.append('page', String(payload.page));
-  }
-  if (payload?.per_page !== undefined && payload.per_page !== null) {
-    form.append('per_page', String(payload.per_page));
-  }
-  let headers = (typeof (this as any).getHeaders === 'function')
-    ? (this as any).getHeaders()
-    : new HttpHeaders({ 'Accept': 'application/json' });
+    if (payload?.page !== undefined && payload.page !== null) {
+      form.append('page', String(payload.page));
+    }
+    if (payload?.per_page !== undefined && payload.per_page !== null) {
+      form.append('per_page', String(payload.per_page));
+    }
+    let headers = (typeof (this as any).getHeaders === 'function')
+      ? (this as any).getHeaders()
+      : new HttpHeaders({ 'Accept': 'application/json' });
 
-  if (headers.has('Content-Type')) {
-    headers = headers.delete('Content-Type');
+    if (headers.has('Content-Type')) {
+      headers = headers.delete('Content-Type');
+    }
+    return this.http.post(`${this.baseUrl}/api/admin/fetch-all-department-users`, form, {
+      headers,
+      responseType: 'blob' as 'blob'
+    });
   }
-  return this.http.post(`${this.baseUrl}/api/admin/fetch-all-department-users`, form, {
-    headers,
-    responseType: 'blob' as 'blob'
-  });
-}
   getAllIncentiveApplications(): any {
     return this.http.post(
       `${this.baseUrl}/api/department/incentive/applications`,

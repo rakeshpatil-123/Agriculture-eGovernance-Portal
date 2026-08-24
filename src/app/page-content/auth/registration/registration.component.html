@@ -79,9 +79,9 @@
                                        && registrationForm.get('mobile_no')?.value?.toString().trim().length === 10
                                        && registrationForm.get('mobile_no')?.valid
                                        && !hideSendOtp
-                                       && mobileStatusType !== 'error'" class="otp-section mb-2">
+                                       && mobileStatusType !== 'error'" class="otp-section mb-2" >
               <button type="button" class="btn-otp" (click)="sendOtp()"
-                [disabled]="otpSent || registrationForm.get('mobile_no')?.invalid || registrationForm.get('mobile_no')?.hasError('taken')">
+                [disabled]="buttonClicked || otpSent || registrationForm.get('mobile_no')?.invalid || registrationForm.get('mobile_no')?.hasError('taken')">
                 {{ otpSent ? 'OTP Sent' : 'Send OTP' }}
               </button>
             </div>
@@ -157,8 +157,7 @@
             formControlName="hierarchy_level" [selectOptions]="hierarchyLevels" placeholder="Select hierarchy level">
           </app-ilogi-select>
         </div>
-        <div class="two-grid" >
-
+        <div class="two-grid">
           <!-- District -->
           <app-ilogi-select *ngIf="shouldShow('district')" [multiple]="sourcePage === 'departmental-users'"
             fieldId="district_id" fieldLabel="District" [mandatory]="true" formControlName="district_id"
@@ -167,22 +166,9 @@
 
           <!-- Subdivision -->
           <app-ilogi-select *ngIf="shouldShow('subdivision')" [multiple]="sourcePage === 'departmental-users'"
-            fieldId="subdivision_id" fieldLabel="Subdivision" [mandatory]="true" formControlName="subdivision_id"
+            fieldId="subdivision_id" fieldLabel="Agri Subdivision" [mandatory]="true" formControlName="subdivision_id"
             [selectOptions]="subdivisions" placeholder="Select subdivision"
             [disabled]="!districts.length || loadingDistricts">
-          </app-ilogi-select>
-
-          <!-- ULB -->
-          <app-ilogi-select *ngIf="shouldShow('block')" [multiple]="sourcePage === 'departmental-users'"
-            fieldId="ulb_id" fieldLabel="ULB/Block" [mandatory]="true" formControlName="ulb_id" [selectOptions]="ulbs"
-            placeholder="Select ULB/Block" [disabled]="!subdivisions.length || loadingSubdivisions">
-          </app-ilogi-select>
-
-          <!-- Ward -->
-          <app-ilogi-select *ngIf="shouldShow('ward') && sourcePage !== 'departmental-users'"
-            [multiple]="sourcePage === 'departmental-users'" fieldId="ward_id" fieldLabel="Ward" [mandatory]="true"
-            formControlName="ward_id" [selectOptions]="wards" placeholder="Select ward"
-            [disabled]="!ulbs.length || loadingUlbs">
           </app-ilogi-select>
         </div>
 
