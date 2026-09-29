@@ -208,8 +208,8 @@ export class PDynamicTableComponent implements OnInit {
     return map[status] ?? 'info';
   }
 
-  getPaymentSeverity(status: string): ButtonSeverity {
-    const map: { [key: string]: ButtonSeverity } = {
+  getPaymentSeverity(status: any): any {
+    const map: { [key: string]: any } = {
       Paid: 'success',
       'Partially Paid': 'warn',
       Overdue: 'danger',

@@ -1,7 +1,5 @@
-
-
 @if(isLoading){
-  <app-loader></app-loader>
+<app-loader></app-loader>
 }@else{<div class="dashboard-page">
   <div class="dashboard-header">
     <p class="subtitle">Welcome to the</p>
@@ -13,9 +11,122 @@
     <app-summary-cards></app-summary-cards>
   </section>
 
+
+  <section class="dashboard-section-two">
+    <button class="btn btn-style" (click)="onApplyForClick()">Apply For</button>
+  </section>
+
+  <section class="lic-section" *ngIf="showLicenceSection">
+    <button class="lic-btn" (click)="selectLic('fertilizer')">Fertilizer Licence</button>
+    <button class="lic-btn" (click)="selectLic('pest')">Pest Control (PPC) Licence</button>
+    <button class="lic-btn" (click)="selectLic('seed')">Seed Licence</button>
+  </section>
+  <section *ngIf="showFertilizer">
+    <div class="mid">
+
+      <span class="service">Fertilizer Licence</span>
+    </div>
+    <div class="lic-section">
+
+      <button class="lic-btn" (click)="selectApplicationType('wholesale')">For Wholesale Applicants</button>
+      <button class="lic-btn" (click)="selectApplicationType('retail')">For Retail Applicants</button>
+    </div>
+  </section>
+  <section *ngIf="wholesale">
+    <div class="mid">
+
+      <span class="service">Whole Sale Applicants</span>
+    </div>
+    <div class="lic-section">
+      <button class="lic-btn" (click)="goToApp('wholesaleFertilizer', 'new')">New Application</button>
+      <button class="lic-btn" (click)="goToApp('wholesaleFertilizer-renewal', 'renewal')">Renewal</button>
+      <button class="lic-btn" (click)="goToApp('wholesaleFertilizer-amendment', 'amendment')">Amendment</button>
+    </div>
+  </section>
+  <section *ngIf="retail">
+    <div class="mid">
+
+      <span class="service">Retail Applicants</span>
+    </div>
+    <div class="lic-section">
+      <button class="lic-btn" (click)="goToApp('retailFertilizer', 'new')">New Application</button>
+      <button class="lic-btn" (click)="goToApp('retailFertilizer-renewal', 'renewal')">Renewal</button>
+      <button class="lic-btn" (click)="goToApp('retailFertilizer-amendment', 'amendment')">Amendment</button>
+    </div>
+  </section>
+
+
+  <section *ngIf="showPest">
+    <div class="mid">
+
+      <span class="service">Pest Control (PPC) Licence</span>
+    </div>
+    <div class="lic-section">
+      <button class="lic-btn" (click)="selectApplicationType('pestManufacture')">Grant of Licence to Manufacture
+        Insecticide</button>
+      <button class="lic-btn" (click)="selectApplicationType('pestSell')">Grant of Licence to
+        Sell/Stock/Exhibit/Distribute </button>
+      <button class="lic-btn" (click)="selectApplicationType('pestControl')">Grant of Licence for Commercial Pest
+        Control
+        Operations </button>
+    </div>
+  </section>
+  <section *ngIf="pestManufacture">
+    <div class="mid">
+
+      <span class="service">Grant of Licence to Manufacture Insecticide</span>
+    </div>
+    <div class="lic-section">
+      <button class="lic-btn" (click)="goToApp('pest-manufacture', 'new')">New Application</button>
+      <button class="lic-btn" (click)="goToApp('pest-manufacture-renewal', 'renewal')">Renewal</button>
+      <button class="lic-btn">Amendment</button>
+    </div>
+  </section>
+  <section *ngIf="pestSell">
+    <div class="mid">
+
+      <span class="service">Grant of Licence to
+        Sell/Stock/Exhibit/Distribute</span>
+    </div>
+    <div class="lic-section">
+      <button class="lic-btn" (click)="goToApp('pest-sell', 'new')">New Application</button>
+      <button class="lic-btn" (click)="goToApp('pest-sell-renewal', 'renewal')">Renewal</button>
+      <button class="lic-btn">Amendment</button>
+    </div>
+  </section>
+  <section *ngIf="pestControl">
+    <div class="mid">
+
+      <span class="service">Grant of Licence for Commercial Pest Control
+        Operations</span>
+    </div>
+    <div class="lic-section">
+      <button class="lic-btn" (click)="goToApp('pest-control', 'new')">New Application</button>
+      <button class="lic-btn" (click)="goToApp('pest-control-renewal', 'renewal')">Renewal</button>
+      <button class="lic-btn">Amendment</button>
+    </div>
+  </section>
+
+
+
+  <section *ngIf="showSeed">
+    <div class="mid">
+
+      <span class="service">Seed Licence</span>
+    </div>
+    <div class="lic-section">
+
+      <button class="lic-btn" (click)="goToApp('seed', 'new')">New Application</button>
+      <button class="lic-btn" (click)="goToApp('seed-renewal', 'renewal')">Renewal</button>
+      <button class="lic-btn" (click)="goToApp('seed-amendment', 'amendment')">Amendment</button>
+    </div>
+  </section>
+
+
+
   <!-- Charts Section -->
-  <section class="dashboard-section charts-section">
-    <!-- <div class="charts-grid">
+  <!-- <section class="dashboard-section charts-section">
+    <div class="charts-grid">
       <div class="chart-item">
         <app-bar-chart></app-bar-chart>
 
@@ -23,46 +134,34 @@
       <div class="chart-item">
         <app-pie-chart></app-pie-chart>
       </div>
-    </div> -->
+    </div> 
    <app-line-chart [dashboardData]="dashboardData"></app-line-chart>
-  </section>
-  <section class="dashboard-section charts-section">
+  </section> -->
+  <!-- <section class="dashboard-section charts-section">
     <app-bar-chart></app-bar-chart>
-
-  </section>
+  </section> -->
   <section class="dashboard-section charts-section">
     <div class="table-h">
-      <p class=""> Clarification Raised </p>
-     <div class="filter">
-  <app-ilogi-select
-    fieldLabel="Service"
-    fieldId="clarificationService"
-    [(ngModel)]="clarificationService"
-    name="clarificationService"
-    [selectOptions]="clarificationServiceOptions"
-    placeholder="Select Service"
-    [mandatory]="false"
-    [readonly]="false">
-  </app-ilogi-select>
+      <h5 class="p-2 fw-bold"> Clarification Raised </h5>
+      <hr>
+      <div class="filter">
+        <app-ilogi-select fieldLabel="Service" fieldId="clarificationService" [(ngModel)]="clarificationService"
+          name="clarificationService" [selectOptions]="clarificationServiceOptions" placeholder="Select Service"
+          [mandatory]="false" [readonly]="false">
+        </app-ilogi-select>
 
-  <app-ilogi-select
-    fieldLabel="Application Number"
-    fieldId="clarificationAppNumber"
-    [(ngModel)]="clarificationAppNumber"
-    name="clarificationAppNumber"
-    [selectOptions]="clarificationAppNumberOptions"
-    placeholder="Select Application"
-    [mandatory]="false"
-    [readonly]="false">
-  </app-ilogi-select>
-</div>
+        <app-ilogi-select fieldLabel="Application Number" fieldId="clarificationAppNumber"
+          [(ngModel)]="clarificationAppNumber" name="clarificationAppNumber"
+          [selectOptions]="clarificationAppNumberOptions" placeholder="Select Application" [mandatory]="false"
+          [readonly]="false">
+        </app-ilogi-select>
+      </div>
       <app-dynamic-table [data]="filteredClarificationRequired" [columns]="columns" [searchable]="false"
         [showPagination]="true" [pageSize]="5"></app-dynamic-table>
     </div>
   </section>
   <section class="dashboard-section charts-section">
     <div class="filter ">
-
       <app-ilogi-select fieldLabel="Service " fieldId="service" [(ngModel)]="service" name="applicationType"
         [selectOptions]="serviceOptions" placeholder="Select Type" [mandatory]="false" [readonly]="false">
       </app-ilogi-select>
@@ -150,12 +249,7 @@
           </button>
         </div>
       </div>
-
-
-
     </div>
   </section>
-
-
 </div>
 }

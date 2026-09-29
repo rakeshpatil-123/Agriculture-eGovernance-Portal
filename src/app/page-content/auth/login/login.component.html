@@ -26,11 +26,11 @@
           <div class="input-wrap">
             <app-ilogi-input
               fieldId="user_name"
-              fieldLabel="User username"
+              fieldLabel="Username / Phone Number"
               [mandatory]="true"
               formControlName="user_name"
               type="text"
-              placeholder="Enter username">
+              placeholder="Enter Username / Phonenumber">
             </app-ilogi-input>
             <small class="error-text" *ngIf="loginForm.get('user_name')?.hasError('invalid')">
               Invalid username.
@@ -44,7 +44,7 @@
               [mandatory]="true"
               formControlName="password"
               type="password"
-              placeholder="Enter your password">
+              placeholder="Enter Your Password">
             </app-ilogi-input>
             <small class="error-text" *ngIf="loginForm.get('password')?.hasError('invalid')">
               Invalid password.

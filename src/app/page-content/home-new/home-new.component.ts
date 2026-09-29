@@ -215,106 +215,106 @@ export class HomeNewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   readonly partnerLinkRows = [this.partnerLinks, this.partnerLinks];
   readonly insecticideServices = [
-  {
-    icon: '01',
-    title: 'Grant of License to Manufacture Insecticide',
-    description: 'Apply for approval to manufacture insecticide products under the portal.',
-  },
-  {
-    icon: '02',
-    title: 'Grant of License to Sell / Stock / Exhibit / Distribution',
-    description: 'Apply for sales, stocking, display, and distribution of insecticides.',
-  },
-  {
-    icon: '03',
-    title: 'Grant of License for Commercial Pest Control Operations',
-    description: 'Submit applications for commercial pest control service authorization.',
-  },
-  {
-    icon: '04',
-    title: 'Wholesaler (New)',
-    description: 'New wholesaler registration for agriculture-related products and services.',
-  },
-  {
-    icon: '05',
-    title: 'Retailer (New)',
-    description: 'New retailer approval for insecticide and seed-related business activity.',
-  },
-  // {
-  //   icon: '06',
-  //   title: 'Renewal',
-  //   description: 'Renew existing licenses and continue uninterrupted compliance online.',
-  // },
-  {
-    icon: '06',
-    title: 'Seed License',
-    description: 'Apply for seed license permissions through the same digital workflow.',
-  },
-];
+    {
+      icon: '01',
+      title: 'Grant of License to Manufacture Insecticide',
+      description: 'Apply for approval to manufacture insecticide products under the portal.',
+    },
+    {
+      icon: '02',
+      title: 'Grant of License to Sell / Stock / Exhibit / Distribution',
+      description: 'Apply for sales, stocking, display, and distribution of insecticides.',
+    },
+    {
+      icon: '03',
+      title: 'Grant of License for Commercial Pest Control Operations',
+      description: 'Submit applications for commercial pest control service authorization.',
+    },
+    {
+      icon: '04',
+      title: 'Wholesaler (New)',
+      description: 'New wholesaler registration for agriculture-related products and services.',
+    },
+    {
+      icon: '05',
+      title: 'Retailer (New)',
+      description: 'New retailer approval for insecticide and seed-related business activity.',
+    },
+    // {
+    //   icon: '06',
+    //   title: 'Renewal',
+    //   description: 'Renew existing licenses and continue uninterrupted compliance online.',
+    // },
+    {
+      icon: '06',
+      title: 'Seed License',
+      description: 'Apply for seed license permissions through the same digital workflow.',
+    },
+  ];
 
-staticServices = [
-  {
-    name: 'Grant of License to Manufacture Insecticide',
-    nocType: 'CFE',
-    department: 'Agriculture Department',
-    icon: 'manufacturing',
-    description: 'License for insecticide manufacturing units to operate as per department guidelines.',
-  },
-  {
-    name: 'Grant of License to Sell / Stock / Exhibit / Distribute Insecticides',
-    nocType: 'CFO',
-    department: 'Agriculture Department',
-    icon: 'store',
-    description: 'For retailers, stockists, exhibitors, and distributors dealing with insecticides.',
-  },
-  {
-    name: 'Grant of License for Commercial Pest Control Operations',
-    nocType: 'NOC',
-    department: 'Agriculture Department',
-    icon: 'bug_report',
-    description: 'Approval for commercial pest control service providers operating in the state.',
-  },
-  {
-    name: 'Wholesaler (New)',
-    nocType: 'CFE',
-    department: 'Agriculture Department',
-    icon: 'warehouse',
-    description: 'New wholesaler registration for insecticide-related business activities.',
-  },
-  {
-    name: 'Retailer (New)',
-    nocType: 'CFO',
-    department: 'Agriculture Department',
-    icon: 'shopping_bag',
-    description: 'New retailer license for selling insecticides through approved channels.',
-  },
-  // {
-  //   name: 'Renew',
-  //   nocType: 'NOC',
-  //   department: 'Agriculture Department',
-  //   icon: 'refresh',
-  //   description: 'Renewal service for existing agriculture-related licenses and approvals.',
-  // },
-  {
-    name: 'Seed License',
-    nocType: 'NOC',
-    department: 'Agriculture Department',
-    icon: 'agriculture',
-    description: 'License application for seed business operations and distribution.',
-  },
-];
+  staticServices = [
+    {
+      name: 'Grant of License to Manufacture Insecticide',
+      nocType: 'CFE',
+      department: 'Agriculture Department',
+      icon: 'manufacturing',
+      description: 'License for insecticide manufacturing units to operate as per department guidelines.',
+    },
+    {
+      name: 'Grant of License to Sell / Stock / Exhibit / Distribute Insecticides',
+      nocType: 'CFO',
+      department: 'Agriculture Department',
+      icon: 'store',
+      description: 'For retailers, stockists, exhibitors, and distributors dealing with insecticides.',
+    },
+    {
+      name: 'Grant of License for Commercial Pest Control Operations',
+      nocType: 'NOC',
+      department: 'Agriculture Department',
+      icon: 'bug_report',
+      description: 'Approval for commercial pest control service providers operating in the state.',
+    },
+    {
+      name: 'Wholesaler (New)',
+      nocType: 'CFE',
+      department: 'Agriculture Department',
+      icon: 'warehouse',
+      description: 'New wholesaler registration for insecticide-related business activities.',
+    },
+    {
+      name: 'Retailer (New)',
+      nocType: 'CFO',
+      department: 'Agriculture Department',
+      icon: 'shopping_bag',
+      description: 'New retailer license for selling insecticides through approved channels.',
+    },
+    // {
+    //   name: 'Renew',
+    //   nocType: 'NOC',
+    //   department: 'Agriculture Department',
+    //   icon: 'refresh',
+    //   description: 'Renewal service for existing agriculture-related licenses and approvals.',
+    // },
+    {
+      name: 'Seed License',
+      nocType: 'NOC',
+      department: 'Agriculture Department',
+      icon: 'agriculture',
+      description: 'License application for seed business operations and distribution.',
+    },
+  ];
 
-getBadgeClass(type: string): string {
-  const t = (type || '').toUpperCase().trim();
-  if (t === 'CFE') return 'badge badge-cfe';
-  if (t === 'CFO') return 'badge badge-cfo';
-  if (t === 'NOC') return 'badge badge-noc';
-  return 'badge badge-default';
-}
+  getBadgeClass(type: string): string {
+    const t = (type || '').toUpperCase().trim();
+    if (t === 'CFE') return 'badge badge-cfe';
+    if (t === 'CFO') return 'badge badge-cfo';
+    if (t === 'NOC') return 'badge badge-noc';
+    return 'badge badge-default';
+  }
   constructor(
     private readonly router: Router,
     private readonly host: ElementRef<HTMLElement>
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.prepareSlideImages();
@@ -381,8 +381,12 @@ getBadgeClass(type: string): string {
     }
   }
 
-  navigateToLogin(): void {
-    this.router.navigate(['/page/login']);
+  navigateTo(route: string): void {
+    if (route === 'login') {
+      this.router.navigate(['/page/login']);
+    } else {
+      this.router.navigate(['/page/registration']);
+    }
   }
 
   startSlider(): void {

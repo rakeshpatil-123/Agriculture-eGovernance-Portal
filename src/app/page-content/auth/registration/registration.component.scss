@@ -473,7 +473,7 @@ $shadow: 0 25px 60px rgba(2,12,27,.35);
   justify-content: center;
 }
 .registration-container .card {
-  margin: 2rem auto;
+  margin: 8rem auto 2rem auto;
 }
 ::ng-deep .custom-dialog .card {
   max-width: 640px;
@@ -533,4 +533,12 @@ $shadow: 0 25px 60px rgba(2,12,27,.35);
   .custom-dialog .card {
     padding: 18px;
   }
+}
+
+
+.two-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+
 }

@@ -145,6 +145,7 @@ export class ServiceApplicationComponent implements OnInit {
   serviceName: string | null = null;
   successFullySubmitted: boolean = false;
   succesResponse!: succesRes;
+  selectOptionsFormatted?: SelectOption[];
 private static digitLengthValidator(min?: number, max?: number): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
@@ -741,6 +742,7 @@ getFileHintText(question: ServiceQuestion): string {
     if (sectionGroup) {
       const newRow = this.createSectionRow(sectionGroup.questions);
       sectionGroup.formArray.push(newRow);
+        this.cdr.detectChanges();
     }
   }
 
@@ -1554,7 +1556,6 @@ onSubmit(): void {
       return false;
     }
 
-    // normalize operator and expected value
     const op = (operator || '').trim();
     const expectedRaw = expectedValue == null ? '' : String(expectedValue).trim();
 

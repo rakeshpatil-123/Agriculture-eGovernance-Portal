@@ -9,10 +9,10 @@
     [confirmButtonClass]="modalConfig.confirmButtonClass" [cancelButtonClass]="modalConfig.cancelButtonClass"
     (confirm)="handleConfirmSubmission()" (cancel)="showConfirmModal = false" (close)="showConfirmModal = false">
   </app-confirmation-modal>
-  <ng-container *ngIf="loading; else formTemplate">
+  <!-- <ng-container *ngIf="loading; else formTemplate">
     <div class="text-center">Loading form...</div>
   </ng-container>
-  <ng-template #formTemplate>
+  <ng-template #formTemplate> -->
     <form [formGroup]="serviceForm" class="service-application-form">
       <div class="h-style">
         <h1 class="">{{serviceName}}</h1>
@@ -103,7 +103,7 @@ class="text-muted d-block mt-1"
 
                 <table class="table table-bordered grid-table">
                   <thead>
-                    <tr>
+                    <!-- <tr>
 
                       <th>SL No</th>
                       <ng-container *ngFor="let q of section.questions">
@@ -112,7 +112,7 @@ class="text-muted d-block mt-1"
                         </th>
                       </ng-container>
                       <th class="no-wrap" style="width: 100px;">Actions</th>
-                    </tr>
+                    </tr> -->
                   </thead>
                   <tbody formArrayName="{{section.sectionName}}">
                     <tr *ngFor="let row of getSectionFormArray(section.sectionName).controls; let i = index"
@@ -236,7 +236,7 @@ class="text-muted d-block mt-1"
 
       </div>
     </form>
-  </ng-template>
+  <!-- </ng-template> -->
   }
 </div>
 @if(successFullySubmitted === true){
