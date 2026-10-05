@@ -1923,7 +1923,6 @@ export class RegistrationComponent implements OnInit, OnChanges {
       this.registrationForm.addControl(
         'whatsapp_no',
         this.fb.control('', [
-          Validators.required,
           Validators.pattern(/^\d{10}$/),
         ])
       );

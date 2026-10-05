@@ -42,17 +42,17 @@ interface ServiceQuestion {
   service_id: number;
   question_label: string;
   question_type:
-    | 'text'
-    | 'number'
-    | 'email'
-    | 'radio'
-    | 'select'
-    | 'checkbox'
-    | 'textarea'
-    | 'date'
-    | 'file'
-    | 'date_mmdd'
-    | 'date_yyyymmdd';
+  | 'text'
+  | 'number'
+  | 'email'
+  | 'radio'
+  | 'select'
+  | 'checkbox'
+  | 'textarea'
+  | 'date'
+  | 'file'
+  | 'date_mmdd'
+  | 'date_yyyymmdd';
   is_required: 'yes' | 'no';
   options: string | null;
   default_value: string | null;
@@ -82,8 +82,8 @@ interface SectionGroup {
   formArray: FormArray;
 }
 
-interface succesRes{
-  message :string;
+interface succesRes {
+  message: string;
   data: any;
 }
 
@@ -124,7 +124,7 @@ export class ServiceApplicationComponent implements OnInit {
   defaultValue: any = null;
   existingFileUrls: { [questionId: number]: string } = {};
   public Object = Object;
-  isCalculated: boolean  = false;
+  isCalculated: boolean = false;
   calculatedFee: number | null = null;
   previousPaid: number | null = null;
   effectiveFee: number | null = null;
@@ -146,128 +146,193 @@ export class ServiceApplicationComponent implements OnInit {
   successFullySubmitted: boolean = false;
   succesResponse!: succesRes;
   selectOptionsFormatted?: SelectOption[];
-private static digitLengthValidator(min?: number, max?: number): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value;
-    if (value == null || value === '') {
+  private static digitLengthValidator(min?: number, max?: number): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (value == null || value === '') {
+        return null;
+      }
+      const stringValue = String(value).replace(/[^0-9]/g, '');
+      if (min !== undefined && stringValue.length < min) {
+        return {
+          minLength: { requiredLength: min, actualLength: stringValue.length },
+        };
+      }
+      if (max !== undefined && stringValue.length > max) {
+        return {
+          maxLength: { requiredLength: max, actualLength: stringValue.length },
+        };
+      }
       return null;
-    }
-    const stringValue = String(value).replace(/[^0-9]/g, '');
-    if (min !== undefined && stringValue.length < min) {
-      return {
-        minLength: { requiredLength: min, actualLength: stringValue.length },
-      };
-    }
-    if (max !== undefined && stringValue.length > max) {
-      return {
-        maxLength: { requiredLength: max, actualLength: stringValue.length },
-      };
-    }
-    return null;
-  };
-}
+    };
+  }
 
-private static fileTypeAndSizeValidator(
-  allowedMimes: string[] = [],
-  maxSizeMb?: number
-): ValidatorFn {
-  const normalize = (value: string) =>
-    String(value || '')
-      .trim()
-      .toLowerCase()
-      .replace(/^\./, '');
+  private buildValidatorsFor(q: ServiceQuestion, isVisible: boolean): ValidatorFn[] {
+    const validators: ValidatorFn[] = [];
 
-  const allowed = allowedMimes.map(normalize).filter(Boolean);
+    if (q.is_required === 'yes' && isVisible) {
+      validators.push(Validators.required);
+    }
 
-  return (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value;
-    if (!(value instanceof File)) {
+    if (q.validation_required === 'yes' && q.validation_rule) {
+      const rule = q.validation_rule;
+
+      if (q.question_type === 'number') {
+        let min: number | undefined = undefined;
+        let max: number | undefined = undefined;
+
+        if (rule.minLength != null && rule.minLength !== '') {
+          const parsed = Number(rule.minLength);
+          if (!isNaN(parsed)) min = parsed;
+        }
+        if (rule.maxLength != null && rule.maxLength !== '') {
+          const parsed = Number(rule.maxLength);
+          if (!isNaN(parsed)) max = parsed;
+        }
+
+        validators.push(ServiceApplicationComponent.digitLengthValidator(min, max));
+      } else {
+        if (rule.minLength != null && rule.minLength !== '') {
+          const min = Number(rule.minLength);
+          if (!isNaN(min)) validators.push(Validators.minLength(min));
+        }
+        if (rule.maxLength != null && rule.maxLength !== '') {
+          const max = Number(rule.maxLength);
+          if (!isNaN(max)) validators.push(Validators.maxLength(max));
+        }
+      }
+
+      if (
+        rule.pattern &&
+        rule.pattern.trim() !== '' &&
+        !['radio', 'select', 'file', 'checkbox', 'date'].includes(q.question_type)
+      ) {
+        try {
+          validators.push(Validators.pattern(new RegExp(rule.pattern)));
+        } catch (e) {
+          console.warn(`Invalid regex for ${q.id}:`, rule.pattern);
+        }
+      }
+
+      if (q.question_type === 'file') {
+        const allowedMimes = Array.isArray(rule.mimes) ? rule.mimes : [];
+        const maxSizeMb =
+          rule.max_size_mb != null && rule.max_size_mb !== ''
+            ? Number(rule.max_size_mb)
+            : undefined;
+
+        if (allowedMimes.length > 0 || maxSizeMb !== undefined) {
+          validators.push(
+            ServiceApplicationComponent.fileTypeAndSizeValidator(allowedMimes, maxSizeMb)
+          );
+        }
+      }
+    }
+
+    return validators;
+  }
+
+  private static fileTypeAndSizeValidator(
+    allowedMimes: string[] = [],
+    maxSizeMb?: number
+  ): ValidatorFn {
+    const normalize = (value: string) =>
+      String(value || '')
+        .trim()
+        .toLowerCase()
+        .replace(/^\./, '');
+
+    const allowed = allowedMimes.map(normalize).filter(Boolean);
+
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (!(value instanceof File)) {
+        return null;
+      }
+      if ((value as any)?._isFake) {
+        return null;
+      }
+
+      if (allowed.length > 0) {
+        const fileName = normalize(value.name || '');
+        const extension = fileName.includes('.') ? fileName.split('.').pop() || '' : '';
+        const mime = normalize(value.type || '');
+        const isAllowed = allowed.some((item) => {
+          if (item === 'jpg' || item === 'jpeg') {
+            return extension === item || mime === 'image/jpeg';
+          }
+          if (item === 'png') {
+            return extension === 'png' || mime === 'image/png';
+          }
+          if (item === 'pdf') {
+            return extension === 'pdf' || mime === 'application/pdf';
+          }
+          return extension === item || mime.includes(item);
+        });
+
+        if (!isAllowed) {
+          return {
+            invalidFileType: {
+              allowedTypes: allowedMimes,
+            },
+          };
+        }
+      }
+
+      if (maxSizeMb !== undefined && !isNaN(maxSizeMb)) {
+        const maxBytes = maxSizeMb * 1024 * 1024;
+        if (value.size > maxBytes) {
+          return {
+            fileTooLarge: {
+              requiredSizeMb: maxSizeMb,
+              actualSizeMb: +(value.size / 1024 / 1024).toFixed(2),
+            },
+          };
+        }
+      }
+
       return null;
-    }
-    if ((value as any)?._isFake) {
-      return null;
-    }
+    };
+  }
 
+  getFileAllowedExtensions(question: ServiceQuestion): string[] {
+    const mimes = question.validation_rule?.mimes;
+    if (!Array.isArray(mimes)) return [];
+    return mimes.map((m) => String(m).trim().toLowerCase()).filter(Boolean);
+  }
+
+  getFileAcceptAttribute(question: ServiceQuestion): string {
+    const allowed = this.getFileAllowedExtensions(question);
+    if (allowed.length === 0) return '*/*';
+    return allowed.map((ext) => `.${ext}`).join(',');
+  }
+
+  getFileMaxBytes(question: ServiceQuestion): number {
+    const maxMb = Number(question.validation_rule?.max_size_mb ?? 5);
+    return !isNaN(maxMb) && maxMb > 0 ? maxMb * 1024 * 1024 : 5 * 1024 * 1024;
+  }
+
+  getFileHintText(question: ServiceQuestion): string {
+    const allowed = this.getFileAllowedExtensions(question);
+    const maxMb = question.validation_rule?.max_size_mb ?? 5;
+
+    const parts: string[] = [];
     if (allowed.length > 0) {
-      const fileName = normalize(value.name || '');
-      const extension = fileName.includes('.') ? fileName.split('.').pop() || '' : '';
-      const mime = normalize(value.type || '');
-      const isAllowed = allowed.some((item) => {
-        if (item === 'jpg' || item === 'jpeg') {
-          return extension === item || mime === 'image/jpeg';
-        }
-        if (item === 'png') {
-          return extension === 'png' || mime === 'image/png';
-        }
-        if (item === 'pdf') {
-          return extension === 'pdf' || mime === 'application/pdf';
-        }
-        return extension === item || mime.includes(item);
-      });
-
-      if (!isAllowed) {
-        return {
-          invalidFileType: {
-            allowedTypes: allowedMimes,
-          },
-        };
-      }
+      parts.push(`Allowed: ${allowed.map((ext) => `.${ext}`).join(', ')}`);
+    }
+    if (maxMb !== null && maxMb !== undefined && String(maxMb).trim() !== '') {
+      parts.push(`Max size: ${maxMb} MB`);
     }
 
-    if (maxSizeMb !== undefined && !isNaN(maxSizeMb)) {
-      const maxBytes = maxSizeMb * 1024 * 1024;
-      if (value.size > maxBytes) {
-        return {
-          fileTooLarge: {
-            requiredSizeMb: maxSizeMb,
-            actualSizeMb: +(value.size / 1024 / 1024).toFixed(2),
-          },
-        };
-      }
-    }
-
-    return null;
-  };
-}
-
-getFileAllowedExtensions(question: ServiceQuestion): string[] {
-  const mimes = question.validation_rule?.mimes;
-  if (!Array.isArray(mimes)) return [];
-  return mimes.map((m) => String(m).trim().toLowerCase()).filter(Boolean);
-}
-
-getFileAcceptAttribute(question: ServiceQuestion): string {
-  const allowed = this.getFileAllowedExtensions(question);
-  if (allowed.length === 0) return '*/*';
-  return allowed.map((ext) => `.${ext}`).join(',');
-}
-
-getFileMaxBytes(question: ServiceQuestion): number {
-  const maxMb = Number(question.validation_rule?.max_size_mb ?? 5);
-  return !isNaN(maxMb) && maxMb > 0 ? maxMb * 1024 * 1024 : 5 * 1024 * 1024;
-}
-
-getFileHintText(question: ServiceQuestion): string {
-  const allowed = this.getFileAllowedExtensions(question);
-  const maxMb = question.validation_rule?.max_size_mb ?? 5;
-
-  const parts: string[] = [];
-  if (allowed.length > 0) {
-    parts.push(`Allowed: ${allowed.map((ext) => `.${ext}`).join(', ')}`);
+    return parts.join(' | ');
   }
-  if (maxMb !== null && maxMb !== undefined && String(maxMb).trim() !== '') {
-    parts.push(`Max size: ${maxMb} MB`);
-  }
-
-  return parts.join(' | ');
-}
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private apiService: GenericService,
     private cdr: ChangeDetectorRef,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     let isThirdPartyService = null;
@@ -488,74 +553,8 @@ getFileHintText(question: ServiceQuestion): string {
     const group: any = {};
 
     this.questions.forEach((q) => {
-      const validators = [];
-
-      if (q.is_required === 'yes') {
-        validators.push(Validators.required);
-      }
-
-      if (q.validation_required === 'yes' && q.validation_rule) {
-        const rule = q.validation_rule;
-
-        if (q.question_type === 'number') {
-          let min: number | undefined = undefined;
-          let max: number | undefined = undefined;
-
-          if (rule.minLength != null && rule.minLength !== '') {
-            const parsed = Number(rule.minLength);
-            if (!isNaN(parsed)) min = parsed;
-          }
-
-          if (rule.maxLength != null && rule.maxLength !== '') {
-            const parsed = Number(rule.maxLength);
-            if (!isNaN(parsed)) max = parsed;
-          }
-
-          validators.push(
-            ServiceApplicationComponent.digitLengthValidator(min, max)
-          );
-        } else {
-          if (rule.minLength != null && rule.minLength !== '') {
-            const min = Number(rule.minLength);
-            if (!isNaN(min)) validators.push(Validators.minLength(min));
-          }
-          if (rule.maxLength != null && rule.maxLength !== '') {
-            const max = Number(rule.maxLength);
-            if (!isNaN(max)) validators.push(Validators.maxLength(max));
-          }
-        }
-
-        if (
-          rule.pattern &&
-          rule.pattern.trim() !== '' &&
-          !['radio', 'select', 'file', 'checkbox', 'date'].includes(
-            q.question_type
-          )
-        ) {
-          try {
-            validators.push(Validators.pattern(new RegExp(rule.pattern)));
-          } catch (e) {
-            console.warn(`Invalid regex for ${q.id}:`, rule.pattern);
-          }
-        }
-
-        if (q.question_type === 'file') {
-          const allowedMimes = Array.isArray(rule.mimes) ? rule.mimes : [];
-          const maxSizeMb =
-            rule.max_size_mb != null && rule.max_size_mb !== ''
-              ? Number(rule.max_size_mb)
-              : undefined;
-
-          if (allowedMimes.length > 0 || maxSizeMb !== undefined) {
-            validators.push(
-              ServiceApplicationComponent.fileTypeAndSizeValidator(
-                allowedMimes,
-                maxSizeMb
-              )
-            );
-          }
-        }
-      }
+      const isVisible = !q.display_rule?.depends_on;
+      const validators = this.buildValidatorsFor(q, isVisible);
 
       let defaultValue: any = q.default_value || '';
 
@@ -590,7 +589,7 @@ getFileHintText(question: ServiceQuestion): string {
       group[q.id] = [defaultValue, validators];
     });
 
-   this.sectionGroups.forEach((sectionGroup) => {
+    this.sectionGroups.forEach((sectionGroup) => {
       const initialRow = this.createSectionRow(sectionGroup.questions);
       sectionGroup.formArray.push(initialRow);
 
@@ -612,92 +611,26 @@ getFileHintText(question: ServiceQuestion): string {
       }, {} as any),
     });
 
-    this.serviceForm.valueChanges.subscribe(() => {
-      if (this.visible) {
-        this.formModifiedAfterFeeCalculation = true;
-      }
-    });
+    // this.serviceForm.valueChanges.subscribe(() => {
+    //   if (this.visible) {
+    //     this.formModifiedAfterFeeCalculation = true;
+    //   }
+    // });
+
+      this.serviceForm.valueChanges.subscribe(() => {
+    if (this.visible && !this.formModifiedAfterFeeCalculation) {
+      this.formModifiedAfterFeeCalculation = true;
+      this.cdr.detectChanges();
+    }
+  });
   }
 
   createSectionRow(questions: ServiceQuestion[]): FormGroup {
     const rowGroup: any = {};
 
     questions.forEach((q) => {
-      const validators = [];
-
-      if (q.is_required === 'yes') {
-        validators.push(Validators.required);
-      }
-
-      if (q.validation_required === 'yes' && q.validation_rule) {
-        const rule = q.validation_rule;
-
-        if (q.question_type === 'number') {
-          let min: number | undefined = undefined;
-          let max: number | undefined = undefined;
-
-          if (rule.minLength != null && rule.minLength !== '') {
-            const parsed = Number(rule.minLength);
-            if (!isNaN(parsed)) min = parsed;
-          }
-
-          if (rule.maxLength != null && rule.maxLength !== '') {
-            const parsed = Number(rule.maxLength);
-            if (!isNaN(parsed)) max = parsed;
-          }
-
-          validators.push(
-            ServiceApplicationComponent.digitLengthValidator(min, max)
-          );
-        } else {
-          if (rule.minLength != null && rule.minLength !== '') {
-            const min = Number(rule.minLength);
-            if (!isNaN(min)) {
-              validators.push(Validators.minLength(min));
-            }
-          }
-
-          if (rule.maxLength != null && rule.maxLength !== '') {
-            const max = Number(rule.maxLength);
-            if (!isNaN(max)) {
-              validators.push(Validators.maxLength(max));
-            }
-          }
-        }
-
-        if (
-          rule.pattern &&
-          rule.pattern.trim() !== '' &&
-          !['radio', 'select', 'file', 'checkbox', 'date'].includes(
-            q.question_type
-          )
-        ) {
-          try {
-            validators.push(Validators.pattern(new RegExp(rule.pattern)));
-          } catch (e) {
-            console.warn(
-              `Invalid regex pattern for question ${q.id}:`,
-              rule.pattern
-            );
-          }
-        }
-        if (q.question_type === 'file') {
-          const allowedMimes = Array.isArray(rule.mimes) ? rule.mimes : [];
-          const maxSizeMb =
-            rule.max_size_mb != null && rule.max_size_mb !== ''
-              ? Number(rule.max_size_mb)
-              : undefined;
-
-          if (allowedMimes.length > 0 || maxSizeMb !== undefined) {
-            validators.push(
-              ServiceApplicationComponent.fileTypeAndSizeValidator(
-                allowedMimes,
-                maxSizeMb
-              )
-            );
-          }
-        }
-      }
+      const isVisible = !q.display_rule?.depends_on;
+      const validators = this.buildValidatorsFor(q, isVisible);
 
       let defaultValue: any = q.default_value || '';
 
@@ -742,7 +675,7 @@ getFileHintText(question: ServiceQuestion): string {
     if (sectionGroup) {
       const newRow = this.createSectionRow(sectionGroup.questions);
       sectionGroup.formArray.push(newRow);
-        this.cdr.detectChanges();
+      this.cdr.detectChanges();
     }
   }
 
@@ -801,7 +734,7 @@ getFileHintText(question: ServiceQuestion): string {
         } else if (control.hasError('pattern')) {
           errors.push(
             question.validation_rule?.errorMessage ||
-              `${label} has invalid format`
+            `${label} has invalid format`
           );
         } else if (control.hasError('invalidFileType')) {
           const allowed = control.getError('invalidFileType')?.allowedTypes || [];
@@ -848,7 +781,7 @@ getFileHintText(question: ServiceQuestion): string {
             } else if (control.hasError('pattern')) {
               errors.push(
                 question.validation_rule?.errorMessage ||
-                  `${label} has invalid format`
+                `${label} has invalid format`
               );
             } else if (control.hasError('invalidFileType')) {
               const allowed = control.getError('invalidFileType')?.allowedTypes || [];
@@ -888,10 +821,10 @@ getFileHintText(question: ServiceQuestion): string {
     this.onSubmit();
   }
 
-onSubmit(): void {
-  const returnUrl = this.route.snapshot.queryParams['returnUrl'];
-  const isThirdParty = !!returnUrl;
-  const thirdPartyServiceId = this.route.snapshot.queryParams['service_id'];
+  onSubmit(): void {
+    const returnUrl = this.route.snapshot.queryParams['returnUrl'];
+    const isThirdParty = !!returnUrl;
+    const thirdPartyServiceId = this.route.snapshot.queryParams['service_id'];
     this.serviceForm.markAllAsTouched();
     const validationErrors = this.getFormValidationErrors();
     if (validationErrors.length > 0) {
@@ -1054,30 +987,30 @@ onSubmit(): void {
     this.apiService.getByConditions(formData, this.getSubmissionEndpoint())
       .subscribe({
         next: (res) => {
-  if (res?.status === 1) {
-    this.apiService.openSnackBar(
-      'Application saved successfully!',
-      'success'
-    );
+          if (res?.status === 1) {
+            this.apiService.openSnackBar(
+              'Application saved successfully!',
+              'success'
+            );
 
-    this.successFullySubmitted = true;
-    this.succesResponse = res;
-    this.successRedirectUrl = isThirdParty && returnUrl ? returnUrl : null;
-    this.apiCalling = false;
-  } else {
-    this.apiService.openSnackBar(
-      res?.message || 'Submission failed.',
-      'error'
-    );
-    this.apiCalling = false;
-  }
+            this.successFullySubmitted = true;
+            this.succesResponse = res;
+            this.successRedirectUrl = isThirdParty && returnUrl ? returnUrl : null;
+            this.apiCalling = false;
+          } else {
+            this.apiService.openSnackBar(
+              res?.message || 'Submission failed.',
+              'error'
+            );
+            this.apiCalling = false;
+          }
 
-  this.apiCalling = false;
-},
+          this.apiCalling = false;
+        },
 
         error: (err) => {
           // console.error('Submission error:', err);
-           this.apiCalling = false;
+          this.apiCalling = false;
           this.apiService.openSnackBar(
             err?.error?.message || err?.uri || 'Submission failed. Please try again.',
             'error'
@@ -1320,140 +1253,278 @@ onSubmit(): void {
     });
   }
 
+  // calFee(): void {
+  //   if (this.feeCalculating) return;
+
+  //   this.serviceForm.markAllAsTouched();
+
+  //   const validationErrors = this.getFormValidationErrors();
+  //   if (validationErrors.length > 0) {
+  //     const message =
+  //       'Please fix the following:\n• ' + validationErrors.join('\n• ');
+  //     this.apiService.openSnackBar(message, 'error');
+  //     return;
+  //   }
+
+  //   const userId = this.apiService.getDecryptedUserId();
+  //   if (!userId) {
+  //     this.apiService.openSnackBar('User not authenticated.', 'error');
+  //     return;
+  //   }
+
+  //   this.feeCalculating = true;
+
+  //   const raw = this.serviceForm.getRawValue();
+  //   const preparedRaw = this.prepareRawDataForSubmission(raw);
+
+  //   const formData = new FormData();
+  //   formData.append('user_id', userId);
+  //   formData.append('service_id', this.serviceId.toString());
+  //   const actualAppId = this.appId2 !== null ? this.appId2 : this.applicationId;
+
+  //   if (actualAppId !== null) {
+  //     formData.append('application_id', actualAppId.toString());
+  //   }
+
+  //   if (this.extraPayment) {
+  //     formData.append('extra_payment', this.extraPayment.toString());
+  //   }
+
+  //   Object.keys(preparedRaw).forEach((key) => {
+  //     if (this.sectionGroups.some((s) => s.sectionName === key)) return;
+  //     const question = this.questions.find((q) => q.id.toString() === key);
+  //     if (!question) return;
+
+  //     let value = preparedRaw[key];
+
+  //     if (question.question_type === 'date' && value instanceof Date) {
+  //       value = value.toISOString().split('T')[0];
+  //     }
+  //     if (question.question_type === 'checkbox') {
+  //       value = Array.isArray(value) ? value.join(', ') : value;
+  //     }
+
+  //     if (
+  //       question.is_required === 'yes' ||
+  //       (value !== null && value !== '' && value !== undefined)
+  //     ) {
+  //       if (question.question_type === 'file' && value instanceof File) {
+  //         formData.append(`application_data[${key}]`, value, value.name);
+  //       } else {
+  //         formData.append(`application_data[${key}]`, value ?? '');
+  //       }
+  //     }
+  //   });
+
+  //   this.sectionGroups.forEach((section) => {
+  //     const sectionData = preparedRaw[section.sectionName] || [];
+  //     const validRows = sectionData.filter((row: any) =>
+  //       section.questions.some((q) => {
+  //         const val = row[q.id];
+  //         return val !== null && val !== '' && val !== undefined;
+  //       })
+  //     );
+
+  //     validRows.forEach((row: any, rowIndex: number) => {
+  //       section.questions.forEach((q) => {
+  //         let value = row[q.id];
+
+  //         if (q.question_type === 'date' && value instanceof Date) {
+  //           value = value.toISOString().split('T')[0];
+  //         }
+  //         if (q.question_type === 'checkbox') {
+  //           value = Array.isArray(value) ? value.join(', ') : value;
+  //         }
+
+  //         if (
+  //           q.is_required === 'yes' ||
+  //           (value !== null && value !== '' && value !== undefined)
+  //         ) {
+  //           const fieldName = `application_data[${q.id}][${rowIndex}]`;
+
+  //           if (q.question_type === 'file' && value instanceof File) {
+  //             formData.append(fieldName, value, value.name);
+  //           } else {
+  //             formData.append(fieldName, value ?? '');
+  //           }
+  //         }
+  //       });
+  //     });
+  //   });
+  //   this.apiService
+  //     .getByConditions(formData, 'api/user/calculate-fee')
+  //     .subscribe({
+  //       next: (res: any) => {
+  //         if (res?.status === 1) {
+  //           this.isCalculated = true;
+  //           this.calculatedFee = Number(res.data.final_fee);
+  //           this.effectiveFee = Number(res.data.effective_fee);
+  //           this.previousPaid = Number(res.data.previous_paid);
+  //           this.visible = true;
+  //           this.formModifiedAfterFeeCalculation = false;
+  //           this.apiService.openSnackBar(
+  //             'Fee calculated successfully!',
+  //             'success'
+  //           );
+  //         } else {
+  //           this.visible = false;
+  //           this.apiService.openSnackBar(
+  //             res?.message || 'Failed to calculate fee.',
+  //             'error'
+  //           );
+  //         }
+  //       },
+  //       error: (err) => {
+  //         console.error('Fee calculation error:', err);
+  //         this.visible = false;
+  //         this.apiService.openSnackBar(
+  //           err?.error?.message || 'Fee calculation failed. Please try again.',
+  //           'error'
+  //         );
+  //       },
+  //       complete: () => {
+  //         this.feeCalculating = false;
+  //       },
+  //     });
+  // }
+
+
   calFee(): void {
-    if (this.feeCalculating) return;
+  if (this.feeCalculating) return;
 
-    this.serviceForm.markAllAsTouched();
+  this.serviceForm.markAllAsTouched();
 
-    const validationErrors = this.getFormValidationErrors();
-    if (validationErrors.length > 0) {
-      const message =
-        'Please fix the following:\n• ' + validationErrors.join('\n• ');
-      this.apiService.openSnackBar(message, 'error');
-      return;
+  const validationErrors = this.getFormValidationErrors();
+  if (validationErrors.length > 0) {
+    const message =
+      'Please fix the following:\n• ' + validationErrors.join('\n• ');
+    this.apiService.openSnackBar(message, 'error');
+    return;
+  }
+
+  const userId = this.apiService.getDecryptedUserId();
+  if (!userId) {
+    this.apiService.openSnackBar('User not authenticated.', 'error');
+    return;
+  }
+
+  this.feeCalculating = true;
+
+  const raw = this.serviceForm.getRawValue();
+  const preparedRaw = this.prepareRawDataForSubmission(raw);
+
+  const formData = new FormData();
+  formData.append('user_id', userId);
+  formData.append('service_id', this.serviceId.toString());
+  const actualAppId = this.appId2 !== null ? this.appId2 : this.applicationId;
+
+  if (actualAppId !== null) {
+    formData.append('application_id', actualAppId.toString());
+  }
+
+  if (this.extraPayment) {
+    formData.append('extra_payment', this.extraPayment.toString());
+  }
+
+  Object.keys(preparedRaw).forEach((key) => {
+    if (this.sectionGroups.some((s) => s.sectionName === key)) return;
+    const question = this.questions.find((q) => q.id.toString() === key);
+    if (!question) return;
+
+    let value = preparedRaw[key];
+
+    if (question.question_type === 'date' && value instanceof Date) {
+      value = value.toISOString().split('T')[0];
+    }
+    if (question.question_type === 'checkbox') {
+      value = Array.isArray(value) ? value.join(', ') : value;
     }
 
-    const userId = this.apiService.getDecryptedUserId();
-    if (!userId) {
-      this.apiService.openSnackBar('User not authenticated.', 'error');
-      return;
-    }
-
-    this.feeCalculating = true;
-
-    const raw = this.serviceForm.getRawValue();
-    const preparedRaw = this.prepareRawDataForSubmission(raw);
-
-    const formData = new FormData();
-    formData.append('user_id', userId);
-    formData.append('service_id', this.serviceId.toString());
-    const actualAppId = this.appId2 !== null ? this.appId2 : this.applicationId;
-
-    if (actualAppId !== null) {
-      formData.append('application_id', actualAppId.toString());
-    }
-
-    if (this.extraPayment) {
-      formData.append('extra_payment', this.extraPayment.toString());
-    }
-
-    Object.keys(preparedRaw).forEach((key) => {
-      if (this.sectionGroups.some((s) => s.sectionName === key)) return;
-      const question = this.questions.find((q) => q.id.toString() === key);
-      if (!question) return;
-
-      let value = preparedRaw[key];
-
-      if (question.question_type === 'date' && value instanceof Date) {
-        value = value.toISOString().split('T')[0];
+    if (
+      question.is_required === 'yes' ||
+      (value !== null && value !== '' && value !== undefined)
+    ) {
+      if (question.question_type === 'file' && value instanceof File) {
+        formData.append(`application_data[${key}]`, value, value.name);
+      } else {
+        formData.append(`application_data[${key}]`, value ?? '');
       }
-      if (question.question_type === 'checkbox') {
-        value = Array.isArray(value) ? value.join(', ') : value;
-      }
+    }
+  });
 
-      if (
-        question.is_required === 'yes' ||
-        (value !== null && value !== '' && value !== undefined)
-      ) {
-        if (question.question_type === 'file' && value instanceof File) {
-          formData.append(`application_data[${key}]`, value, value.name);
-        } else {
-          formData.append(`application_data[${key}]`, value ?? '');
+  this.sectionGroups.forEach((section) => {
+    const sectionData = preparedRaw[section.sectionName] || [];
+    const validRows = sectionData.filter((row: any) =>
+      section.questions.some((q) => {
+        const val = row[q.id];
+        return val !== null && val !== '' && val !== undefined;
+      })
+    );
+
+    validRows.forEach((row: any, rowIndex: number) => {
+      section.questions.forEach((q) => {
+        let value = row[q.id];
+
+        if (q.question_type === 'date' && value instanceof Date) {
+          value = value.toISOString().split('T')[0];
         }
-      }
-    });
+        if (q.question_type === 'checkbox') {
+          value = Array.isArray(value) ? value.join(', ') : value;
+        }
 
-    this.sectionGroups.forEach((section) => {
-      const sectionData = preparedRaw[section.sectionName] || [];
-      const validRows = sectionData.filter((row: any) =>
-        section.questions.some((q) => {
-          const val = row[q.id];
-          return val !== null && val !== '' && val !== undefined;
-        })
-      );
+        if (
+          q.is_required === 'yes' ||
+          (value !== null && value !== '' && value !== undefined)
+        ) {
+          const fieldName = `application_data[${q.id}][${rowIndex}]`;
 
-      validRows.forEach((row: any, rowIndex: number) => {
-        section.questions.forEach((q) => {
-          let value = row[q.id];
-
-          if (q.question_type === 'date' && value instanceof Date) {
-            value = value.toISOString().split('T')[0];
+          if (q.question_type === 'file' && value instanceof File) {
+            formData.append(fieldName, value, value.name);
+          } else {
+            formData.append(fieldName, value ?? '');
           }
-          if (q.question_type === 'checkbox') {
-            value = Array.isArray(value) ? value.join(', ') : value;
-          }
-
-          if (
-            q.is_required === 'yes' ||
-            (value !== null && value !== '' && value !== undefined)
-          ) {
-            const fieldName = `application_data[${q.id}][${rowIndex}]`;
-
-            if (q.question_type === 'file' && value instanceof File) {
-              formData.append(fieldName, value, value.name);
-            } else {
-              formData.append(fieldName, value ?? '');
-            }
-          }
-        });
+        }
       });
     });
-    this.apiService
-      .getByConditions(formData, 'api/user/calculate-fee')
-      .subscribe({
-        next: (res: any) => {
-          if (res?.status === 1) {
-            this.isCalculated = true;
-            this.calculatedFee = Number(res.data.final_fee);
-            this.effectiveFee = Number(res.data.effective_fee);
-            this.previousPaid = Number(res.data.previous_paid);
-            this.visible = true;
-            this.formModifiedAfterFeeCalculation = false;
-            this.apiService.openSnackBar(
-              'Fee calculated successfully!',
-              'success'
-            );
-          } else {
-            this.visible = false;
-            this.apiService.openSnackBar(
-              res?.message || 'Failed to calculate fee.',
-              'error'
-            );
-          }
-        },
-        error: (err) => {
-          console.error('Fee calculation error:', err);
+  });
+  
+  this.apiService
+    .getByConditions(formData, 'api/user/calculate-fee')
+    .subscribe({
+      next: (res: any) => {
+        if (res?.status === 1) {
+          this.isCalculated = true;
+          this.calculatedFee = Number(res.data.final_fee);
+          this.effectiveFee = Number(res.data.effective_fee);
+          this.previousPaid = Number(res.data.previous_paid);
+          this.visible = true;
+          this.formModifiedAfterFeeCalculation = false; 
+          
+          this.apiService.openSnackBar(
+            'Fee calculated successfully!',
+            'success'
+          );
+        } else {
           this.visible = false;
           this.apiService.openSnackBar(
-            err?.error?.message || 'Fee calculation failed. Please try again.',
+            res?.message || 'Failed to calculate fee.',
             'error'
           );
-        },
-        complete: () => {
-          this.feeCalculating = false;
-        },
-      });
-  }
+        }
+      },
+      error: (err) => {
+        console.error('Fee calculation error:', err);
+        this.visible = false;
+        this.apiService.openSnackBar(
+          err?.error?.message || 'Fee calculation failed. Please try again.',
+          'error'
+        );
+      },
+      complete: () => {
+        this.feeCalculating = false;
+      },
+    });
+}
 
   private setupConditionalLogic(): void {
     this.questions.forEach((question) => {
@@ -1546,7 +1617,7 @@ onSubmit(): void {
     this.cdr.detectChanges();
   }
 
-   private evaluateCondition(
+  private evaluateCondition(
     actualValue: any,
     operator: string,
     expectedValue: string
@@ -1638,4 +1709,19 @@ onSubmit(): void {
     div.innerHTML = html;
     return div.textContent || div.innerText || '';
   }
+
+
+get regularGroupKeys(): string[] {
+  return Object.keys(this.groupedQuestions).filter(
+    (g) => g.trim().toLowerCase() !== 'declaration'
+  );
+}
+
+get declarationGroupKey(): string | null {
+  return (
+    Object.keys(this.groupedQuestions).find(
+      (g) => g.trim().toLowerCase() === 'declaration'
+    ) ?? null
+  );
+}
 }

@@ -140,7 +140,7 @@
   <!-- <section class="dashboard-section charts-section">
     <app-bar-chart></app-bar-chart>
   </section> -->
-  <section class="dashboard-section charts-section">
+  <!-- <section class="dashboard-section charts-section">
     <div class="table-h">
       <h5 class="p-2 fw-bold"> Clarification Raised </h5>
       <hr>
@@ -159,8 +159,8 @@
       <app-dynamic-table [data]="filteredClarificationRequired" [columns]="columns" [searchable]="false"
         [showPagination]="true" [pageSize]="5"></app-dynamic-table>
     </div>
-  </section>
-  <section class="dashboard-section charts-section">
+  </section> -->
+  <!-- <section class="dashboard-section charts-section">
     <div class="filter ">
       <app-ilogi-select fieldLabel="Service " fieldId="service" [(ngModel)]="service" name="applicationType"
         [selectOptions]="serviceOptions" placeholder="Select Type" [mandatory]="false" [readonly]="false">
@@ -179,9 +179,6 @@
             <thead>
               <tr>
                 <th>
-                  <!-- <input type="checkbox" [checked]="isAllSelected()"
-                [disabled]="pendingPayments.length > 5 && maxSelectionReached && !isAllSelected()"
-                (change)="toggleAllSelection()" /> -->
                   Select
                 </th>
                 <th>SL No</th>
@@ -209,9 +206,6 @@
                 <td>{{ payment.status }}</td>
                 <td>₹{{ payment.amount }}</td>
               </tr>
-              <!-- <tr *ngIf="paginatedPendingPayments.length === 0">
-                <td colspan="8" class="no-data">No pending payments found.</td>
-              </tr> -->
             </tbody>
           </table>
         </div>
@@ -250,6 +244,6 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 </div>
 }

@@ -1,0 +1,72 @@
+// Container that centers everything in the available space
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  // Ensure it takes up full height of its parent or a minimum height
+  min-height: 400px; 
+  height: 100%;
+  width: 100%;
+  
+  padding: 2rem;
+  text-align: center;
+  animation: fadeIn 0.5s ease-out;
+}
+
+// Optional: If you want it to look like a floating card, uncomment these lines
+/*
+.empty-state {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  max-width: 400px;
+  margin: 0 auto; // Centers the card itself if parent isn't flex
+}
+*/
+
+// Icon styling
+.empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f0f4ff 0%, #e6efff 100%);
+  color: var(--primary, #0b4ea2); // Uses your primary blue, falls back if not defined
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease;
+
+  svg {
+    width: 40px;
+    height: 40px;
+    opacity: 0.8;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+// Text styling
+.empty-message {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-muted, #475569); // Uses your muted text color
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+// Subtle fade-in animation
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

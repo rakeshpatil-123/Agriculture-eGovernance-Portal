@@ -1,0 +1,177 @@
+.dashboard-container {
+  padding: 30px;
+  background-color: #fff;
+  min-height: 100vh;
+  color: #000;
+
+  .dashboard-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  // Filters Section
+  .filters-section {
+    margin-bottom: 30px;
+
+    label {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 15px;
+      color: #000;
+    }
+
+    .filters-wrapper {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+
+      .filter-group {
+        select.filter-select {
+          padding: 12px 20px;
+          font-size: 14px;
+          border: 1px solid #dddcdc;
+          border-radius: 4px;
+          background-color: #fff;
+          color: #000;
+          min-width: 200px;
+          cursor: pointer;
+          outline: none;
+          transition: border-color 0.3s ease;
+
+          &:hover {
+            border-color: #28a745;
+          }
+
+          &:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
+          }
+
+          option {
+            background-color: #ffffff;
+            color: #000;
+          }
+        }
+      }
+    }
+  }
+
+  // Table Section
+  .table-container {
+    overflow-x: auto;
+    border: 1px solid #c2c0c0;
+    border-radius: 4px;
+
+    .inspection-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+
+      thead {
+        tr {
+          background-color: #28a745; // Green header
+          
+          th {
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #ffffff;
+            border: 1px solid #1e7e34;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+          }
+        }
+      }
+
+      tbody {
+        tr {
+          background-color: #fcfcfc;
+          transition: background-color 0.2s ease;
+
+          &:hover {
+            background-color: #fcfcfc;
+          }
+
+          td {
+            padding: 12px;
+            border: 1px solid #c2c0c0;
+            color: #000;
+            vertical-align: middle;
+
+            &:nth-child(1) {
+              // SL NO. column
+              text-align: center;
+              font-weight: 500;
+            }
+
+            &:nth-child(3),
+            &:nth-child(4),
+            &:nth-child(5) {
+              // Number columns
+              text-align: center;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media screen and (max-width: 768px) {
+  .dashboard-container {
+    padding: 15px;
+
+    .filters-section {
+      .filters-wrapper {
+        flex-direction: column;
+        
+        .filter-group {
+          select.filter-select {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .table-container {
+      overflow-x: auto;
+      
+      .inspection-table {
+        font-size: 12px;
+
+        thead {
+          tr {
+            th {
+              padding: 10px 8px;
+              font-size: 11px;
+            }
+          }
+        }
+
+        tbody {
+          tr {
+            position: relative;
+            td {
+              padding: 8px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.pd{
+    
+    padding:  10px;
+ position: absolute;
+  right: 45%;
+  z-index: 9999;    
+}

@@ -7,25 +7,33 @@
     <!-- Bottom Row: Logo, Auth Buttons, Ministers Image -->
     <div class="main-header-row">
       <div class="brand-left">
-        <a class="logo-link" [routerLink]="['/']" title="Tripura Agriculture Home"
-          aria-label="Tripura Agriculture Home">
-          <img [src]="logoPath" alt="Tripura Agriculture Logo" class="logo" />
-        </a>
+        <div class="logo-container"> 
+
+          <div class="">
+
+            <img class="logo2" [src]="stateLogoPath" alt="Tripura State Logo" />
+          </div>
+          <a class="logo-link" [routerLink]="['/']" title="Tripura Agriculture Home"
+            aria-label="Tripura Agriculture Home">
+            <img [src]="logoPath" alt="Tripura Agriculture Logo" class="logo" />
+          </a>
+        </div>
 
         <div class="brand-copy">
           <div class="title-row">
             <a [routerLink]="['/']" class="site-name" title="Tripura Agriculture Home">
-              Agriculture LMS
+              Agriculture License Management System
             </a>
           </div>
 
           <div class="subtitle-row" aria-label="Department information">
-            <span style="padding-bottom: 1px;">Dept. of Agriculture & Farmer <br/> Welfare Govt. of Tripura</span>
+            <span style="padding-bottom: 1px;">Dept. of Agriculture & Farmer Welfare Govt. of Tripura</span>
           </div>
+          <span style="padding-bottom: 1px;"> <b> Government of Tripura</b></span>
         </div>
       </div>
       <div class="top-toolbar">
-        <div class="top-fixed" >
+        <div class="top-fixed">
 
           <div id="google_translate_element" class="translate-box" aria-hidden="false">
           </div>

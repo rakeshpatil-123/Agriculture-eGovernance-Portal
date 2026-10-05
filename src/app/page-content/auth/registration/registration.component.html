@@ -126,7 +126,7 @@
           </small>
 
           <app-ilogi-input *ngIf="!whatsappSameAsMobile" fieldId="whatsapp_no" fieldLabel="WhatsApp Number"
-            [mandatory]="true" formControlName="whatsapp_no" placeholder="Enter WhatsApp number" type="text">
+            [mandatory]="false" formControlName="whatsapp_no" placeholder="Enter WhatsApp number" type="text">
           </app-ilogi-input>
           <small class="error-text"
             *ngIf="!whatsappSameAsMobile && registrationForm.get('whatsapp_no')?.touched && registrationForm.get('whatsapp_no')?.invalid">

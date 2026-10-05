@@ -205,6 +205,7 @@ export class InspectionComponent implements OnInit {
       .getByConditions(payload, 'api/inspection/inspection-date-update-by-user')
       .subscribe({
         next: (res: any) => {
+          
           if (res?.status === 1) {
             this.genericService.openSnackBar(
               'Date confirmed successfully!',

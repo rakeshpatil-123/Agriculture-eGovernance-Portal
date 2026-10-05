@@ -171,6 +171,42 @@ export const PAGE_CONTENT_ROUTES: Routes = [
                     // canActivate: [authGuard],
                     data: { roles: ['individual'] },
                   },
+              {
+                    path: 'inspection-dashboard',
+                    loadComponent: () =>
+                      import(
+                        '../page-content/inspection-dashboard/inspection-dashboard.component'
+                      ).then((m) => m.InspectionDashboardComponent),
+                    // canActivate: [authGuard],
+                    data: { roles: [''] },
+                  },
+              {
+                    path: 'inspection-timeline-dashboard',
+                    loadComponent: () =>
+                      import(
+                        '../page-content/inspection-timeline-dashboard/inspection-timeline-dashboard.component'
+                      ).then((m) => m.InspectionTimelineDashboardComponent),
+                    // canActivate: [authGuard],
+                    data: { roles: [''] },
+                  },
+              {
+                    path: 'application-dashboard',
+                    loadComponent: () =>
+                      import(
+                        '../page-content/application-dashboard/application-dashboard.component'
+                      ).then((m) => m.ApplicationDashboardComponent),
+                    // canActivate: [authGuard],
+                    data: { roles: [''] },
+                  },
+                  {
+                    path: 'notification',
+                    loadComponent: () =>
+                      import(
+                        '../page-content/notification/notification.component'
+                      ).then((m) => m.NotificationComponent),
+                    // canActivate: [authGuard],
+                    data: { roles: [''] },
+                  },
         ]
     }
 ];
