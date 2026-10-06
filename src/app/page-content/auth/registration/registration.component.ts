@@ -3,6 +3,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
@@ -70,7 +71,7 @@ interface Ward {
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
 })
-export class RegistrationComponent implements OnInit, OnChanges {
+export class RegistrationComponent implements OnInit, OnChanges, OnDestroy {
   @Input() sourcePage: string | null = null;
   @Output() registrationSuccess = new EventEmitter<void>();
   @Input() editMode: boolean = false;
@@ -113,6 +114,10 @@ export class RegistrationComponent implements OnInit, OnChanges {
   whatsappSameAsMobile = true;
   errorMessage: string = '';
   buttonClicked: boolean = false;
+  // Resend OTP cooldown: seconds remaining before the button is re-enabled
+  readonly RESEND_OTP_SECONDS = 30;
+  resendCountdown = 0;
+  private resendTimer: ReturnType<typeof setInterval> | null = null;
   hierarchyLevels = [
     { id: 'subdivision1', name: 'Subdivision 1' },
     { id: 'subdivision2', name: 'Subdivision 2' },
@@ -300,6 +305,8 @@ export class RegistrationComponent implements OnInit, OnChanges {
         // reset otp flags so user can request again
         this.otpSent = false;
         this.otpVerified = false;
+        this.buttonClicked = false;
+        this.stopResendTimer();
 
         if (this.otpControl) {
           this.otpControl.reset();
@@ -1762,6 +1769,7 @@ export class RegistrationComponent implements OnInit, OnChanges {
           this.hideVerify = false;
 
           if (res?.status === 1) {
+            this.buttonClicked = false;
             // Successful flow from backend
             // Determine message text (backend-driven)
             const msg = (
@@ -1786,8 +1794,9 @@ export class RegistrationComponent implements OnInit, OnChanges {
               this.hideVerify = true; // hide OTP input + Verify button
               this.hideSendOtp = true; // hide Send OTP (already verified)
             } else {
-              // OTP was sent normally — hide the Send OTP button to avoid duplicate sends
-              this.hideSendOtp = true;
+              // OTP was sent normally — keep the button visible as "Resend OTP",
+              // disabled until the cooldown runs out
+              this.startResendTimer();
               // keep hideVerify false so Verify UI appears when otpSent && !otpVerified
             }
           } else {
@@ -1824,12 +1833,36 @@ export class RegistrationComponent implements OnInit, OnChanges {
 
           // preserve flag behaviour
           this.otpSent = false;
+          this.buttonClicked = false;
 
           // ensure send otp remains available after error (unless backend said otherwise)
           this.hideSendOtp = false;
           this.hideVerify = false;
         },
       });
+  }
+
+  private startResendTimer(): void {
+    this.stopResendTimer();
+    this.resendCountdown = this.RESEND_OTP_SECONDS;
+    this.resendTimer = setInterval(() => {
+      this.resendCountdown--;
+      if (this.resendCountdown <= 0) {
+        this.stopResendTimer();
+      }
+    }, 1000);
+  }
+
+  private stopResendTimer(): void {
+    if (this.resendTimer) {
+      clearInterval(this.resendTimer);
+      this.resendTimer = null;
+    }
+    this.resendCountdown = 0;
+  }
+
+  ngOnDestroy(): void {
+    this.stopResendTimer();
   }
 
   verifyOtp(): void {
@@ -1866,6 +1899,8 @@ export class RegistrationComponent implements OnInit, OnChanges {
             // update flags and UI state
             this.otpVerified = true;
             this.hideVerify = true;
+            this.hideSendOtp = true; // number verified — no need to (re)send
+            this.stopResendTimer();
             this.otpSent = false;
             this.mobileChecked = true;
 
