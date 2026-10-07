@@ -62,7 +62,7 @@
             <!-- Mobile -->
             <div class="mobile-row">
               <app-ilogi-input class="mobile-field" fieldId="mobile_no" fieldLabel="Mobile Number" [mandatory]="true"
-                formControlName="mobile_no" placeholder="Enter mobile number" type="text"></app-ilogi-input>
+                formControlName="mobile_no" placeholder="Enter mobile number" type="text" maxlength="10" oninput="const t = event.target; if (/[^0-9]/.test(t.value)) { t.value = t.value.replace(/[^0-9]/g, ''); t.dispatchEvent(new Event('input', { bubbles: true })); }"></app-ilogi-input>
                 <!-- Always visible (OTP flow is not used in edit mode / departmental users); disabled when it can't be used -->
                 @if(!editMode && sourcePage !== 'departmental-users')
               {
@@ -78,6 +78,7 @@
               }
             </div>
             <small class="error-text" *ngIf="registrationForm.get('mobile_no')?.touched
+                       && registrationForm.get('mobile_no')?.value?.toString().trim().length !== 10
                        && registrationForm.get('mobile_no')?.invalid
                        && !registrationForm.get('mobile_no')?.hasError('taken')">
               Please enter a valid 10-digit mobile number.
