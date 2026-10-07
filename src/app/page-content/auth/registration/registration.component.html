@@ -67,7 +67,7 @@
                 @if(!editMode && sourcePage !== 'departmental-users')
               {
                 <button type="button" class="btn-otp" (click)="sendOtp()"
-                [disabled]="buttonClicked || otpVerified || resendCountdown > 0 || registrationForm.get('mobile_no')?.invalid || registrationForm.get('mobile_no')?.hasError('taken')">
+                [disabled]="buttonClicked || otpVerified || resendCountdown > 0 || registrationForm.get('mobile_no')?.invalid || registrationForm.get('mobile_no')?.hasError('taken') || registrationForm.get('mobile_no')?.value?.toString().trim().length !== 10">
                 {{ otpSent ? 'Resend OTP' : 'Send OTP' }}
                 </button>
                 @if (resendCountdown > 0) {
