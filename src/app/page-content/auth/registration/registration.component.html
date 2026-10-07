@@ -62,7 +62,7 @@
             <!-- Mobile -->
             <div class="mobile-row">
               <app-ilogi-input class="mobile-field" fieldId="mobile_no" fieldLabel="Mobile Number" [mandatory]="true"
-                formControlName="mobile_no" placeholder="Enter mobile number" type="text" maxlength="10" oninput="const t = event.target; if (/[^0-9]/.test(t.value)) { t.value = t.value.replace(/[^0-9]/g, ''); t.dispatchEvent(new Event('input', { bubbles: true })); }"></app-ilogi-input>
+                formControlName="mobile_no" placeholder="Enter mobile number" type="text" maxlength="10" oninput="{const t = event.target; if (/[^0-9]/.test(t.value)) { t.value = t.value.replace(/[^0-9]/g, ''); t.dispatchEvent(new Event('input', { bubbles: true })); }}"></app-ilogi-input>
                 <!-- Always visible (OTP flow is not used in edit mode / departmental users); disabled when it can't be used -->
                 @if(!editMode && sourcePage !== 'departmental-users')
               {
@@ -101,7 +101,7 @@
             <div *ngIf="otpSent && !otpVerified && !editMode && sourcePage !== 'departmental-users' && !hideVerify"
               class="otp-section mt-2">
               <app-ilogi-input fieldId="otp" fieldLabel="Enter OTP" [mandatory]="true" [formControl]="otpControl"
-                placeholder="Enter 6-digit OTP"></app-ilogi-input>
+                placeholder="Enter 6-digit OTP" maxlength="6" oninput="{const t = event.target; if (/[^0-9]/.test(t.value)) { t.value = t.value.replace(/[^0-9]/g, ''); t.dispatchEvent(new Event('input', { bubbles: true })); }}"></app-ilogi-input>
               <button type="button" class="btn-verify" (click)="verifyOtp()" [disabled]="!otpControl.valid">Verify
                 OTP</button>
             </div>

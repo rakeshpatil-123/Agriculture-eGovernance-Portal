@@ -306,7 +306,8 @@ export class RegistrationComponent implements OnInit, OnChanges, OnDestroy {
         this.otpSent = false;
         this.otpVerified = false;
         this.buttonClicked = false;
-        this.stopResendTimer();
+        // don't stop the resend timer here — the cooldown must run its full
+        // duration after a request, even if the number is edited
 
         if (this.otpControl) {
           this.otpControl.reset();
