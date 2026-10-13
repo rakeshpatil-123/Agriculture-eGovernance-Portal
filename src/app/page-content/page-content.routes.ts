@@ -207,6 +207,15 @@ export const PAGE_CONTENT_ROUTES: Routes = [
                     // canActivate: [authGuard],
                     data: { roles: [''] },
                   },
+                  {
+                    path: 'others',
+                    loadComponent: () =>
+                      import(
+                        '../page-content/others/others.component'
+                      ).then((m) => m.OthersComponent),
+                    // canActivate: [authGuard],
+                    data: { roles: [''] },
+                  },
         ]
     }
 ];

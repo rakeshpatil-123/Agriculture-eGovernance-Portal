@@ -2135,6 +2135,9 @@ export class GenericService {
     const url = `${this.baseUrl}/api/department/user-certificate-generate`;
     return this.http.post(url, body, { responseType: 'blob', headers: this.getHeaders() }) as Observable<Blob>;
   }
+  getInformationPdf(id: number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}/api/informations/${id}`, {}, { responseType: 'blob' });
+  }
   generateCertificate(payload: any): any {
     return this.http.post(
       `${this.baseUrl}/api/department/user-certificate-generate `, payload, { headers: this.getHeaders() }

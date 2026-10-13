@@ -1,0 +1,117 @@
+<section class="section">
+  <div class="docs-grid">
+    @if (isLoading) {
+      <p class="empty-message">Loading documents...</p>
+    } @else if (errorMessage) {
+      <p class="empty-message">{{ errorMessage }}</p>
+    } @else {
+    @for (doc of documents; track doc.id; let i = $index) {
+      <div class="doc-card">
+        <div class="doc-card-body">
+          <div class="doc-card-top">
+            <div class="doc-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                ></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="9" y1="13" x2="15" y2="13"></line>
+                <line x1="9" y1="17" x2="13" y2="17"></line>
+              </svg>
+            </div>
+            <span class="doc-index">{{ i + 1 | number: "2.0-0" }}</span>
+          </div>
+
+          <span class="doc-badge">{{ doc.category }}</span>
+          <h3 class="doc-title" [title]="doc.title">{{ doc.title }}</h3>
+        </div>
+
+        <div class="doc-card-footer">
+          <button
+            type="button"
+            class="btn-preview"
+            [disabled]="loadingPdfId === doc.id"
+            (click)="openPreview(doc)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            Preview
+          </button>
+          <button
+            type="button"
+            class="btn-open"
+            [disabled]="loadingPdfId === doc.id"
+            (click)="openPdf(doc)"
+          >
+            {{ loadingPdfId === doc.id ? "Loading..." : "Open PDF" }}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+              ></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    } @empty {
+      <p class="empty-message">No documents available.</p>
+    }
+    }
+  </div>
+
+  @if (previewDoc) {
+    <div class="preview-backdrop" (click)="closePreview()">
+      <div class="preview-modal" (click)="$event.stopPropagation()">
+        <div class="preview-header">
+          <h4>{{ previewDoc.title }}</h4>
+          <button
+            type="button"
+            class="preview-close"
+            (click)="closePreview()"
+            aria-label="Close preview"
+          >
+            &times;
+          </button>
+        </div>
+        <iframe
+          class="preview-frame"
+          [src]="previewUrl"
+          [title]="previewDoc.title"
+        ></iframe>
+      </div>
+    </div>
+  }
+</section>
