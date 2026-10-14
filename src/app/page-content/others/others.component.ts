@@ -3,11 +3,32 @@ import { DecimalPipe } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable, finalize, map, of, tap } from 'rxjs';
 import { GenericService } from '../../_service/generic/generic.service';
-import {
-  InformationResponse,
-  OtherDocument,
-  mapInformationToDocument,
-} from './others.data';
+
+interface OtherDocument {
+  id: number;
+  title: string;
+  category: string;
+}
+
+interface InformationItem {
+  id: number;
+  information_section: string;
+  information_title: string;
+}
+
+interface InformationResponse {
+  status: number;
+  message: string;
+  data: InformationItem[];
+}
+
+function mapInformationToDocument(item: InformationItem): OtherDocument {
+  return {
+    id: item.id,
+    title: item.information_title,
+    category: item.information_section,
+  };
+}
 
 @Component({
   selector: 'app-others',
