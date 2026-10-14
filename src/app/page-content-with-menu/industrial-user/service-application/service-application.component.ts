@@ -1086,11 +1086,11 @@ export class ServiceApplicationComponent implements OnInit {
       )
       .subscribe({
         next: (res: any) => {
-          if (res?.status === 1 && res.data?.application_data) {
+          if (res?.status === 1 && res.application_data) {
             if (res.data?.extra_payment) {
               this.extraPayment = res.data.extra_payment;
             }
-            this.patchFormWithExistingData(res.data.application_data);
+            this.patchFormWithExistingData(this.toFormData(res.application_data));
           }
         },
         error: (err) => {
@@ -1101,6 +1101,29 @@ export class ServiceApplicationComponent implements OnInit {
           );
         },
       });
+  }
+
+  // Converts the detailed response ({ fields: [{id, answer}], <section>: [[{id, answer}]] })
+  // into the { [questionId]: answer } shape patchFormWithExistingData expects
+  private toFormData(detailedData: any): any {
+    const toRow = (fields: any[]) =>
+      fields.reduce((acc: any, field: any) => {
+        acc[field.id] = field.answer;
+        return acc;
+      }, {});
+
+    const result: any = toRow(detailedData.fields || []);
+
+    this.sectionGroups.forEach((section) => {
+      const rows = detailedData[section.sectionName];
+      if (Array.isArray(rows)) {
+        result[section.sectionName] = rows.map((row: any) =>
+          Array.isArray(row) ? toRow(row) : row
+        );
+      }
+    });
+
+    return result;
   }
 
   private patchFormWithExistingData(applicationData: any): void {
