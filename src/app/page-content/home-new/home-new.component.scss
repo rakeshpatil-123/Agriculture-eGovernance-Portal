@@ -280,19 +280,20 @@
 
   .hero-control__icon {
     display: block;
-    width: 0.74rem;
-    height: 0.74rem;
-    border-top: 2px solid currentColor;
-    border-right: 2px solid currentColor;
+  width: 0.74rem;
+  height: 0.74rem;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  margin: auto;
   }
 
-  .hero-control--prev .hero-control__icon {
-    transform: rotate(-135deg) translate(-1px, -1px);
-  }
+ .hero-control--prev .hero-control__icon {
+  transform: rotate(-135deg);  
+}
 
-  .hero-control--next .hero-control__icon {
-    transform: rotate(45deg) translate(-1px, 1px);
-  }
+.hero-control--next .hero-control__icon {
+  transform: rotate(45deg);  
+}
 
   button:hover {
     background: #f5c766;
