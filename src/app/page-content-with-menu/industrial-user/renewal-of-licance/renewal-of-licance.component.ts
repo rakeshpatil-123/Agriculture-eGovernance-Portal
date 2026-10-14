@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router'; // 1. Import ActivatedRoute
 import {
   DynamicTableComponent,
   TableColumn,
 } from '../../../shared/component/table/table.component';
 import { GenericService } from '../../../_service/generic/generic.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-renewal-of-licance',
@@ -15,7 +15,12 @@ import { Router } from '@angular/router';
 export class RenewalOfLicanceComponent implements OnInit {
   renewalData: any[] = [];
 
-  constructor(private apiService: GenericService, private router: Router) {}
+  // 2. Inject ActivatedRoute in the constructor
+  constructor(
+    private apiService: GenericService, 
+    private router: Router,
+    private route: ActivatedRoute 
+  ) {}
 
   ngOnInit(): void {
     this.fetchRenewalData();
@@ -72,9 +77,6 @@ export class RenewalOfLicanceComponent implements OnInit {
       width: '120px',
       buttonText: 'View',
       buttonColor: 'btn-success',
-      // buttonVisible: (row) => {
-      //   return row.renewal_cycles?.some((cycle: any) => cycle.can_renew);
-      // },
       onClick: (row) => {
         this.router.navigate(['/dashboard/renewal-list', row.service_id, row.application_id]);
       },
@@ -82,8 +84,15 @@ export class RenewalOfLicanceComponent implements OnInit {
   ];
 
   fetchRenewalData(): void {
+    const serviceIdParam = this.route.snapshot.queryParamMap.get('id');
+    
+    const payload: any = {};
+    if (serviceIdParam) {
+      payload.service_id = Number(serviceIdParam); 
+    }
+
     this.apiService
-      .getByConditions({}, 'api/user/get-applications-ready-for-renewal')
+      .getByConditions(payload, 'api/user/get-applications-ready-for-renewal')
       .subscribe({
         next: (res: any) => {
           if (res?.status === 1 && Array.isArray(res.data)) {

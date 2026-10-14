@@ -2,7 +2,7 @@
 
 $sidebar-width-expanded: 320px;
 $sidebar-width-collapsed: 76px;
-$top-navbar-height: 100px;
+$top-navbar-height: 143px;
 $transition-speed: 260ms;
 $mobile-breakpoint: 1024px;
 
@@ -41,40 +41,41 @@ $mobile-breakpoint: 1024px;
   display: block;
 }
 
-:host-context(.theme-dark),
-:host-context(html.theme-dark),
-:host-context(body.theme-dark) {
-  --sidebar-bg: rgba(6, 11, 20, 0.98);
-  --sidebar-surface: #0a1220;
-  --sidebar-surface-soft: #10192b;
-  --sidebar-border: rgba(148, 163, 184, 0.12);
-  --sidebar-shadow: 0 16px 40px rgba(0, 0, 0, 0.38);
-  --sidebar-shadow-strong: 0 24px 60px rgba(0, 0, 0, 0.52);
+// :host-context(.theme-dark),
+// :host-context(html.theme-dark),
+// :host-context(body.theme-dark) {
+//   --sidebar-bg: rgba(6, 11, 20, 0.98);
+//   --sidebar-surface: #0a1220;
+//   --sidebar-surface-soft: #10192b;
+//   --sidebar-border: rgba(148, 163, 184, 0.12);
+//   --sidebar-shadow: 0 16px 40px rgba(0, 0, 0, 0.38);
+//   --sidebar-shadow-strong: 0 24px 60px rgba(0, 0, 0, 0.52);
 
-  --text-main: #edf4ff;
-  --text-muted: #9fb0c7;
-  --text-soft: #7c8ca6;
+//   --text-main: #edf4ff;
+//   --text-muted: #9fb0c7;
+//   --text-soft: #7c8ca6;
 
-  --primary: #67d48b;
-  --primary-2: #8df0ad;
-  --primary-soft: rgba(103, 212, 139, 0.12);
-  --primary-soft-2: rgba(103, 212, 139, 0.18);
+//   --primary: #67d48b;
+//   --primary-2: #8df0ad;
+//   --primary-soft: rgba(103, 212, 139, 0.12);
+//   --primary-soft-2: rgba(103, 212, 139, 0.18);
 
-  --accent: #6fb1ff;
-  --accent-soft: rgba(111, 177, 255, 0.1);
+//   --accent: #6fb1ff;
+//   --accent-soft: rgba(111, 177, 255, 0.1);
 
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --danger: #f87171;
+//   --success: #22c55e;
+//   --warning: #f59e0b;
+//   --danger: #f87171;
 
-  --active-bg: linear-gradient(135deg, rgba(103, 212, 139, 0.18), rgba(111, 177, 255, 0.12));
-  --active-border: rgba(103, 212, 139, 0.26);
-  --hover-bg: rgba(255, 255, 255, 0.05);
-  --hover-border: rgba(255, 255, 255, 0.1);
+//   --active-bg: linear-gradient(135deg, rgba(103, 212, 139, 0.18), rgba(111, 177, 255, 0.12));
+//   --active-border: rgba(103, 212, 139, 0.26);
+//   --hover-bg: rgba(255, 255, 255, 0.05);
+//   --hover-border: rgba(255, 255, 255, 0.1);
 
-  --focus-ring: 0 0 0 4px rgba(103, 212, 139, 0.18);
-  --submenu-bg: rgba(10, 18, 32, 0.96);
-}
+//   --focus-ring: 0 0 0 4px rgba(103, 212, 139, 0.18);
+//   --submenu-bg: rgba(10, 18, 32, 0.96);
+// }
+
 .sidebar {
   background:
     linear-gradient(180deg, rgba(8, 13, 22, 0.98), rgba(11, 18, 32, 0.96)),

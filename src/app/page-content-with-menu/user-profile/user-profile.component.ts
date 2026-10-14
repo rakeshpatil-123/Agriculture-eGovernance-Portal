@@ -454,16 +454,16 @@ export class UserProfileComponent implements OnInit {
         payload.pan = val.pan
       }
       if (val.district_code) {
-        payload.district_id = val.district_code;
+        payload.district_id = Number(val.district_code);
       }
       if (val.subdivision_code) {
-        payload.subdivision_id = val.subdivision_code;
+        payload.subdivision_id = Number(val.subdivision_code);
       }
       if (val.ulb_code) {
-        payload.ulb_id = val.ulb_code;
+        payload.ulb_id = Number(val.ulb_code);
       }
       if (val.ward_code) {
-        payload.ward_id = val.ward_code;
+        payload.ward_id = Number(val.ward_code);
       }
 
       if (this.otpVerified && this.otpCode) {

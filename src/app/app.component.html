@@ -1,4 +1,10 @@
 <app-header-new></app-header-new>
+<div *ngIf="nav">
+  <div class="top">
+
+    <app-nav-menu-bar></app-nav-menu-bar>
+  </div>
+</div>
 <!-- <app-theme-toggle></app-theme-toggle> -->
 <!-- NAVIGATION
 <app-new-nav [isLogged]="isLoggedIn"
@@ -195,9 +201,7 @@
 <app-marquee-cards *ngIf="(currentPath === '/' || currentPath === '') && showOtherComponents"></app-marquee-cards>
 
 <app-choose-destination *ngIf="(currentPath === '/' || currentPath === '') && showOtherComponents"
-  [titleMain]="'Choose Your Destination'"
-  [titleSub]="'Live Where You Want'"
-  [cards]="[
+  [titleMain]="'Choose Your Destination'" [titleSub]="'Live Where You Want'" [cards]="[
     {
       id: 1,
       name: 'Geetanjali Guest House',
@@ -231,19 +235,17 @@
       image: 'assets/images/Dumboor-Lake-Dhalai-District.png',
       badge: ''
     }
-  ]"
-></app-choose-destination>
+  ]"></app-choose-destination>
 
-<app-image-zoom-card *ngIf="(currentPath === '/' || currentPath === '') && showOtherComponents"
-  [images]="[
+<app-image-zoom-card *ngIf="(currentPath === '/' || currentPath === '') && showOtherComponents" [images]="[
     { src: 'assets/images/Bashgram.png' },
     { src: 'assets/images/Durga-Bari.png' },
     { src: 'assets/images/Neermahal-Festival.png' },
     { src: 'assets/images/Vanghmun.jpg' },
     { src: 'assets/images/Laxmi-Narayan-Temple.png' }
-  ]"
-></app-image-zoom-card>
+  ]"></app-image-zoom-card>
 
-<app-testimonials *ngIf="(currentPath === '/' || currentPath === '') && showOtherComponents" [testimonials]="myTestimonials"></app-testimonials>
+<app-testimonials *ngIf="(currentPath === '/' || currentPath === '') && showOtherComponents"
+  [testimonials]="myTestimonials"></app-testimonials>
 
 <app-mini-footer *ngIf="!isLoggedIn"></app-mini-footer>

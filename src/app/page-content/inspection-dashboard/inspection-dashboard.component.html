@@ -1,0 +1,52 @@
+<div class="dashboard-container">
+  <h1 class="dashboard-title">INSPECTION DASHBOARD</h1>
+  
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <label>Filters:</label>
+    <div class="filters-wrapper">
+      <div class="filter-group">
+        <select [(ngModel)]="selectedService" class="filter-select">
+          <option value="" disabled selected>Service</option>
+          <option *ngFor="let service of services" [value]="service">{{ service }}</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <select [(ngModel)]="selectedDistrict" class="filter-select">
+          <option value="" disabled selected>District</option>
+          <option *ngFor="let district of districts" [value]="district">{{ district }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Section -->
+  <div class="table-container">
+    <table class="inspection-table">
+      <thead>
+        <tr>
+          <th>SL NO.</th>
+          <th>SERVICE</th>
+          <th>Total No. Of Inspections</th>
+          <th>Total No. Of Inspections Uploaded Within 24 Hours</th>
+          <th>Total No. Of Inspections Uploaded Beyond 24 Hours</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of inspectionData">
+          <!-- <td>{{ data.slNo }}</td>
+          <td>{{ data.service }}</td>
+          <td>{{ data.totalInspections }}</td>
+          <td>{{ data.uploadedWithin24Hours }}</td>
+          <td>{{ data.uploadedBeyond24Hours }}</td> -->
+         
+        </tr>
+        <div class="pd" >
+
+           <p> No data Found.</p>
+        </div>
+      </tbody>
+    </table>
+  </div>
+</div>
