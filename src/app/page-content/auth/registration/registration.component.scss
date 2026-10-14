@@ -542,3 +542,57 @@ $shadow: 0 25px 60px rgba(2,12,27,.35);
   gap: 8px;
 
 }
+
+/* Mobile number field at half width with Send OTP button inline on its right */
+.mobile-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .mobile-field {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .btn-otp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid #007bff;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    min-width: 100px;
+
+    &:hover:not(:disabled) {
+      background-color: #0069d9;
+      border-color: #0062cc;
+    }
+
+    &:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+  }
+
+  .otp-timer {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #003c5b;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 520px) {
+  .mobile-row .mobile-field {
+    flex: 1 1 auto;
+    max-width: none;
+  }
+}
