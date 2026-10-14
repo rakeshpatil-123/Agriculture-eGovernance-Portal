@@ -690,24 +690,24 @@ private buildSummaryRows(app: any, structuredFields: any[]): any[][] {
       { text: 'Payment Status', style: 'summaryKey' },
       { text: this.titleCase(app?.payment_status), style: 'summaryValue' },
     ],
-    [
-      { text: 'Target Days', style: 'summaryKey' },
-      { text: this.safeText(app?.service?.target_days), style: 'summaryValue' },
-      { text: 'Max Processing Date', style: 'summaryKey' },
-      { text: this.formatPdfDate(app?.max_processing_date), style: 'summaryValue' },
-    ],
+    // [
+    //   { text: 'Target Days', style: 'summaryKey' },
+    //   { text: this.safeText(app?.service?.target_days), style: 'summaryValue' },
+    //   { text: 'Max Processing Date', style: 'summaryKey' },
+    //   { text: this.formatPdfDate(app?.max_processing_date), style: 'summaryValue' },
+    // ],
     [
       { text: 'Paid Amount', style: 'summaryKey' },
       { text: this.safeText(app?.paid_amount), style: 'summaryValue' },
       { text: 'Total Fee', style: 'summaryKey' },
       { text: this.safeText(app?.total_fee), style: 'summaryValue' },
     ],
-    [
-      { text: 'Payment Count', style: 'summaryKey' },
-      { text: this.safeText(paymentDetails.length), style: 'summaryValue' },
-      { text: 'Current Step', style: 'summaryKey' },
-      { text: this.safeText(app?.current_step_number), style: 'summaryValue' },
-    ],
+    // [
+    //   { text: 'Payment Count', style: 'summaryKey' },
+    //   { text: this.safeText(paymentDetails.length), style: 'summaryValue' },
+    //   { text: 'Current Step', style: 'summaryKey' },
+    //   { text: this.safeText(app?.current_step_number), style: 'summaryValue' },
+    // ],
   ];
 }
 
@@ -715,8 +715,8 @@ private buildFieldsTable(fields: any[]): any[] {
   const body: any[] = [
     [
       { text: 'SL', style: 'tableHead' },
-      { text: 'FIELD / QUESTION', style: 'tableHead' },
-      { text: 'ANSWER / DOCUMENT', style: 'tableHead' },
+      { text: 'Particulars', style: 'tableHead' },
+      { text: 'Details Entered', style: 'tableHead' },
     ],
   ];
 
@@ -993,25 +993,25 @@ private buildPdfDefinition(app: any): any {
         margin: [0, 2, 0, 10],
       },
 
-      { text: 'Applicant / Service Details', style: 'section' },
-      {
-        table: {
-          widths: ['40%', '60%'],
-          body: [
-            [{ text: 'Applicant Name', style: 'summaryKey' }, { text: applicantName, style: 'summaryValue' }],
-            [{ text: 'Application No.', style: 'summaryKey' }, { text: applicationNo, style: 'summaryValue' }],
-            [{ text: 'Service Name', style: 'summaryKey' }, { text: serviceName, style: 'summaryValue' }],
-            [{ text: 'Application Status', style: 'summaryKey' }, { text: this.titleCase(app?.status), style: 'summaryValue' }],
-            [{ text: 'Payment Status', style: 'summaryKey' }, { text: this.titleCase(app?.payment_status), style: 'summaryValue' }],
-            [{ text: 'Created At', style: 'summaryKey' }, { text: this.formatPdfDate(app?.created_at), style: 'summaryValue' }],
-            [{ text: 'Updated At', style: 'summaryKey' }, { text: this.formatPdfDate(app?.updated_at), style: 'summaryValue' }],
-          ],
-        },
-        layout: 'lightHorizontalLines',
-        margin: [0, 0, 0, 10],
-      },
+      // { text: 'Applicant / Service Details', style: 'section' },
+      // {
+      //   table: {
+      //     widths: ['40%', '60%'],
+      //     body: [
+      //       [{ text: 'Applicant Name', style: 'summaryKey' }, { text: applicantName, style: 'summaryValue' }],
+      //       [{ text: 'Application No.', style: 'summaryKey' }, { text: applicationNo, style: 'summaryValue' }],
+      //       [{ text: 'Service Name', style: 'summaryKey' }, { text: serviceName, style: 'summaryValue' }],
+      //       [{ text: 'Application Status', style: 'summaryKey' }, { text: this.titleCase(app?.status), style: 'summaryValue' }],
+      //       [{ text: 'Payment Status', style: 'summaryKey' }, { text: this.titleCase(app?.payment_status), style: 'summaryValue' }],
+      //       [{ text: 'Created At', style: 'summaryKey' }, { text: this.formatPdfDate(app?.created_at), style: 'summaryValue' }],
+      //       [{ text: 'Updated At', style: 'summaryKey' }, { text: this.formatPdfDate(app?.updated_at), style: 'summaryValue' }],
+      //     ],
+      //   },
+      //   layout: 'lightHorizontalLines',
+      //   margin: [0, 0, 0, 10],
+      // },
 
-      { text: 'All Form Fields', style: 'section' },
+      { text: 'Details of Application', style: 'section' },
       {
         table: {
           headerRows: 1,

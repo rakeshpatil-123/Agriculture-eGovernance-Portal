@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgApexchartsModule, ChartComponent, ApexChart, ApexXAxis, ApexYAxis, ApexDataLabels, ApexPlotOptions, ApexGrid, ApexTitleSubtitle, ApexLegend } from 'ng-apexcharts';
+import { NgApexchartsModule, ChartComponent, ApexChart, ApexXAxis, ApexYAxis, ApexDataLabels, ApexPlotOptions, ApexGrid, ApexTitleSubtitle, ApexLegend, ApexAxisChartSeries } from 'ng-apexcharts';
 import { DashboardService } from '../dashboard-service/dashboard-service';
 
 export type BarChartOptions = {

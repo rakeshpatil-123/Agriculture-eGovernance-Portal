@@ -3,7 +3,7 @@ import { PageContentWithMenuComponent } from './page-content-with-menu.component
 import { authGuard } from '../guards/guards/auth.guard';
 import { ProformaListComponent } from './proforma-list/proforma-list.component';
 import { IncentiveApplicationsComponent } from './incentive-applications/incentive-applications.component';
-import { profileCompletionGuard } from '../guards/guards/profile-completion.guard';
+import {  } from '../guards/guards/profile-completion.guard';
 
 export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
   {
@@ -18,7 +18,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
           import('./dashboard/dashboard.component').then(
             (m) => m.DashboardComponent
           ),
-          canActivate: [profileCompletionGuard],
+          canActivate: [],
       },
       {
         path: 'external-services-tracking',
@@ -26,7 +26,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
           import(
             './external-services-redirection-tracking/external-services-redirection-tracking.component'
           ).then((m) => m.ExternalServicesRedirectionTrackingComponent),
-        canActivate: [authGuard, profileCompletionGuard],
+        canActivate: [authGuard, ],
         data: { roles: ['individual'] }
       },
       {
@@ -35,7 +35,16 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
           import(
             './industrial-user/application-list/application-list.component'
           ).then((m) => m.ApplicationSearchPageComponent),
-        canActivate: [authGuard, profileCompletionGuard],
+        canActivate: [authGuard, ],
+        data: { roles: ['individual'] }
+      },
+      {
+        path: 'inspection-list',
+        loadComponent: () =>
+          import(
+            './industrial-user/inspection/inspection.component'
+          ).then((m) => m.InspectionComponent),
+        canActivate: [authGuard, ],
         data: { roles: ['individual'] }
       },
       {
@@ -44,7 +53,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
           import(
             './industrial-user/renewal-of-licance/renewal-of-licance.component'
           ).then((m) => m.RenewalOfLicanceComponent),
-        canActivate: [authGuard, profileCompletionGuard],
+        canActivate: [authGuard, ],
         data: { roles: ['individual'] }
       },
       {
@@ -53,7 +62,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
           import(
             './industrial-user/renewal-list/renewal-list.component'
           ).then((m) => m.RenewalListComponent),
-        canActivate: [authGuard, profileCompletionGuard],
+        canActivate: [authGuard, ],
         data: { roles: ['individual'] }
       },
       {
@@ -71,7 +80,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
       //     import('./industrial-user/inspection/inspection.component').then(
       //       (m) => m.InspectionComponent
       //     ),
-      //     canActivate: [authGuard, profileCompletionGuard],
+      //     canActivate: [authGuard, ],
       //     data: { roles: ['individual'] }
       // },
       // {
@@ -80,7 +89,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
       //     import('./industrial-user/inspection-view/inspection-view.component').then(
       //       (m) => m.InspectionViewComponent
       //     ),
-      //     canActivate: [authGuard, profileCompletionGuard],
+      //     canActivate: [authGuard, ],
       //     data: { roles: ['individual'] }
       // },
       {
@@ -98,7 +107,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
       //     import('./industrial-user/caf/caf.component').then(
       //       (m) => m.ApplicationFormComponent
       //     ),
-      //   canActivate: [authGuard, profileCompletionGuard],
+      //   canActivate: [authGuard, ],
       //   data: { roles: ['individual'] }
       // },
       {
@@ -107,7 +116,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
           import('./industrial-user/allServices/services.component').then(
             (m) => m.ServicesComponent
           ),
-        canActivate: [authGuard, profileCompletionGuard],
+        canActivate: [authGuard, ],
         data: { roles: ['individual'] }
       },
       // {
@@ -116,7 +125,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
       //     import('./industrial-user/incentive/eligibility/eligibility.component').then(
       //       (m) => m.EligibilityComponent
       //     ),
-      //   canActivate: [authGuard, profileCompletionGuard],
+      //   canActivate: [authGuard, ],
       //   data: { roles: ['department', 'individual'] }
       // },
       // {
@@ -125,7 +134,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
       //     import('./industrial-user/incentive/claim/claim.component').then(
       //       (m) => m.ClaimComponent
       //     ),
-      //   canActivate: [authGuard, profileCompletionGuard],
+      //   canActivate: [authGuard, ],
       //   data: { roles: ['department', 'individual'] }
       // },
       {
@@ -171,7 +180,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
           import(
             './industrial-user/service-feedback/service-feedback.component'
           ).then((m) => m.ServiceFeedbackComponent),
-        canActivate: [authGuard, profileCompletionGuard],
+        canActivate: [authGuard, ],
         data: { roles: [ 'individual'] }
       },
       {
@@ -251,7 +260,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
       //     import(
       //       './industrial-user/upload-existing-licence/upload-existing-licence.component'
       //     ).then((m) => m.UploadExistingLicenceComponent),
-      //   canActivate: [authGuard, profileCompletionGuard],
+      //   canActivate: [authGuard, ],
       //   data: { roles: ['individual'] }
       // },
       {
@@ -260,7 +269,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
           import(
             './industrial-user/license-details/license-details.component'
           ).then((m) => m.LicenseDetailsComponent),
-        canActivate: [authGuard, profileCompletionGuard],
+        canActivate: [authGuard, ],
         data: { roles: ['individual'] }
       },
       {
@@ -269,7 +278,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
           import('./example-form/example-form.component').then(
             (m) => m.ExampleFormComponent
           ),
-        canActivate: [authGuard, profileCompletionGuard],
+        canActivate: [authGuard, ],
         data: { roles: ['individual'] }
       },
       {
@@ -278,7 +287,7 @@ export const PAGE_CONTENT_WITH_MENU_ROUTES: Routes = [
           import('./industrial-user/all-payments/all-payments.component').then(
             (m) => m.AllPaymentsComponent
           ),
-        canActivate: [authGuard, profileCompletionGuard],
+        canActivate: [authGuard, ],
         data: { roles: ['individual'] }
       },
       // {

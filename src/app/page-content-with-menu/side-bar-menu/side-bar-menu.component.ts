@@ -234,6 +234,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
       roles: ['individual'],
     },
     {
+      id: 'Inspection List',
+      title: 'Inspection List',
+      icon: 'list_alt',
+      route: '/dashboard/inspection-list',
+      roles: ['individual'],
+    },
+    {
       id: 'reports',
       title: 'Reports',
       icon: 'assessment',

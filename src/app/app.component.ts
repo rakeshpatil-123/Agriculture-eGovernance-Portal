@@ -45,6 +45,7 @@ import { TestimonialsComponent } from './page-content-with-menu/testimonials/tes
 import { TripuraTourismLicensingComponent } from './tripura-tourism-licensing/tripura-tourism-licensing.component';
 import { TripuraNocDashboardComponent } from './tripura-noc-dashboard/tripura-noc-dashboard.component';
 import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
+import { NavMenuBarComponent } from './page-template/nav-menu-bar/nav-menu-bar.component';
 
 @Component({
   selector: 'app-root',
@@ -70,6 +71,7 @@ import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
     TripuraTourismLicensingComponent,
     TripuraNocDashboardComponent,
     ThemeToggleComponent,
+    NavMenuBarComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -79,6 +81,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   showLoader = true;
   isLoggedIn = false;
+   nav: boolean = true; 
   currentUrl = '';
   currentPath: any = '';
   helpSidebarOpen = false;
@@ -306,6 +309,13 @@ export class AppComponent implements OnInit, OnDestroy {
     this.themeService.initTheme();
     this.currentPath = this.router.url;
     this.currentUrl = this.router.url;
+    this.updateNavVisibility();
+
+    this.router.events
+      .pipe(filter((event: any) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.updateNavVisibility();
+      });
 
     this.router.events
       .pipe(
@@ -334,6 +344,12 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     this.checkToken();
+  }
+
+    private updateNavVisibility(): void {
+    const isDashboardRoute = this.router.url.includes('/dashboard');
+    this.nav = !isDashboardRoute; 
+    
   }
 
   checkToken() {
