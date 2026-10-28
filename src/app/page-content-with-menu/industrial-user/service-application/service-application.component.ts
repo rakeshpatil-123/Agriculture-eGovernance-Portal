@@ -1029,6 +1029,11 @@ export class ServiceApplicationComponent implements OnInit {
     this.successFullySubmitted = false;
   }
 
+  goToPayments() {
+    this.router.navigate(['/dashboard/payments']);
+    this.successFullySubmitted = false;
+  }
+
 
   draft(): void {
     const userId = this.apiService.getDecryptedUserId();
