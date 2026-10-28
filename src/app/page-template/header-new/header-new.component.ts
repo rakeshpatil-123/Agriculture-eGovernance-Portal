@@ -29,6 +29,7 @@ type FontSize = 'small' | 'normal' | 'large';
 })
 export class HeaderNewComponent implements OnInit, AfterViewInit, OnDestroy {
   logoPath = 'assets/logo/National-Emblem.png';
+  stateLogoPath = 'assets/logo/statelogo.jpg';
 
   isLoggedIn = false;
   private loginSubscription?: Subscription;

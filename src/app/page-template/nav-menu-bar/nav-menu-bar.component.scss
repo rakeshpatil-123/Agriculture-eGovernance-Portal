@@ -1,0 +1,41 @@
+.nav-menu-bar {
+  background-color: #006317; // Green background for the full strip
+  padding: 15px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+margin-top: 160px;
+  .menu-list {
+    list-style-type: none;
+    display: flex;
+    justify-content: center; // <--- THIS CENTERS THE ITEMS
+    gap: 20px;               // Space between menu items
+    margin: 0;
+    padding: 0;
+
+    .menu-item {
+      .menu-link {
+        color: #ffffff;            // White text
+        text-decoration: none;
+        padding: 10px 15px;        // Padding around the text
+        font-weight: 600;
+        font-size: 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+
+        // Hover effect: subtle white overlay
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.2); 
+        }
+
+        // Active link effect
+        &.active {
+          background-color: rgba(255, 255, 255, 0.3);
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
+.border-right{
+    border-right: 1px solid rgba(255, 255, 255, 0.5); // White border with some transparency
+}

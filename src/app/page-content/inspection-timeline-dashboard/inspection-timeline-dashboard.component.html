@@ -1,0 +1,63 @@
+<div class="dashboard-container">
+  <h1 class="dashboard-title">INSPECTION TIMELINE DASHBOARD</h1>
+  
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <label>Filters:</label>
+    <div class="filters-wrapper">
+      <div class="filter-group">
+        <select [(ngModel)]="selectedService" class="filter-select">
+          <option value="" disabled selected>Service</option>
+          <option *ngFor="let service of services" [value]="service">{{ service }}</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <select [(ngModel)]="selectedDistrict" class="filter-select">
+          <option value="" disabled selected>District</option>
+          <option *ngFor="let district of districts" [value]="district">{{ district }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Section -->
+  <div class="table-container">
+    <table class="timeline-table">
+      <thead>
+        <tr>
+          <th>SL NO.</th>
+          <th>SERVICE</th>
+          <th>Total No. Of Pending Inspections</th>
+          <th>Total No. Of Inspections Conducted Within Timeline</th>
+          <th>Total No. Of Inspections Conducted Beyond Timeline</th>
+          <th>Total Number of Pending Inspections</th>
+          <th>No. of Enterprises Exempted based on Self-Certification</th>
+          <th>No. of Enterprises Exempted based on Third-Party Certification</th>
+          <th>Track Inspections</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of timelineData">
+          <!-- <td>{{ data.slNo }}</td>
+          <td>{{ data.service }}</td>
+          <td>{{ data.totalPending }}</td>
+          <td>{{ data.conductedWithinTimeline }}</td>
+          <td>{{ data.conductedBeyondTimeline }}</td>
+          <td>{{ data.totalNumberPending }}</td>
+          <td>{{ data.exemptedSelfCert }}</td>
+          <td>{{ data.exemptedThirdParty }}</td>
+          <td>
+            <button class="track-btn" (click)="trackInspection(data.trackId)">
+              Track
+            </button>
+          </td> -->
+        </tr>
+         <div class="pd" >
+
+           <p> No data Found.</p>
+        </div>
+      </tbody>
+    </table>
+  </div>
+</div>

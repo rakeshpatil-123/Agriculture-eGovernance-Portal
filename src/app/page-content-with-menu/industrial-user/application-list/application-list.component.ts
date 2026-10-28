@@ -360,15 +360,15 @@ private formatDateForBackend(input: string): string {
         label: 'Service Name',
         class: 'input-large-custom2',
       },
-      {
-        key: 'departmentName',
-        label: 'Department',
-        class: 'input-large-custom wid-cus2',
-      },
-      {
-        key: 'applicationType',
-        label: 'Application Type',
-      },
+      // {
+      //   key: 'departmentName',
+      //   label: 'Department',
+      //   class: 'input-large-custom wid-cus2',
+      // },
+      // {
+      //   key: 'applicationType',
+      //   label: 'Application Type',
+      // },
       {
         key: 'status',
         label: 'Status',
@@ -393,25 +393,25 @@ private formatDateForBackend(input: string): string {
         format: (value: string) => this.toTitleCase(value),
         cellClass: () => 'input-large-custom wid-cus',
       },
-      {
-        key: 'renew',
-        label: 'Query & Feedback',
-        type: 'button',
-        width: '120px',
-        buttonText: (row: any) => {
-          return row.already_rated ? `${row.rating}⭐` : 'Rating';
-        },
-        buttonColor: 'btn-success',
-        buttonVisible: (row: any) =>
-          row.payment_status.toLowerCase() === 'paid',
-        onClick: (row: any) => {
-          if (row.already_rated === false) {
-            this.router.navigate([`/dashboard/service-feedback`, row.id]);
-          }
+      // {
+      //   key: 'renew',
+      //   label: 'Query & Feedback',
+      //   type: 'button',
+      //   width: '120px',
+      //   buttonText: (row: any) => {
+      //     return row.already_rated ? `${row.rating}⭐` : 'Rating';
+      //   },
+      //   buttonColor: 'btn-success',
+      //   buttonVisible: (row: any) =>
+      //     row.payment_status.toLowerCase() === 'paid',
+      //   onClick: (row: any) => {
+      //     if (row.already_rated === false) {
+      //       this.router.navigate([`/dashboard/service-feedback`, row.id]);
+      //     }
 
-          console.log(row.rating);
-        },
-      },
+      //     console.log(row.rating);
+      //   },
+      // },
       {
         key: 'actions',
         label: 'Action',
